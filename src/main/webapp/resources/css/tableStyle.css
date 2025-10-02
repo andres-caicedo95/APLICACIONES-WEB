@@ -1,0 +1,135 @@
+/* Estilos generales para la tabla DataTable */
+.jsf-data-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.jsf-data-table thead th {
+    background-color: #036fab;
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    border: 1px solid #ddd;
+}
+
+.jsf-data-table tbody td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+
+.jsf-data-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.jsf-data-table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Estilos para los botones de DataTables */
+.dt-buttons .dt-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 0 5px 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.3s;
+}
+
+.dt-buttons .dt-button:hover {
+    background-color: #218838;
+}
+
+/* Estilos para la paginación */
+.dataTables_paginate .paginate_button {
+    padding: 5px 10px;
+    margin: 0 3px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #036fab;
+}
+
+.dataTables_paginate .paginate_button.current,
+.dataTables_paginate .paginate_button.current:hover {
+    background-color: #036fab;
+    color: white;
+    border-color: #036fab;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background-color: #e9ecef;
+}
+
+/* Estilos para el campo de búsqueda */
+.dataTables_filter input {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* Estilos para el selector de cantidad de registros */
+.dataTables_length select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* Estilos responsive para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+    .jsf-data-table thead {
+        display: none;
+    }
+    
+    .jsf-data-table tbody td {
+        display: block;
+        padding: 10px;
+        text-align: right;
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .jsf-data-table tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-right: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+    
+    .jsf-data-table tbody tr {
+        margin-bottom: 15px;
+        display: block;
+        border: 1px solid #ddd;
+    }
+    
+    .dt-buttons {
+        text-align: center;
+    }
+    
+    .dt-buttons .dt-button {
+        margin-bottom: 5px;
+        width: 100%;
+        display: block;
+    }
+    
+    .dataTables_length,
+    .dataTables_filter {
+        float: none;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}

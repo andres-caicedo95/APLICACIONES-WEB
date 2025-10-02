@@ -1,0 +1,325 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="./../newTemplate.xhtml">
+            
+            <ui:define name="title">Gestión de Productos</ui:define>
+            
+            <ui:define name="head">
+                <style>
+                    .product-header {
+                        background: rgba(255, 255, 255, 0.98);
+                        border-radius: 12px;
+                        padding: 1.5rem;
+                        margin-bottom: 1.5rem;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                        border: 1px solid rgba(255, 255, 255, 0.6);
+                    }
+                    
+                    .btn-primary-custom {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        border: none;
+                        color: white;
+                        padding: 0.6rem 1.8rem;
+                        border-radius: 10px;
+                        font-weight: 500;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .btn-primary-custom:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+                    }
+                    
+                    .table-container {
+                        background: rgba(255, 255, 255, 0.98);
+                        border-radius: 12px;
+                        overflow: hidden;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                        border: 1px solid rgba(255, 255, 255, 0.6);
+                    }
+                    
+                    .jsf-data-table th {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                        color: white !important;
+                        font-weight: 600;
+                        border: none;
+                        padding: 1rem;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .jsf-data-table td {
+                        padding: 0.8rem 1rem;
+                        vertical-align: middle;
+                        border-color: #e2e8f0;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .action-buttons {
+                        display: flex;
+                        gap: 0.3rem;
+                        flex-wrap: wrap;
+                    }
+                    
+                    .btn-action {
+                        padding: 0.3rem 0.8rem;
+                        font-size: 0.8rem;
+                        border-radius: 6px;
+                        transition: all 0.3s ease;
+                        border: none;
+                        text-decoration: none;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.3rem;
+                    }
+                    
+                    .btn-edit {
+                        background: #ffc107;
+                        color: #000;
+                    }
+                    
+                    .btn-edit:hover {
+                        background: #e0a800;
+                        transform: translateY(-1px);
+                        color: #000;
+                    }
+                    
+                    .btn-delete {
+                        background: #dc3545;
+                        color: white;
+                    }
+                    
+                    .btn-delete:hover {
+                        background: #c82333;
+                        transform: translateY(-1px);
+                        color: white;
+                    }
+                    
+                    .status-badge {
+                        padding: 0.3rem 0.8rem;
+                        border-radius: 15px;
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                        text-align: center;
+                        display: inline-block;
+                        min-width: 80px;
+                    }
+                    
+                    .status-active {
+                        background: #d4edda;
+                        color: #155724;
+                    }
+                    
+                    .status-inactive {
+                        background: #f8d7da;
+                        color: #721c24;
+                    }
+                    
+                    .category-badge {
+                        padding: 0.3rem 0.6rem;
+                        border-radius: 10px;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                    }
+                    
+                    .category-panes { background: #d1ecf1; color: #0c5460; }
+                    .category-bebidas { background: #d4edda; color: #155724; }
+                    .category-tortas { background: #fff3cd; color: #856404; }
+                    .category-chocolates { background: #e2e3e5; color: #383d41; }
+                    .category-sandwiches { background: #d1ecf1; color: #0c5460; }
+                    .category-cafe { background: #d4edda; color: #155724; }
+                    .category-helados { background: #fff3cd; color: #856404; }
+                    .category-postres { background: #e2e3e5; color: #383d41; }
+                    .category-otros { background: #f8d7da; color: #721c24; }
+                    
+                    .product-title {
+                        color: #2d3748;
+                        font-weight: 700;
+                        margin-bottom: 0.3rem;
+                    }
+                    
+                    .product-subtitle {
+                        color: #718096;
+                        font-size: 0.9rem;
+                        margin-bottom: 0;
+                    }
+                    
+                    .code-cell {
+                        font-family: 'Courier New', monospace;
+                        font-weight: 600;
+                    }
+                    
+                    .price-cell {
+                        font-weight: 600;
+                        color: #2d3748;
+                    }
+                    
+                    .stock-cell {
+                        text-align: center;
+                        font-weight: 600;
+                    }
+                    
+                    .stock-low { color: #dc3545; }
+                    .stock-medium { color: #ffc107; }
+                    .stock-high { color: #28a745; }
+                </style>
+            </ui:define>
+            
+            <ui:define name="content">
+                <!-- Encabezado mejorado -->
+                <div class="product-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="product-title">
+                                <i class="bi bi-box-seam me-2"></i>Gestión de Productos
+                            </h3>
+                            <p class="product-subtitle">
+                                Administra los productos del sistema Desayunos Detalles
+                            </p>
+                        </div>
+                        <h:form style="margin-bottom: 0;">
+                            <h:commandButton value="📦 Registrar Producto" action="#{productController.prepararCrearProducto()}" 
+                                           styleClass="btn-primary-custom" immediate="true"/>
+                        </h:form>
+                    </div>
+                </div>
+
+                <!-- Mensajes del sistema -->
+                <h:messages globalOnly="false" styleClass="messages" infoClass="alert alert-success" 
+                          errorClass="alert alert-danger" warnClass="alert alert-warning"/>
+
+                <!-- Información de estadísticas -->
+                <div class="alert alert-info mb-3">
+                    <strong>Total de productos: #{productController.obtenerProductos().size()}</strong>
+                </div>
+
+                <!-- Tabla de productos -->
+                <div class="table-container">
+                    <table id="t-all" class="jsf-data-table display nowrap" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>CÓDIGO</th>
+                                <th>NOMBRE</th>
+                                <th>STOCK</th>
+                                <th>PRECIO</th>
+                                <th>CATEGORÍA</th>
+                                <th>ESTADO</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{productController.obtenerProductos()}" var="item">
+                                <tr>
+                                    <td><strong>#{item.idProducto}</strong></td>
+                                    <td class="code-cell">#{item.codigoProducto}</td>
+                                    <td><strong>#{item.nombreProducto}</strong></td>
+                                    <td class="stock-cell #{item.stockProduccto lt 10 ? 'stock-low' : item.stockProduccto lt 30 ? 'stock-medium' : 'stock-high'}">
+                                        #{item.stockProduccto}
+                                    </td>
+                                    <td class="price-cell">$#{item.valorProducto}</td>
+                                    <td>
+                                        <span class="category-badge category-#{item.categoriaProducto.name().toLowerCase()}">
+                                            #{item.categoriaProducto}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge #{item.estadoProducto eq 'Activo' ? 'status-active' : 'status-inactive'}">
+                                            #{item.estadoProducto}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <h:form style="display: inline;">
+                                                <h:commandButton value="Editar" action="#{productController.prepararEditarProducto(item)}" 
+                                                               styleClass="btn-action btn-edit" immediate="true">
+                                                    <i class="bi bi-pencil"></i>
+                                                </h:commandButton>
+                                            </h:form>
+                                            <h:form style="display: inline;">
+                                                <h:commandButton value="Eliminar" 
+                                                               onclick="return confirm('¿Está seguro de eliminar el producto #{item.nombreProducto}?')" 
+                                                               action="#{productController.eliminarProducto(item)}"
+                                                               styleClass="btn-action btn-delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </h:commandButton>
+                                            </h:form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mensaje si no hay productos -->
+                <div class="alert alert-warning text-center" rendered="#{empty productController.obtenerProductos()}">
+                    <h5>No hay productos registrados</h5>
+                    <p>Utiliza el botón "Registrar Producto" para agregar el primer producto al sistema.</p>
+                </div>
+
+                <script>
+                    $(document).ready(function () {
+                        $('.jsf-data-table').DataTable({
+                            dom: 'Bfrtip',
+                            "language": {
+                                "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json",
+                                "decimal": ",",
+                                "thousands": "."
+                            },
+                            "pageLength": 10,
+                            "responsive": true,
+                            "autoWidth": false,
+                            "order": [[0, "desc"]],
+                            "columnDefs": [
+                                { "width": "5%", "targets": 0 },
+                                { "width": "10%", "targets": 1 },
+                                { "width": "25%", "targets": 2 },
+                                { "width": "8%", "targets": 3 },
+                                { "width": "10%", "targets": 4 },
+                                { "width": "15%", "targets": 5 },
+                                { "width": "10%", "targets": 6 },
+                                { "width": "17%", "targets": 7 }
+                            ],
+                            buttons: [
+                                {
+                                    extend: 'copy',
+                                    text: '<i class="bi bi-clipboard"></i> Copiar',
+                                    className: 'btn btn-sm btn-outline-secondary'
+                                },
+                                {
+                                    extend: 'csv',
+                                    text: '<i class="bi bi-file-earmark-spreadsheet"></i> CSV',
+                                    className: 'btn btn-sm btn-outline-secondary'
+                                },
+                                {
+                                    extend: 'excel',
+                                    text: '<i class="bi bi-file-earmark-excel"></i> Excel',
+                                    className: 'btn btn-sm btn-outline-secondary'
+                                },
+                                {
+                                    extend: 'pdf',
+                                    text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
+                                    className: 'btn btn-sm btn-outline-secondary'
+                                },
+                                {
+                                    extend: 'print',
+                                    text: '<i class="bi bi-printer"></i> Imprimir',
+                                    className: 'btn btn-sm btn-outline-secondary'
+                                }
+                            ],
+                            "initComplete": function(settings, json) {
+                                $('.dt-buttons .btn').addClass('me-1');
+                            }
+                        });
+                    });
+                </script>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

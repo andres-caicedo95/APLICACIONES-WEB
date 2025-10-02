@@ -1,0 +1,738 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="#{resource['images/logo.png']}" type="image/x-icon" /> 
+        <h:outputStylesheet name="/css/Inicio.css"/>
+        <title>Desayunos y Detalles - Inicio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    </h:head>
+    <h:body style="font-family: 'Poppins', sans-serif; overflow-x: hidden;">
+        <!-- Barra de navegación mejorada -->
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="container">
+                <h:graphicImage value="/resources/images/logo.png" styleClass="header-logo me-2" style="height: 50px;" />
+                <a class="navbar-brand fw-bold" href="#">Desayunos y Detalles</a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#servicios">Servicios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#nosotros">Quiénes Somos</a>
+                        </li>
+                        <li class="nav-item">
+                            <h:link outcome="/views/catalogo/catalogo" styleClass="nav-link" value="Catálogo" />
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contacto.xhtml">Contacto</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="login.xhtml" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                        </a>
+                        <a href="registro.xhtml" class="btn btn-light btn-sm">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </a>
+                        <a href="carrito_compra.xhtml" class="btn btn-light btn-sm position-relative">
+                            <i class="bi bi-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                0
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section mejorada con animación -->
+        <section class="hero-section" style="
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 120px 0;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        ">
+            <div class="floating-elements">
+                <div class="floating-icon" style="top: 20%; left: 10%; animation-delay: 0s;">
+                    <i class="bi bi-cup-hot"></i>
+                </div>
+                <div class="floating-icon" style="top: 60%; left: 85%; animation-delay: 1s;">
+                    <i class="bi bi-gift"></i>
+                </div>
+                <div class="floating-icon" style="top: 80%; left: 15%; animation-delay: 2s;">
+                    <i class="bi bi-balloon-heart"></i>
+                </div>
+                <div class="floating-icon" style="top: 30%; left: 80%; animation-delay: 1.5s;">
+                    <i class="bi bi-flower1"></i>
+                </div>
+            </div>
+            
+            <div class="container">
+                <h1 class="display-4 fw-bold mb-4" data-aos="fade-up" data-aos-delay="200">Sorprende a tus seres queridos</h1>
+                <p class="lead mb-5 fs-4" data-aos="fade-up" data-aos-delay="400">Los mejores desayunos y detalles para ocasiones especiales</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap" data-aos="fade-up" data-aos-delay="600">
+                    <a href="catalogo.xhtml" class="btn btn-primary btn-lg px-4 py-2 rounded-pill shadow pulse-animation">Ver Catálogo</a>
+                    <a href="#servicios" class="btn btn-outline-light btn-lg px-4 py-2 rounded-pill">Nuestros Servicios</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Servicios mejorada -->
+        <section id="servicios" class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="fw-bold display-5 mb-3">Nuestros Servicios</h2>
+                    <p class="lead text-muted">Ofrecemos los mejores productos para tus momentos especiales</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card service-card shadow-sm h-100 border-0 hover-card">
+                            <div class="card-body text-center p-4">
+                                <div class="feature-icon mb-4" style="font-size: 3rem; color: #667eea;">
+                                    <i class="bi bi-cup-hot-fill"></i>
+                                </div>
+                                <h3 class="h4 mb-3">Desayunos Especiales</h3>
+                                <p class="text-muted">Deliciosos desayunos preparados con ingredientes frescos y de alta calidad.</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-primary">Desde $45.000 COP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                        <div class="card service-card shadow-sm h-100 border-0 hover-card">
+                            <div class="card-body text-center p-4">
+                                <div class="feature-icon mb-4" style="font-size: 3rem; color: #764ba2;">
+                                    <i class="bi bi-gift-fill"></i>
+                                </div>
+                                <h3 class="h4 mb-3">Detalles Únicos</h3>
+                                <p class="text-muted">Selección de regalos y detalles cuidadosamente seleccionados.</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-primary">Desde $35.000 COP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                        <div class="card service-card shadow-sm h-100 border-0 hover-card">
+                            <div class="card-body text-center p-4">
+                                <div class="feature-icon mb-4" style="font-size: 3rem; color: #f093fb;">
+                                    <i class="bi bi-truck"></i>
+                                </div>
+                                <h3 class="h4 mb-3">Entrega a Domicilio</h3>
+                                <p class="text-muted">Servicio de entrega puntual y discreto para que tu sorpresa llegue perfecta.</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-success">Gratis desde $100.000 COP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Quiénes Somos mejorada -->
+        <section id="nosotros" class="py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                        <div class="image-container">
+                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80" alt="Equipo de Desayunos y Detalles" class="img-fluid rounded shadow zoom-image" />
+                            <div class="floating-badge">
+                                <span>+10 años de experiencia</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 ps-lg-5" data-aos="fade-left" data-aos-delay="200">
+                        <h2 class="fw-bold mb-4 display-5">Quiénes Somos</h2>
+                        <p class="lead fs-4">Somos un equipo apasionado por crear momentos memorables.</p>
+                        <p class="fs-5">Desde 2010, nos dedicamos a hacer que tus ocasiones especiales sean aún más memorables con productos cuidadosamente seleccionados.</p>
+                        <div class="d-flex gap-5 mt-4">
+                            <div class="text-center" data-aos="zoom-in" data-aos-delay="400">
+                                <h3 class="h2 fw-bold text-primary counter">10000</h3>
+                                <p class="text-muted">Clientes satisfechos</p>
+                            </div>
+                            <div class="text-center" data-aos="zoom-in" data-aos-delay="600">
+                                <h3 class="h2 fw-bold text-primary counter">5000</h3>
+                                <p class="text-muted">Entregas realizadas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catálogo Mejorado -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="fw-bold display-5">Catálogo de Productos</h2>
+                    <p class="lead text-muted">Descubre nuestra selección de productos especiales</p>
+                </div>
+                
+                <!-- Filtros de categoría -->
+                <div class="row mb-4" data-aos="fade-up">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-center flex-wrap gap-2">
+                            <button class="btn btn-outline-primary active filter-btn" data-filter="all">Todos</button>
+                            <button class="btn btn-outline-primary filter-btn" data-filter="desayuno">Desayunos</button>
+                            <button class="btn btn-outline-primary filter-btn" data-filter="detalle">Detalles</button>
+                            <button class="btn btn-outline-primary filter-btn" data-filter="combo">Combos</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grid de productos -->
+                <div class="row g-4" id="product-grid">
+                    <!-- Producto 1 -->
+                    <div class="col-lg-3 col-md-6 product-item" data-category="desayuno" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card h-100 shadow-sm border-0 product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=400&amp;h=300&amp;q=80" class="card-img-top" alt="Desayuno Especial" />
+                                <div class="product-overlay">
+                                    <button class="btn btn-primary btn-sm quick-view">Vista Rápida</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-warning">Destacado</span>
+                                    <span class="badge bg-success">En stock</span>
+                                </div>
+                                <h3 class="h5 fw-bold">Desayuno Deluxe</h3>
+                                <p class="text-muted small">Incluye jugo natural, café, frutas frescas y pan artesanal.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="h4 text-primary fw-bold mb-0">$120.000 COP</p>
+                                    <span class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 pt-0">
+                                <div class="d-grid gap-2">
+                                    <a href="catalogo.xhtml" class="btn btn-primary rounded-pill">Ver Detalles</a>
+                                    <button class="btn btn-outline-primary rounded-pill add-to-cart">
+                                        <i class="bi bi-cart-plus"></i> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Producto 2 -->
+                    <div class="col-lg-3 col-md-6 product-item" data-category="detalle" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card h-100 shadow-sm border-0 product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=400&amp;h=300&amp;q=80" class="card-img-top" alt="Caja de Chocolate" />
+                                <div class="product-overlay">
+                                    <button class="btn btn-primary btn-sm quick-view">Vista Rápida</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-info">Nuevo</span>
+                                    <span class="badge bg-success">En stock</span>
+                                </div>
+                                <h3 class="h5 fw-bold">Caja de Chocolate Premium</h3>
+                                <p class="text-muted small">Selección de chocolates finos con opción personalizada.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="h4 text-primary fw-bold mb-0">$95.000 COP</p>
+                                    <span class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 pt-0">
+                                <div class="d-grid gap-2">
+                                    <a href="catalogo.xhtml" class="btn btn-primary rounded-pill">Ver Detalles</a>
+                                    <button class="btn btn-outline-primary rounded-pill add-to-cart">
+                                        <i class="bi bi-cart-plus"></i> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Producto 3 -->
+                    <div class="col-lg-3 col-md-6 product-item" data-category="combo" data-aos="fade-up" data-aos-delay="300">
+                        <div class="card h-100 shadow-sm border-0 product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=400&amp;h=300&amp;q=80" class="card-img-top" alt="Combo Especial" />
+                                <div class="product-overlay">
+                                    <button class="btn btn-primary btn-sm quick-view">Vista Rápida</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-danger">Oferta</span>
+                                    <span class="badge bg-success">En stock</span>
+                                </div>
+                                <h3 class="h5 fw-bold">Combo Aniversario</h3>
+                                <p class="text-muted small">Desayuno completo + botella de vino + arreglo floral.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="h4 text-primary fw-bold mb-0">$250.000 COP</p>
+                                    <span class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 pt-0">
+                                <div class="d-grid gap-2">
+                                    <a href="catalogo.xhtml" class="btn btn-primary rounded-pill">Ver Detalles</a>
+                                    <button class="btn btn-outline-primary rounded-pill add-to-cart">
+                                        <i class="bi bi-cart-plus"></i> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Producto 4 -->
+                    <div class="col-lg-3 col-md-6 product-item" data-category="desayuno" data-aos="fade-up" data-aos-delay="400">
+                        <div class="card h-100 shadow-sm border-0 product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=400&amp;h=300&amp;q=80" class="card-img-top" alt="Desayuno Continental" />
+                                <div class="product-overlay">
+                                    <button class="btn btn-primary btn-sm quick-view">Vista Rápida</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-success">Popular</span>
+                                    <span class="badge bg-success">En stock</span>
+                                </div>
+                                <h3 class="h5 fw-bold">Desayuno Continental</h3>
+                                <p class="text-muted small">Yogur, granola, frutas frescas y pastelería selecta.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="h4 text-primary fw-bold mb-0">$85.000 COP</p>
+                                    <span class="text-warning">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                        <i class="bi bi-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 pt-0">
+                                <div class="d-grid gap-2">
+                                    <a href="catalogo.xhtml" class="btn btn-primary rounded-pill">Ver Detalles</a>
+                                    <button class="btn btn-outline-primary rounded-pill add-to-cart">
+                                        <i class="bi bi-cart-plus"></i> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-5" data-aos="fade-up">
+                    <a href="catalogo.xhtml" class="btn btn-outline-primary btn-lg px-4 py-2 rounded-pill">Ver Catálogo Completo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Testimonios -->
+        <section class="py-5">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="fw-bold display-5">Lo que dicen nuestros clientes</h2>
+                    <p class="lead text-muted">Experiencias reales de quienes han confiado en nosotros</p>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card border-0 shadow-sm h-100 testimonial-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <h:graphicImage value="https://randomuser.me/api/portraits/women/32.jpg" alt="Cliente" styleClass="rounded-circle me-3" style="width: 50px; height: 50px;" />
+                                    <div>
+                                        <h5 class="mb-0">María González</h5>
+                                        <small class="text-muted">Aniversario de Bodas</small>
+                                    </div>
+                                </div>
+                                <p class="mb-0">"El desayuno sorpresa para mi esposo fue perfecto. La presentación y calidad de los productos superaron mis expectativas."</p>
+                                <div class="text-warning mt-2">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card border-0 shadow-sm h-100 testimonial-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <h:graphicImage value="https://randomuser.me/api/portraits/men/45.jpg" alt="Cliente" styleClass="rounded-circle me-3" style="width: 50px; height: 50px;" />
+                                    <div>
+                                        <h5 class="mb-0">Carlos Rodríguez</h5>
+                                        <small class="text-muted">Cumpleaños</small>
+                                    </div>
+                                </div>
+                                <p class="mb-0">"Excelente servicio al cliente y entrega puntual. Mi novia quedó encantada con el detalle. Definitivamente repetiré."</p>
+                                <div class="text-warning mt-2">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-half"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                        <div class="card border-0 shadow-sm h-100 testimonial-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <h:graphicImage value="https://randomuser.me/api/portraits/women/67.jpg" alt="Cliente" styleClass="rounded-circle me-3" style="width: 50px; height: 50px;" />
+                                    <div>
+                                        <h5 class="mb-0">Ana Martínez</h5>
+                                        <small class="text-muted">Día de la Madre</small>
+                                    </div>
+                                </div>
+                                <p class="mb-0">"La atención personalizada y la calidad de los productos hicieron que mi mamá tuviera un día especial. ¡Gracias!"</p>
+                                <div class="text-warning mt-2">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pie de página mejorado -->
+        <footer class="bg-dark text-white py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mb-4 mb-lg-0">
+                        <h3 class="h4 fw-bold mb-3 text-white">Desayunos y Detalles</h3>
+                        <p class="text-white">Haciendo momentos especiales desde 2010.</p>
+                        <div class="d-flex gap-3 mt-3">
+                            <a href="#" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="text-white fs-5"><i class="bi bi-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4 mb-lg-0">
+                        <h3 class="h4 fw-bold mb-3 text-white">Enlaces Rápidos</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="index.xhtml" class="text-white text-decoration-none">Inicio</a></li>
+                            <li class="mb-2"><a href="#servicios" class="text-white text-decoration-none">Servicios</a></li>
+                            <li class="mb-2"><a href="#nosotros" class="text-white text-decoration-none">Quiénes Somos</a></li>
+                            <li class="mb-2"><a href="catalogo.xhtml" class="text-white text-decoration-none">Catálogo</a></li>
+                            <li class="mb-2"><a href="contacto.xhtml" class="text-white text-decoration-none">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <h3 class="h4 fw-bold mb-3 text-white">Contacto</h3>
+                        <ul class="list-unstyled text-white">
+                            <li class="mb-2"><i class="bi bi-geo-alt"></i> Calle 60 sur # 70 - 90, Bogotá</li>
+                            <li class="mb-2"><i class="bi bi-telephone"></i> (320) 959 96 91</li>
+                            <li class="mb-2"><i class="bi bi-envelope"></i> info@desayunosydetalles.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="my-4 bg-light" />
+                <div class="text-center text-white">
+                    <p class="mb-0">© 2025 Desayunos y Detalles. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Botón flotante de WhatsApp -->
+        <div class="whatsapp-float">
+            <a href="https://wa.me/3209599691" target="_blank" class="whatsapp-btn">
+                <i class="bi bi-whatsapp"></i>
+            </a>
+        </div>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        
+        <!-- Estilos y scripts adicionales -->
+        <style>
+            /* Animaciones y efectos */
+            .hover-card {
+                transition: all 0.3s ease;
+            }
+            .hover-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+            }
+            
+            .product-card {
+                transition: all 0.3s ease;
+            }
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .product-image {
+                position: relative;
+                overflow: hidden;
+            }
+            .product-image img {
+                transition: transform 0.5s ease;
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+            .product-card:hover .product-image img {
+                transform: scale(1.05);
+            }
+            .product-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .product-card:hover .product-overlay {
+                opacity: 1;
+            }
+            
+            .floating-icon {
+                position: absolute;
+                font-size: 2rem;
+                opacity: 0.7;
+                animation: float 6s ease-in-out infinite;
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-20px); }
+            }
+            
+            .pulse-animation {
+                animation: pulse 2s infinite;
+            }
+            
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            
+            .testimonial-card {
+                transition: transform 0.3s ease;
+            }
+            .testimonial-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .zoom-image {
+                transition: transform 0.5s ease;
+            }
+            .image-container:hover .zoom-image {
+                transform: scale(1.03);
+            }
+            
+            .floating-badge {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 10px 15px;
+                border-radius: 30px;
+                font-weight: 600;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+            
+            .whatsapp-float {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+            .whatsapp-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60px;
+                height: 60px;
+                background: #25D366;
+                color: white;
+                border-radius: 50%;
+                font-size: 24px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                transition: all 0.3s ease;
+            }
+            .whatsapp-btn:hover {
+                transform: scale(1.1);
+                color: white;
+            }
+            
+            .filter-btn.active {
+                background-color: #667eea;
+                color: white;
+            }
+            
+            .rounded-pill {
+                border-radius: 50rem !important;
+            }
+            
+            @media (max-width: 768px) {
+                .display-4 {
+                    font-size: 2.5rem;
+                }
+                .hero-section {
+                    padding: 80px 0 !important;
+                }
+                .floating-icon {
+                    display: none;
+                }
+            }
+        </style>
+        
+        <script>
+            //<![CDATA[
+            // Inicializar AOS (Animate On Scroll)
+            document.addEventListener('DOMContentLoaded', function() {
+                AOS.init({
+                    duration: 1000,
+                    once: true,
+                    offset: 100
+                });
+                
+                // Contadores animados
+                const counters = document.querySelectorAll('.counter');
+                const speed = 200;
+                
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = +counter.getAttribute('data-target') || +counter.innerText;
+                        const count = +counter.innerText;
+                        const increment = target / speed;
+                        
+                        if(count < target) {
+                            counter.innerText = Math.ceil(count + increment);
+                            setTimeout(updateCount, 1);
+                        } else {
+                            counter.innerText = target.toLocaleString();
+                        }
+                    }
+                    
+                    // Iniciar contador cuando el elemento es visible
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if(entry.isIntersecting) {
+                                updateCount();
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    
+                    observer.observe(counter);
+                });
+                
+                // Filtro de productos
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const productItems = document.querySelectorAll('.product-item');
+                
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remover clase active de todos los botones
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        // Agregar clase active al botón clickeado
+                        button.classList.add('active');
+                        
+                        const filterValue = button.getAttribute('data-filter');
+                        
+                        productItems.forEach(item => {
+                            if(filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                                item.style.display = 'block';
+                                // Añadir animación
+                                item.style.animation = 'fadeIn 0.5s ease';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+                
+                // Agregar al carrito
+                const addToCartButtons = document.querySelectorAll('.add-to-cart');
+                let cartCount = 0;
+                
+                addToCartButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        cartCount++;
+                        document.querySelector('.badge.bg-danger').textContent = cartCount;
+                        
+                        // Efecto de confirmación
+                        button.innerHTML = '<i class="bi bi-check"></i> Agregado';
+                        button.classList.remove('btn-outline-primary');
+                        button.classList.add('btn-success');
+                        
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="bi bi-cart-plus"></i> Agregar';
+                            button.classList.remove('btn-success');
+                            button.classList.add('btn-outline-primary');
+                        }, 2000);
+                    });
+                });
+                
+                // Vista rápida de productos
+                const quickViewButtons = document.querySelectorAll('.quick-view');
+                
+                quickViewButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        // Aquí podrías implementar un modal de vista rápida
+                        alert('Funcionalidad de vista rápida - En desarrollo');
+                    });
+                });
+            });
+            //]]>
+        </script>
+    </h:body>
+</html>
