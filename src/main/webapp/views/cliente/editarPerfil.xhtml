@@ -1,49 +1,99 @@
-<?xml versión='1.0' codificación='UTF-8' ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:cabeza>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
     <title>Editar perfil</title>
-    <link href="#{request.contextPath}/resources/css/bootstrap.min.css" rel="hoja de estilo"/>
-</h:cabeza>
-<h:cuerpo>
-    <div class="contenedor mt-4">
+    <meta charset="UTF-8"/>
+    <link href="#{request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet"/>
+</h:head>
+<h:body>
+    <div class="container mt-4">
         <h2>Editar perfil</h2>
-        <h:messages globalOnly="true"/>
+        <h:messages globalOnly="true" styleClass="alert alert-info mb-4" />
+
         <h:form enctype="multipart/form-data">
-            <div class="mb-3">
-                <label>Nombre</label>
-                <h:inputText value="#{clienteController.usuario.nombreUsuario}" required="true" styleClass="form-control"/>
-            </div>
-            <div class="mb-3">
-                Apellido
-                <h:inputText valor="#{clienteController.usuario.apellidoUsuario}" requerido="verdadero" estiloClass="control-de-formulario"/>
-            </div>
-            <div class="mb-3">
-                <label>Correo</label>
-                <h:inputText valor="#{clienteController.usuario.correoUsuario}" requerido="verdadero" estiloClass="control-de-formulario"/>
-            </div>
-            <div class="mb-3">
-                <label>Teléfono</label>
-                <h:inputText valor="#{clienteController.usuario.telUsuario}" styleClass="form-control"/>
-            </div>
-            <div class="mb-3">
-                <label>Dirección</label>
-                <h:inputText value="#{clienteController.usuario.direcciónUsuario}" styleClass="form-control"/>
+            <div class="row">
+                <!-- Columna izquierda: Datos personales -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <h:inputText id="nombreUsuario" 
+                                     value="#{login.usuarioLogueado.nombreUsuario}" 
+                                     required="true" 
+                                     styleClass="form-control" />
+                        <h:message for="nombreUsuario" styleClass="text-danger" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Apellido</label>
+                        <h:inputText id="apellidoUsuario" 
+                                     value="#{login.usuarioLogueado.apellidoUsuario}" 
+                                     required="true" 
+                                     styleClass="form-control" />
+                        <h:message for="apellidoUsuario" styleClass="text-danger" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Correo electrónico</label>
+                        <h:inputText id="correoUsuario" 
+                                     value="#{login.usuarioLogueado.correoUsuario}" 
+                                     required="true" 
+                                     styleClass="form-control" />
+                        <h:message for="correoUsuario" styleClass="text-danger" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Teléfono</label>
+                        <h:inputText id="telUsuario" 
+                                     value="#{login.usuarioLogueado.telUsuario}" 
+                                     styleClass="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dirección</label>
+                        <h:inputText id="direcccionUsuario" 
+                                     value="#{login.usuarioLogueado.direcccionUsuario}" 
+                                     styleClass="form-control" />
+                    </div>
+                </div>
+
+                <!-- Columna derecha: Foto de perfil -->
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Foto de perfil</label>
+                        <h:inputFile id="fotoPerfil" 
+                                     value="#{perfilController.uploadedFile}" 
+                                     pt:accept="image/jpeg,image/png" 
+                                     styleClass="form-control" />
+                        <small class="form-text text-muted">Formatos permitidos: JPG, PNG (máx. 2MB)</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <h:commandButton value="Subir foto" 
+                                         action="#{perfilController.subirFoto}" 
+                                         styleClass="btn btn-secondary" />
+                    </div>
+
+                    <!-- Vista previa de la imagen actual -->
+                    <div class="mt-3">
+                        <label class="form-label">Vista previa:</label><br/>
+                        <img src="#{request.contextPath}/userImage?id=#{login.usuarioLogueado.idUsuario}"
+                             class="img-thumbnail rounded"
+                             style="max-width: 200px; max-height: 200px; object-fit: cover;"
+                             onerror="this.src='#{request.contextPath}/resources/images/default-user.png'" />
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label>Foto</label><br/>
-                <h:valor del archivo de entrada="#{clienteController.uploadedFile}" />
-                <h:commandButton value="Subir foto" action="#{clienteController.subirFoto}" styleClass="btn btn-secondary"/>
-            </div>
-
-            <div class="mt-3">
-                <h:commandButton value="Guardar" action="#{clienteController.guardarPerfil}" styleClass="btn btn-success"/>
-                <h:commandButton valor="Cancelar" acción="perfil.xhtml?faces-redirect=true" estiloClass="btn btn-light"/>
+            <!-- Botones de acción -->
+            <div class="mt-4">
+                <h:commandButton value="Guardar cambios" 
+                                 action="#{perfilController.guardarPerfil}" 
+                                 styleClass="btn btn-success" />
+                <h:commandButton value="Cancelar" 
+                                 action="perfil?faces-redirect=true" 
+                                 styleClass="btn btn-light ms-2" />
             </div>
         </h:form>
     </div>
-</h:cuerpo>
+</h:body>
 </html>

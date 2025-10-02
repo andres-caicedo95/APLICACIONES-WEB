@@ -23,47 +23,60 @@ public class Filtro implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // No necesitas implementar nada aquí si no hay configuración
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
+            throws IOException, ServletException {
+        
         HttpServletRequest solicitud = (HttpServletRequest) request;
         HttpServletResponse respuesta = (HttpServletResponse) response;
-        //Atributos para validacion
         HttpSession sesion = solicitud.getSession();
         String rutaSolicitud = solicitud.getRequestURI();
         String raiz = solicitud.getContextPath();
 
-        respuesta.setHeader("Cache-Control", "no-caché, no-store, must-revalidate");
-        respuesta.setHeader("Pragma", "sin caché");
+        // Encabezados para evitar caché
+        respuesta.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        respuesta.setHeader("Pragma", "no-cache");
         respuesta.setDateHeader("Expires", 0);
-        //Validaciones
-        //1. Sesion Valida
-        boolean validarSesion = ((sesion != null) && (sesion.getAttribute("usuario") != null));
-        //2. Ruta de login y registro
-        boolean validarRutaLogin = ((rutaSolicitud.equals(raiz + "/")) || 
-                (rutaSolicitud.equals(raiz + "/PaginaInicio.xhtml")) ||
-                                 (rutaSolicitud.equals(raiz + "/login.xhtml")) ||
-                                 (rutaSolicitud.equals(raiz + "/registro.xhtml")));
-        //3. Cargue contenido estatico
-        boolean validarContenido
-                = rutaSolicitud.contains("/resources/")
-                || rutaSolicitud.contains("/javax.faces.resource/")
-                || rutaSolicitud.endsWith(".css")
-                || rutaSolicitud.endsWith(".js")
-                || rutaSolicitud.endsWith(".png")
-                || rutaSolicitud.endsWith(".jpg");
 
-        if (validarSesion || validarRutaLogin || validarContenido) {
+        // Validaciones
+        boolean validarSesion = (sesion != null && sesion.getAttribute("usuario") != null);
+        boolean validarRutaLogin = (
+            rutaSolicitud.equals(raiz + "/") ||
+            rutaSolicitud.equals(raiz + "/PaginaInicio.xhtml") ||
+            rutaSolicitud.equals(raiz + "/login.xhtml") ||
+            rutaSolicitud.equals(raiz + "/registro.xhtml")
+        );
+
+        boolean validarContenido = (
+            rutaSolicitud.contains("/resources/") ||
+            rutaSolicitud.contains("/javax.faces.resource/") ||
+            rutaSolicitud.endsWith(".css") ||
+            rutaSolicitud.endsWith(".js") ||
+            rutaSolicitud.endsWith(".png") ||
+            rutaSolicitud.endsWith(".jpg") ||
+            rutaSolicitud.endsWith(".jpeg") ||
+            rutaSolicitud.endsWith(".gif")
+        );
+
+        // ✅ NUEVA VALIDACIÓN: Permitir acceso a vistas de cliente SI el usuario está logueado
+        boolean validarRutaCliente = (
+            validarSesion && 
+            rutaSolicitud.startsWith(raiz + "/views/cliente/")
+        );
+
+        if (validarSesion || validarRutaLogin || validarContenido || validarRutaCliente) {
             chain.doFilter(request, response);
         } else {
+            // Redirigir a la página principal si no tiene permiso
             respuesta.sendRedirect(raiz);
         }
     }
 
     @Override
     public void destroy() {
-        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // No necesitas implementar nada aquí
     }
 }

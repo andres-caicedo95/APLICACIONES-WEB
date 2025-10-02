@@ -1,37 +1,84 @@
-<?xml versión='1.0' codificación='UTF-8' ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<h:cabeza>
+<h:head>
     <title>Mi perfil</title>
-    <link href="#{request.contextPath}/resources/css/bootstrap.min.css" rel="hoja de estilo"/>
-</h:cabeza>
-<h:cuerpo>
-    <div class="contenedor mt-4">
-        Mi perfil
-        <h:messages globalOnly="true"/>
-        <div class="fila">
-            <div class="col-md-4">
-                <img src="#{request.contextPath}/userImage?id=#{clienteController.usuario.idUsuario}" class="img-fluid rounded" alt="Foto usuario"/>
-            </div>
-            <div class="col-md-8">
-                <h3>Datos</h3>
-                <p><strong>Nombre:</strong> #{clienteController.usuario.nombreUsuario} #{clienteController.usuario.apellidoUsuario}</p>
-                <p><strong>Correo:</strong> #{clienteController.usuario.correoUsuario}</p>
-                <p><strong>Teléfono:</strong> #{clienteController.usuario.telUsuario}</p>
-                <p><strong>Dirección:</strong> #{clienteController.usuario.direcccionUsuario}</p>
+    <meta charset="UTF-8"/>
+    <link href="#{request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet"/>
+</h:head>
+<h:body>
+    <div class="container mt-4">
+        <h2>Mi perfil</h2>
+        <h:messages globalOnly="true" styleClass="alert alert-info mb-4"/>
 
-                <h:form>
-                    <h:commandButton value="Editar perfil" action="editarPerfil.xhtml?faces-redirect=true" styleClass="btn btn-primary"/>
-                </h:form>
+        <div class="row">
+            <!-- Foto de perfil -->
+            <div class="col-md-4 text-center mb-4 mb-md-0">
+                <div class="border rounded-circle overflow-hidden d-inline-block" 
+                     style="width: 180px; height: 180px;">
+                    <img src="#{request.contextPath}/userImage?id=#{login.usuarioLogueado.idUsuario}"
+                         class="w-100 h-100"
+                         style="object-fit: cover;"
+                         onerror="this.src='#{request.contextPath}/resources/images/default-user.png'"
+                         alt="Foto de perfil"/>
+                </div>
+            </div>
+
+            <!-- Datos personales -->
+            <div class="col-md-8">
+                <h3 class="mb-4">Datos personales</h3>
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Nombre completo:</strong></div>
+                    <div class="col-sm-8">
+                        #{login.usuarioLogueado.nombreUsuario} #{login.usuarioLogueado.apellidoUsuario}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Correo electrónico:</strong></div>
+                    <div class="col-sm-8">#{login.usuarioLogueado.correoUsuario}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Teléfono:</strong></div>
+                    <div class="col-sm-8">#{login.usuarioLogueado.telUsuario}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Dirección:</strong></div>
+                    <div class="col-sm-8">#{login.usuarioLogueado.direcccionUsuario}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Documento:</strong></div>
+                    <div class="col-sm-8">
+                        #{login.usuarioLogueado.tipoDocumentoUsuario} #{login.usuarioLogueado.numeroDocumento}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4"><strong>Estado:</strong></div>
+                    <div class="col-sm-8">
+                        <span class="badge bg-#{login.usuarioLogueado.estadoUsuario == 'Activo' ? 'success' : 'secondary'}">
+                            #{login.usuarioLogueado.estadoUsuario}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Botón para editar -->
+                <div class="mt-4">
+                    <h:form>
+                        <h:commandButton value="Editar perfil" 
+                                         action="editarPerfil?faces-redirect=true" 
+                                         styleClass="btn btn-primary"/>
+                    </h:form>
+                </div>
             </div>
         </div>
 
-        <hr/>
-        Catálogo
+        <hr class="my-5"/>
+
+        <!-- Catálogo de productos -->
+        <h3 class="mb-4">Catálogo de productos</h3>
         <ui:include src="/views/catalogo/catalogo.xhtml"/>
     </div>
-</h:cuerpo>
+</h:body>
 </html>
