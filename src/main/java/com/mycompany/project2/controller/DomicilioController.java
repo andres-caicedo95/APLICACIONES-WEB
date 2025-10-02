@@ -6,7 +6,7 @@ import com.mycompany.project2.entities.Usuario;
 import com.mycompany.project2.services.DomiciliosFacadeLocal;
 import com.mycompany.project2.services.FacturaFacadeLocal;
 import com.mycompany.project2.services.UsuarioFacadeLocal;
-import com.mycompany.project2.service.GeolocationService;
+import com.mycompany.project2.services.GeolocationService; // ✅ CORREGIDO: "services" (plural)
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import java.util.logging.Logger;
-import java.text.SimpleDateFormat; // ← IMPORT AÑADIDO
+import java.text.SimpleDateFormat;
 
 @Named(value = "domicilioController")
 @ViewScoped

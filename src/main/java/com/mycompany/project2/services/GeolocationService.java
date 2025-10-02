@@ -1,4 +1,4 @@
-package com.mycompany.project2.service;
+package com.mycompany.project2.services; // ✅ Ahora es "services" (plural)
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
