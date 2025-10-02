@@ -5,6 +5,7 @@
 package com.mycompany.project2.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -51,12 +52,30 @@ public class Factura implements Serializable {
     @Column(name = "FECHA_FACTURA")
     @Temporal(TemporalType.DATE)
     private Date fechaFactura;
+    
+    // ✅ CAMPOS AGREGADOS PARA EL CARRITO DE COMPRAS
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "TOTAL_FACTURA")
+    private BigDecimal totalFactura;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ESTADO_FACTURA")
+    private String estadoFactura;
+    
+    @JoinColumn(name = "USUARIO_ID_USUARIO_CLIENTE", referencedColumnName = "ID_USUARIO")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Usuario usuarioIDUSUARIOCLIENTE;
+    
     @JoinColumn(name = "prototipo_ID_PROTOTIPO", referencedColumnName = "ID_PROTOTIPO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Prototipo prototipoIDPROTOTIPO;
+    
     @JoinColumn(name = "usuario_ID_USUARIO_VENDEDOR", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioIDUSUARIOVENDEDOR;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturaIDFACTURA", fetch = FetchType.LAZY)
     private List<Domicilios> domiciliosList;
 
@@ -67,9 +86,11 @@ public class Factura implements Serializable {
         this.idFactura = idFactura;
     }
 
-    public Factura(Integer idFactura, Date fechaFactura) {
+    public Factura(Integer idFactura, Date fechaFactura, BigDecimal totalFactura, String estadoFactura) {
         this.idFactura = idFactura;
         this.fechaFactura = fechaFactura;
+        this.totalFactura = totalFactura;
+        this.estadoFactura = estadoFactura;
     }
 
     public Integer getIdFactura() {
@@ -86,6 +107,31 @@ public class Factura implements Serializable {
 
     public void setFechaFactura(Date fechaFactura) {
         this.fechaFactura = fechaFactura;
+    }
+
+    // ✅ GETTERS Y SETTERS AGREGADOS
+    public BigDecimal getTotalFactura() {
+        return totalFactura;
+    }
+
+    public void setTotalFactura(BigDecimal totalFactura) {
+        this.totalFactura = totalFactura;
+    }
+
+    public String getEstadoFactura() {
+        return estadoFactura;
+    }
+
+    public void setEstadoFactura(String estadoFactura) {
+        this.estadoFactura = estadoFactura;
+    }
+
+    public Usuario getUsuarioIDUSUARIOCLIENTE() {
+        return usuarioIDUSUARIOCLIENTE;
+    }
+
+    public void setUsuarioIDUSUARIOCLIENTE(Usuario usuarioIDUSUARIOCLIENTE) {
+        this.usuarioIDUSUARIOCLIENTE = usuarioIDUSUARIOCLIENTE;
     }
 
     public Prototipo getPrototipoIDPROTOTIPO() {
@@ -122,7 +168,6 @@ public class Factura implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Factura)) {
             return false;
         }
@@ -137,5 +182,4 @@ public class Factura implements Serializable {
     public String toString() {
         return "com.mycompany.project2.entities.Factura[ idFactura=" + idFactura + " ]";
     }
-    
 }

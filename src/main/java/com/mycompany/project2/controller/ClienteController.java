@@ -1,9 +1,11 @@
-// src/main/java/com/mycompany/project2/controller/ClienteController.java
 package com.mycompany.project2.controller;
 
 import com.mycompany.project2.entities.Producto;
+import com.mycompany.project2.entities.Factura;
+import com.mycompany.project2.entities.Usuario;
 import com.mycompany.project2.model.ItemCarrito;
 import com.mycompany.project2.services.ProductoFacadeLocal;
+import com.mycompany.project2.services.FacturaFacadeLocal;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -14,6 +16,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 @Named
 @SessionScoped
@@ -22,6 +28,9 @@ public class ClienteController implements Serializable {
 
     @EJB
     private ProductoFacadeLocal productoFacade;
+    
+    @EJB
+    private FacturaFacadeLocal facturaFacade;
 
     @Inject
     private login login; // Para validar sesión
@@ -93,5 +102,52 @@ public class ClienteController implements Serializable {
             return "/views/cliente/carrito?faces-redirect=true";
         }
         return "/login?faces-redirect=true";
+    }
+    
+    // ✅ MÉTODO FINALIZAR COMPRA - AHORA CON NOMBRES CORRECTOS
+    public String finalizarCompra() {
+        try {
+            // 1. Validar que el usuario esté logueado
+            if (login.getUsuarioLogueado() == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debes iniciar sesión para finalizar la compra"));
+                return null;
+            }
+
+            // 2. Validar que el carrito no esté vacío
+            if (items.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Carrito vacío", "Agrega productos antes de finalizar"));
+                return null;
+            }
+
+            // 3. Crear la factura
+            Factura factura = new Factura();
+            factura.setFechaFactura(new Date());
+            factura.setTotalFactura(BigDecimal.valueOf(getTotal()));
+            factura.setEstadoFactura("Pendiente");
+            
+            // Asignar el cliente (usuario logueado)
+            Usuario cliente = login.getUsuarioLogueado();
+            factura.setUsuarioIDUSUARIOCLIENTE(cliente);
+
+            // 4. Guardar la factura en la base de datos
+            facturaFacade.create(factura);
+
+            // 5. Limpiar el carrito
+            vaciarCarrito();
+
+            // 6. Mostrar mensaje de éxito
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Compra finalizada!", "Tu pedido ha sido registrado"));
+
+            // 7. Redirigir a la página de perfil
+            return "perfil?faces-redirect=true";
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al finalizar compra", e.getMessage()));
+            return null;
+        }
     }
 }
