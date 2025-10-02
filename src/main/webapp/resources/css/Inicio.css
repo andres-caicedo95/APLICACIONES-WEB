@@ -1,0 +1,242 @@
+/* Estilos generales */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 100px 0;
+  text-align: center;
+}
+
+.hero-section h1 {
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Tarjetas de servicios */
+.service-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Sección Quiénes Somos */
+.about-section {
+  background-color: #f8f9fa;
+}
+
+/* Iconos destacados */
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #0d6efd;
+}
+
+/* Estilos para las tarjetas de productos */
+.card {
+  border: none;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.card-img-top {
+  transition: transform 0.3s ease;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.03);
+}
+
+/* Footer styles */
+footer a {
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: white !important;
+}
+
+/* Estilos para los botones de autenticación */
+.btn-outline-light:hover {
+  color: #0d6efd !important;
+  background-color: white;
+}
+
+/* Ajustes para el navbar */
+.navbar-brand i {
+  margin-right: 8px;
+}
+
+/* Mejoras para dispositivos móviles */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    padding-top: 15px;
+  }
+  
+  .hero-section {
+    padding: 60px 0;
+     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/fondo.jpg');
+  }
+  
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  .d-flex.justify-content-center.gap-3,
+  .d-flex.align-items-center.gap-2 {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px !important;
+    margin-top: 10px;
+  }
+  
+  .btn-lg, 
+  .d-flex.align-items-center.gap-2 a {
+    width: 100%;
+  }
+  
+  .about-section .row > div {
+    text-align: center;
+  }
+  
+  .about-section img {
+    margin-bottom: 30px;
+  }
+}
+
+/* Efecto hover para los botones */
+.btn-light:hover {
+  background-color: #e2e6ea !important;
+}
+
+/* Ajustes para el contador del carrito */
+.position-absolute {
+  font-size: 0.75rem;
+}
+
+/* Mejoras de accesibilidad */
+a:focus, button:focus {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+.header-logo {
+    height: 40px; /* Ajusta según el tamaño de tu logo */
+    width: auto;
+    margin-right: 15px;
+    
+}
+
+/* NAVBAR PERSONALIZADO */
+.custom-navbar {
+    padding: 1.5rem 2rem;
+    min-height: 90px;
+    transition: all 0.3s ease;
+}
+
+.custom-navbar-container {
+    max-width: 100%;
+    padding: 0 3rem;
+}
+
+.header-logo {
+    height: 75px;
+    width: auto;
+    margin-right: 2rem;
+}
+
+.navbar-left-section {
+    flex-grow: 1;
+    align-items: center;
+}
+
+.navbar-right-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.custom-nav-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.nav-link {
+    font-size: 1.1rem;
+    padding: 0.8rem 1.2rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+}
+
+.bi-cart {
+    font-size: 1.3rem;
+}
+
+/* Efecto hover para botones */
+.custom-nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .custom-navbar {
+        padding: 1rem;
+        min-height: auto;
+    }
+    
+    .custom-navbar-container {
+        padding: 0 1rem;
+    }
+    
+    .navbar-right-section {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .header-logo {
+        margin-right: 1rem;
+        height: 40px;
+    }
+    
+    .custom-nav-btn {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .nav-link {
+        padding: 0.5rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-right-section {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .custom-nav-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

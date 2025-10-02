@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <body>
+        <ui:composition template="./../newTemplate.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h:commandButton value="Agregar Producto" action="#{catalogoController.prepararNuevoProducto()}"/>
+                </h:form>
+
+                <table id="tblCatalogo" class="jsf-data-table display nowrap" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Categoría</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{catalogoController.listarProductos()}" var="producto">
+                            <tr>
+                                <td>#{producto.codigoProducto}</td>
+                                <td>#{producto.nombreProducto}</td>
+                                <td>$#{producto.valorProducto}</td>
+                                <td>#{producto.stockProduccto}</td>
+                                <td>#{producto.categoriaProducto}</td>
+                                <td>#{producto.estadoProducto}</td>
+                                <td>
+                                    <h:form>
+                                        <h:commandButton value="Editar" action="#{catalogoController.prepararEditarProducto(producto)}"/>
+                                        <h:commandButton value="Eliminar" onclick="return confirm('¿Eliminar este producto?')" 
+                                                         action="#{catalogoController.eliminarProducto(producto)}"/>
+                                    </h:form>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+
+                <script>
+                    $(document).ready(function() {
+                        $('#tblCatalogo').DataTable({
+                            dom: 'Bfrtip',
+                            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                            language: {
+                                url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json'
+                            }
+                        });
+                    });
+                </script>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

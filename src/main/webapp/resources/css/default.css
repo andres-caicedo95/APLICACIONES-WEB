@@ -1,0 +1,72 @@
+/* Estilos base mejorados - responsive */
+body {
+    
+    background-color: #ffffff;
+    font-size: 14px;
+    font-family: Verdana, Arial, sans-serif;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+h1 {
+    font-family: Arial, sans-serif;
+    border-bottom: 1px solid #AFAFAF;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    color: #D20005;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+/* Enlaces responsive */
+a:link, a:visited {
+    color: #045491;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0.3rem 0;
+    display: inline-block;
+}
+
+a:link:hover, a:visited:hover {
+    color: #045491;
+    text-decoration: underline;
+}
+
+/* Botón responsive */
+h\:commandButton {
+    background-color: #D20005;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    display: inline-block;
+}
+
+h\:commandButton:hover {
+    background-color: #b30004;
+}
+
+/* Media queries para tipografía */
+@media (max-width: 768px) {
+    body {
+        font-size: 13px;
+    }
+    
+    h1 {
+        font-size: 1.3rem;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+    }
+}

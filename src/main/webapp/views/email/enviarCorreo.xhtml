@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Enviar Correo Masivo</title>
+</h:head>
+
+<h:body>
+    <ui:composition template="./../newTemplate.xhtml">
+        
+        <ui:define name="title">Envío de Correos Masivos</ui:define>
+        
+        <ui:define name="head">
+            <style>
+                .email-card {
+                    background: rgba(255, 255, 255, 0.98);
+                    border-radius: 15px;
+                    padding: 2rem;
+                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+                    border: 1px solid rgba(255, 255, 255, 0.6);
+                }
+                .form-title {
+                    color: #2d3748;
+                    font-weight: 700;
+                    margin-bottom: 1.5rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                .form-group {
+                    margin-bottom: 1.5rem;
+                }
+                .form-label {
+                    display: block;
+                    font-weight: 600;
+                    color: #2d3748;
+                    margin-bottom: 0.5rem;
+                    font-size: 0.95rem;
+                }
+                .form-control {
+                    width: 100%;
+                    padding: 0.75rem 1rem;
+                    border: 1px solid #cbd5e0;
+                    border-radius: 8px;
+                    font-size: 0.95rem;
+                    transition: border-color 0.3s;
+                }
+                .form-control:focus {
+                    outline: none;
+                    border-color: #667eea;
+                    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+                }
+                .btn-primary-custom {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border: none;
+                    color: white;
+                    padding: 0.75rem 2rem;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                }
+                .btn-primary-custom:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+                }
+                .email-editor {
+                    min-height: 300px;
+                    font-family: Arial, sans-serif;
+                    font-size: 14px;
+                    line-height: 1.6;
+                }
+                .recipient-list {
+                    max-height: 200px;
+                    overflow-y: auto;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    background: #f8fafc;
+                }
+                .recipient-item {
+                    display: inline-block;
+                    background: #667eea;
+                    color: white;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 20px;
+                    margin: 0.25rem;
+                    font-size: 0.85rem;
+                }
+                .btn-cancel {
+                    padding: 0.75rem 2rem; 
+                    border-radius: 10px; 
+                    background: #f1f5f9; 
+                    border: 1px solid #cbd5e0; 
+                    color: #4a5568; 
+                    font-weight: 600;
+                    text-decoration: none;
+                    display: inline-block;
+                    transition: all 0.3s ease;
+                }
+                .btn-cancel:hover {
+                    background: #e2e8f0;
+                    text-decoration: none;
+                    color: #4a5568;
+                }
+                .text-muted {
+                    color: #718096;
+                    font-size: 0.85rem;
+                    margin-top: 0.3rem;
+                    display: block;
+                }
+            </style>
+        </ui:define>
+        
+        <ui:define name="content">
+            <div class="email-card">
+                <h2 class="form-title">
+                    <i class="bi bi-envelope-paper"></i>
+                    Envío de Correos Masivos
+                </h2>
+                
+                <h:form id="formEmail">
+                    <h:messages globalOnly="true" 
+                              infoStyle="color: #28a745; font-weight: bold; margin-bottom: 1rem; display: block;" 
+                              errorStyle="color: #dc3545; font-weight: bold; margin-bottom: 1rem; display: block;" 
+                              layout="block"/>
+                    
+                    <!-- Asunto -->
+                    <div class="form-group">
+                        <h:outputLabel for="asunto" value="Asunto *" styleClass="form-label"/>
+                        <h:inputText id="asunto" value="#{emailController.asunto}" 
+                                   required="true" requiredMessage="El asunto es obligatorio"
+                                   styleClass="form-control"/>
+                        <h:message for="asunto" style="color: red;"/>
+                    </div>
+                    
+                    <!-- Tipo de destinatario -->
+                    <div class="form-group">
+                        <h:outputLabel for="tipoDestinatario" value="Tipo de Destinatario *" styleClass="form-label"/>
+                        <h:selectOneMenu id="tipoDestinatario" value="#{emailController.tipoDestinatario}" 
+                                       required="true" requiredMessage="Seleccione el tipo de destinatario"
+                                       styleClass="form-control"
+                                       onchange="this.form.submit()">
+                            <f:selectItem itemValue="" itemLabel="Seleccione..."/>
+                            <f:selectItems value="#{emailController.tiposDestinatario}"/>
+                        </h:selectOneMenu>
+                        <h:message for="tipoDestinatario" style="color: red;"/>
+                    </div>
+                    
+                    <!-- Destinatarios personalizados -->
+                    <div class="form-group">
+                        <h:panelGroup rendered="#{emailController.tipoDestinatario == 'personalizado'}">
+                            <h:outputLabel value="Destinatarios Personalizados" styleClass="form-label"/>
+                            <p class="text-muted">Ingrese correos separados por comas. Ej: ejemplo1@gmail.com, ejemplo2@gmail.com</p>
+                            <h:inputTextarea value="#{emailController.destinatariosPersonalizadosString}" 
+                                           rows="3" styleClass="form-control"/>
+                        </h:panelGroup>
+                    </div>
+                    
+                    <!-- Vista previa de destinatarios -->
+                    <div class="form-group">
+                        <h:panelGroup rendered="#{emailController.tipoDestinatario != null and emailController.tipoDestinatario != '' and emailController.tipoDestinatario != 'personalizado'}">
+                            <h:outputLabel value="Destinatarios Seleccionados" styleClass="form-label"/>
+                            <div class="recipient-list">
+                                <ui:repeat value="#{emailController.destinatariosPreview}" var="email">
+                                    <span class="recipient-item">#{email}</span>
+                                </ui:repeat>
+                                <h:outputText value="No se encontraron destinatarios" 
+                                             rendered="#{empty emailController.destinatariosPreview}"/>
+                            </div>
+                        </h:panelGroup>
+                    </div>
+                    
+                    <!-- Opciones de formato -->
+                    <div class="form-group">
+                        <div class="form-check">
+                            <h:selectBooleanCheckbox id="htmlCheckbox" value="#{emailController.enviarHtml}" 
+                                                   styleClass="form-check-input"/>
+                            <h:outputLabel for="htmlCheckbox" value="Enviar como HTML (permite formato enriquecido)" styleClass="form-check-label"/>
+                        </div>
+                    </div>
+                    
+                    <!-- Cuerpo del correo -->
+                    <div class="form-group">
+                        <h:outputLabel for="cuerpo" value="Cuerpo del Correo *" styleClass="form-label"/>
+                        <h:inputTextarea id="cuerpo" value="#{emailController.cuerpo}" 
+                                       required="true" requiredMessage="El cuerpo del correo es obligatorio"
+                                       styleClass="form-control email-editor"
+                                       rows="12"/>
+                        <h:message for="cuerpo" style="color: red;"/>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <h:commandButton value="📤 Enviar Correos Masivos" 
+                                       action="#{emailController.enviarCorreoMasivo}"
+                                       styleClass="btn-primary-custom"
+                                       onclick="return confirm('¿Está seguro de enviar este correo a todos los destinatarios seleccionados?');"/>
+                        
+                        <h:button value="↩️ Cancelar" outcome="/views/dashboard/dashboard" 
+                                styleClass="btn-cancel"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>
