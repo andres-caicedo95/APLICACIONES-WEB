@@ -7,10 +7,10 @@
 
     <body>
         <ui:composition template="./../newTemplate.xhtml">
-            
+
             <ui:define name="title">Gestión de Productos</ui:define>
-            
-                        
+
+
             <ui:define name="content">
                 <!-- Encabezado mejorado -->
                 <div class="product-header">
@@ -23,16 +23,22 @@
                                 Administra los productos del sistema Desayunos Detalles
                             </p>
                         </div>
+                        <h:form id="downloadForm" style="margin-bottom: 0;">
+                            <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                                <ui:param name="descargarPDF" value="descargarListadoProductosPDF"/>
+                                <ui:param name="descargarTexto" value="descargarListadoProductosTexto"/>
+                            </ui:include>
+                        </h:form>
                         <h:form style="margin-bottom: 0;">
                             <h:commandButton value="📦 Registrar Producto" action="#{productController.prepararCrearProducto()}" 
-                                           styleClass="btn-primary-custom" immediate="true"/>
+                                             styleClass="btn-primary-custom" immediate="true"/>
                         </h:form>
                     </div>
                 </div>
 
                 <!-- Mensajes del sistema -->
                 <h:messages globalOnly="false" styleClass="messages" infoClass="alert alert-success" 
-                          errorClass="alert alert-danger" warnClass="alert alert-warning"/>
+                            errorClass="alert alert-danger" warnClass="alert alert-warning"/>
 
                 <!-- Información de estadísticas -->
                 <div class="alert alert-info mb-3">
@@ -78,15 +84,15 @@
                                         <div class="action-buttons">
                                             <h:form style="display: inline;">
                                                 <h:commandButton value="Editar" action="#{productController.prepararEditarProducto(item)}" 
-                                                               styleClass="btn-action btn-edit" immediate="true">
+                                                                 styleClass="btn-action btn-edit" immediate="true">
                                                     <i class="bi bi-pencil"></i>
                                                 </h:commandButton>
                                             </h:form>
                                             <h:form style="display: inline;">
                                                 <h:commandButton value="Eliminar" 
-                                                               onclick="return confirm('¿Está seguro de eliminar el producto #{item.nombreProducto}?')" 
-                                                               action="#{productController.eliminarProducto(item)}"
-                                                               styleClass="btn-action btn-delete">
+                                                                 onclick="return confirm('¿Está seguro de eliminar el producto #{item.nombreProducto}?')" 
+                                                                 action="#{productController.eliminarProducto(item)}"
+                                                                 styleClass="btn-action btn-delete">
                                                     <i class="bi bi-trash"></i>
                                                 </h:commandButton>
                                             </h:form>
@@ -118,14 +124,14 @@
                             "autoWidth": false,
                             "order": [[0, "desc"]],
                             "columnDefs": [
-                                { "width": "5%", "targets": 0 },
-                                { "width": "10%", "targets": 1 },
-                                { "width": "25%", "targets": 2 },
-                                { "width": "8%", "targets": 3 },
-                                { "width": "10%", "targets": 4 },
-                                { "width": "15%", "targets": 5 },
-                                { "width": "10%", "targets": 6 },
-                                { "width": "17%", "targets": 7 }
+                                {"width": "5%", "targets": 0},
+                                {"width": "10%", "targets": 1},
+                                {"width": "25%", "targets": 2},
+                                {"width": "8%", "targets": 3},
+                                {"width": "10%", "targets": 4},
+                                {"width": "15%", "targets": 5},
+                                {"width": "10%", "targets": 6},
+                                {"width": "17%", "targets": 7}
                             ],
                             buttons: [
                                 {
@@ -154,7 +160,7 @@
                                     className: 'btn btn-sm btn-outline-secondary'
                                 }
                             ],
-                            "initComplete": function(settings, json) {
+                            "initComplete": function (settings, json) {
                                 $('.dt-buttons .btn').addClass('me-1');
                             }
                         });

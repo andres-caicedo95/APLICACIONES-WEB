@@ -2,6 +2,7 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 template="/views/newTemplate.xhtml">
 
     <ui:define name="content">
@@ -256,7 +257,7 @@
                         <div>
                             <h3 class="order-section-title">Direccion de Entrega</h3>
                             <h:inputText value="#{clienteController.direccionEntrega}" required="true" requiredMessage="La direccion es obligatoria" styleClass="order-address-input" 
-                                         <placeholder="Ingresa tu direccion completa"/>
+                                         pt:placeholder="Ingresa tu direccion completa"/>
                             <h:message for="direccionEntrega" style="color: #ef4444; font-size: 0.9rem;"/>
                         </div>
                     </div>
