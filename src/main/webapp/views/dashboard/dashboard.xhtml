@@ -17,34 +17,66 @@
 
                 <p:panel header="Clientes por Estado" style="margin:10px;">
                     <p:chart type="pie" model="#{dashboardBean.clientesPorEstado}" style="width:100%;height:300px"/>
+                    <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                        <ui:param name="descargarPDF" value="descargarClientesPorEstadoPDF"/>
+                        <ui:param name="descargarTexto" value="descargarClientesPorEstadoTexto"/>
+                    </ui:include>
                 </p:panel>
 
                 <p:panel header="Productos por Categoría" style="margin:10px;">
                     <p:chart type="bar" model="#{dashboardBean.productosPorCategoria}" style="width:100%;height:300px"/>
+                    <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                        <ui:param name="descargarPDF" value="descargarProductosPorCategoriaPDF"/>
+                        <ui:param name="descargarTexto" value="descargarProductosPorCategoriaTexto"/>
+                    </ui:include>
                 </p:panel>
 
                 <p:panel header="Top 5 Productos con más Stock" style="margin:10px;">
                     <p:chart type="bar" model="#{dashboardBean.topStockProductos}" style="width:100%;height:300px"/>
+                    <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                        <ui:param name="descargarPDF" value="descargarTopStockProductosPDF"/>
+                        <ui:param name="descargarTexto" value="descargarTopStockProductosTexto"/>
+                    </ui:include>
                 </p:panel>
 
                 <p:panel header="Ventas Diarias (Últimos 30 días)" style="margin:10px;">
                     <p:chart type="line" model="#{dashboardBean.ventasDiarias}" style="width:100%;height:300px"/>
+                    <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                        <ui:param name="descargarPDF" value="descargarVentasDiariasPDF"/>
+                        <ui:param name="descargarTexto" value="descargarVentasDiariasTexto"/>
+                    </ui:include>
                 </p:panel>
 
                 <p:panel header="Pedidos por Estado" style="margin:10px;">
                     <p:chart type="pie" model="#{dashboardBean.pedidosPorEstado}" style="width:100%;height:300px"/>
+                    <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                        <ui:param name="descargarPDF" value="descargarPedidosPorEstadoPDF"/>
+                        <ui:param name="descargarTexto" value="descargarPedidosPorEstadoTexto"/>
+                    </ui:include>
                 </p:panel>
 
                 <p:panel header="Domicilios por Estado" style="margin:10px;">
                     <p:chart type="pie" model="#{dashboardBean.domiciliosPorEstado}" style="width:100%;height:300px"/>
+                    <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                        <ui:param name="descargarPDF" value="descargarDomiciliosPorEstadoPDF"/>
+                        <ui:param name="descargarTexto" value="descargarDomiciliosPorEstadoTexto"/>
+                    </ui:include>
                 </p:panel>
 
                 <p:panel header="Facturas por Vendedor (30 días)" style="margin:10px;">
                     <p:chart type="bar" model="#{dashboardBean.facturasPorVendedor}" style="width:100%;height:300px"/>
+                    <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                        <ui:param name="descargarPDF" value="descargarFacturasPorVendedorPDF"/>
+                        <ui:param name="descargarTexto" value="descargarFacturasPorVendedorTexto"/>
+                    </ui:include>
                 </p:panel>
 
                 <p:panel header="Top 5 Productos Más Vendidos" style="margin:10px;">
                     <p:chart type="bar" model="#{dashboardBean.topProductosVendidos}" style="width:100%;height:300px"/>
+                    <ui:include src="/WEB-INF/templates/downloadButtons.xhtml">
+                        <ui:param name="descargarPDF" value="descargarTopProductosVendidosPDF"/>
+                        <ui:param name="descargarTexto" value="descargarTopProductosVendidosTexto"/>
+                    </ui:include>
                 </p:panel>
 
             </p:panelGrid>
