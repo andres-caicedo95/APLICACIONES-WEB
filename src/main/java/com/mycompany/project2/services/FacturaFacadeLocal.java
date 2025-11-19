@@ -5,7 +5,9 @@
 package com.mycompany.project2.services;
 
 import com.mycompany.project2.entities.Factura;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -28,5 +30,7 @@ public interface FacturaFacadeLocal {
     List<Factura> findRange(int[] range);
 
     int count();
+
+    public Map<String, Long> countByVendedor(Date desde, Date hasta);
     
 }

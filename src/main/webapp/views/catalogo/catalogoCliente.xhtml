@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/views/newTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:outputStylesheet>
+            /* --- Mantiene tu diseño original --- */
+            .catalog-container { max-width: 1200px; margin: 0 auto; padding: 2rem; background: #f8f9fa; min-height: 100vh; font-family: 'Segoe UI', Arial, sans-serif; }
+            .catalog-header { text-align: center; margin-bottom: 2rem; }
+            .catalog-header h1 { font-weight: 700; color: #1d4ed8; }
+            .catalog-header p { color: #64748b; }
+            .product-card { border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); transition: transform 0.3s, box-shadow 0.3s; background: #fff; }
+            .product-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); }
+            .product-image { height: 220px; object-fit: cover; width: 100%; background: #f9fafb; }
+            .product-body { padding: 1rem 1.25rem; text-align: center; }
+            .product-name { font-size: 1.1rem; font-weight: 600; color: #1e293b; margin-bottom: 0.25rem; }
+            .product-price { color: #2563eb; font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; }
+            .stock-text { color: #64748b; font-size: 0.9rem; }
+            .qty-control { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; }
+            .qty-control button, .qty-control input { font-weight: 600; }
+            .qty-control button { border: none; background: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; }
+            .qty-value { min-width: 40px; display: inline-block; text-align: center; font-weight: 600; }
+            .add-btn { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 600; transition: background 0.3s ease; }
+            .add-btn:hover { background: linear-gradient(135deg, #1e40af, #1d4ed8); }
+            .btn-carrito { background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.3s; }
+            .btn-carrito:hover { background: #059669; }
+        </h:outputStylesheet>
+
+        <div class="catalog-container">
+            <div class="catalog-header">
+                <h1>Catálogo de Productos</h1>
+                <p>Selecciona los productos que deseas agregar al carrito</p>
+            </div>
+
+            <!-- FORM PRINCIPAL -->
+            <h:form id="catalogForm">
+                <!-- Mensajes de confirmación -->
+                <h:messages id="catalogMsgs" globalOnly="true"
+                            style="color:#10b981; font-weight:600; text-align:center; margin-bottom:10px;" />
+
+                <div class="row g-4">
+                    <ui:repeat value="#{clienteController.productos}" var="p">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="product-card">
+                                <!-- Imagen -->
+                                <h:graphicImage value="#{productController.getImageBase64(p)}"
+                                                alt="#{p.nombreProducto}"
+                                                styleClass="product-image" />
+
+                                <div class="product-body">
+                                    <!-- Info básica -->
+                                    <div class="product-name">#{p.nombreProducto}</div>
+                                    <div class="product-price">$#{p.valorProducto}</div>
+                                    <div class="stock-text">Stock: #{p.stockProduccto}</div>
+
+                                    <!-- Controles de cantidad -->
+                                    <div class="qty-control">
+                                        <h:commandButton value="−"
+                                                         action="#{clienteController.decrementarCantidadTemporal(p.idProducto)}"
+                                                         styleClass="btn btn-sm btn-light">
+                                            <f:ajax execute="@this" render="@form" />
+                                        </h:commandButton>
+
+                                        <h:outputText id="cantidad_#{p.idProducto}"
+                                                      value="#{clienteController.getCantidadTemporal(p.idProducto)}"
+                                                      styleClass="qty-value" />
+
+                                        <h:commandButton value="+"
+                                                         action="#{clienteController.incrementarCantidadTemporal(p.idProducto)}"
+                                                         styleClass="btn btn-sm btn-light">
+                                            <f:ajax execute="@this" render="@form" />
+                                        </h:commandButton>
+                                    </div>
+
+                                    <!-- Botón agregar -->
+                                    <h:commandButton value="Agregar al Carrito"
+                                                     action="#{clienteController.agregarAlCarrito(p, clienteController.getCantidadTemporal(p.idProducto))}"
+                                                     styleClass="add-btn"
+                                                     rendered="#{p.stockProduccto gt 0}">
+                                        <f:ajax execute="@this" render="catalogMsgs" />
+                                    </h:commandButton>
+
+                                    <h:outputText value="Agotado"
+                                                  rendered="#{p.stockProduccto eq 0}"
+                                                  style="color:red; font-weight:bold;" />
+                                </div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </div>
+
+                <!-- Si no hay productos -->
+                <h:outputText value="No hay productos disponibles en este momento."
+                              rendered="#{empty clienteController.productos}"
+                              style="display:block;text-align:center;padding:2rem;" />
+
+                <div class="text-center mt-5">
+                    <h:commandButton value="Ver Carrito"
+                                     action="/views/cliente/carrito.xhtml?faces-redirect=true"
+                                     styleClass="btn-carrito" />
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,242 +1,504 @@
-/* Estilos generales */
+/* ========================================================================= */
+/* FUENTES Y LIBRERÍAS EXTERNAS (CRUCIALES PARA MANTENER EL ESTILO) */
+/* ========================================================================= */
+
+/* Fuente Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* NOTA: Las referencias a Bootstrap y Bootstrap Icons deben permanecer en el <h:head> de cada archivo XHTML */
+
+
+/* ========================================================================= */
+/* ESTILOS GLOBALES Y UTILIDADES */
+/* ========================================================================= */
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa; /* Fondo claro general para el contenido (Admin, Catálogo) */
+    overflow-x: hidden;
+}
+
+/* Estilos de gradiente principal para botones y navegación */
+.primary-gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* 💡 ESTILO UNIFICADO DE BOTONES PRINCIPALES (Login, Registro y Admin CRUD) 💡 */
+.btn-primary-gradient,
+.btn-login,
+.btn-register,
+.btn-primary-custom { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%; /* Ancho completo por defecto (anulado en Admin Forms) */
+    transition: all 0.3s;
+}
+
+.btn-primary-gradient:hover,
+.btn-login:hover,
+.btn-register:hover,
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Botones secundarios (Cancelar, Volver en Admin) */
+.btn-secondary-custom {
+    background: #e2e8f0;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+.btn-secondary-custom:hover {
+    background: #cbd5e0;
+    transform: translateY(-1px);
+}
+
+/* ========================================================================= */
+/* ESTILOS DE FORMULARIOS GENERALES (Usados en Login/Registro y Admin CRUD) */
+/* ========================================================================= */
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.form-control, .form-select {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+}
+
+.input-icon {
+    position: relative;
+}
+.input-icon i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+.input-icon .form-control, .input-icon .form-select {
+    padding-left: 45px;
+}
+
+/* ========================================================================= */
+/* ESTILOS DE AUTENTICACIÓN (login.xhtml y registro.xhtml) */
+/* ========================================================================= */
+
+/* Fondo de imagen para páginas de autenticación */
+.bg-auth {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Contenedores y Tarjetas */
+.login-container { max-width: 1200px; margin: 0 auto; }
+.register-container { max-width: 1000px; margin: 0 auto; }
+
+.login-card, .register-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+.login-image, .register-image {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    color: white;
+}
+.login-image h2, .register-image h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.login-image p, .register-image p {
+    opacity: 0.9;
+}
+.login-form, .register-form {
+    padding: 40px;
+}
+.login-title, .register-title {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 28px;
+}
+
+/* Botón de Cancelar/Volver del Login/Registro */
+.btn-cancel {
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+.btn-cancel:hover {
+    background: #e2e8f0;
+}
+
+/* Sección de Registro Específica (Para registro.xhtml) */
+.form-section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #e2e8f0;
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+.button-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+.button-container .btn-cancel {
+    width: auto;
+    flex-grow: 1;
+}
+
+/* Media Query para Login/Registro */
+@media (max-width: 992px) {
+    .login-image, .register-image {
+        display: none;
+    }
+    .login-card, .register-card {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
+
+/* ========================================================================= */
+/* ESTILOS DE NAVEGACIÓN Y PÁGINA DE INICIO (PaginaInicio.xhtml) */
+/* ========================================================================= */
+
+/* Navegación */
+.navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 /* Hero Section */
 .hero-section {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/fondo.jpg');
-  background-size: cover;
-  background-position: center;
-  color: white;
-  padding: 100px 0;
-  text-align: center;
-}
-
-.hero-section h1 {
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-}
-
-/* Tarjetas de servicios */
-.service-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  height: 100%;
-  border: none;
-  border-radius: 10px;
-}
-
-.service-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-/* Sección Quiénes Somos */
-.about-section {
-  background-color: #f8f9fa;
-}
-
-/* Iconos destacados */
-.feature-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #0d6efd;
-}
-
-/* Estilos para las tarjetas de productos */
-.card {
-  border: none;
-  overflow: hidden;
-  border-radius: 10px;
-}
-
-.card-img-top {
-  transition: transform 0.3s ease;
-}
-
-.card:hover .card-img-top {
-  transform: scale(1.03);
-}
-
-/* Footer styles */
-footer a {
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-footer a:hover {
-  color: white !important;
-}
-
-/* Estilos para los botones de autenticación */
-.btn-outline-light:hover {
-  color: #0d6efd !important;
-  background-color: white;
-}
-
-/* Ajustes para el navbar */
-.navbar-brand i {
-  margin-right: 8px;
-}
-
-/* Mejoras para dispositivos móviles */
-@media (max-width: 992px) {
-  .navbar-collapse {
-    padding-top: 15px;
-  }
-  
-  .hero-section {
-    padding: 60px 0;
-     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/fondo.jpg');
-  }
-  
-  .hero-section h1 {
-    font-size: 2.5rem;
-  }
-  
-  .d-flex.justify-content-center.gap-3,
-  .d-flex.align-items-center.gap-2 {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px !important;
-    margin-top: 10px;
-  }
-  
-  .btn-lg, 
-  .d-flex.align-items-center.gap-2 a {
-    width: 100%;
-  }
-  
-  .about-section .row > div {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 120px 0;
+    color: white;
     text-align: center;
-  }
-  
-  .about-section img {
-    margin-bottom: 30px;
-  }
+    position: relative;
+    overflow: hidden;
 }
 
-/* Efecto hover para los botones */
-.btn-light:hover {
-  background-color: #e2e6ea !important;
+/* Animaciones */
+.floating-icon {
+    position: absolute;
+    font-size: 2.5rem;
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+    color: white;
+}
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0); }
+}
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
-/* Ajustes para el contador del carrito */
-.position-absolute {
-  font-size: 0.75rem;
+/* Iconos y Tarjetas de Servicios */
+.feature-icon-primary { color: #667eea; }
+.feature-icon-secondary { color: #764ba2; }
+.feature-icon-success { color: #f093fb; }
+
+.service-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.service-card.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+.testimonial-card { transition: transform 0.3s ease; }
+.testimonial-card:hover { transform: translateY(-5px); }
+.zoom-image { transition: transform 0.5s ease; }
+.product-image:hover .zoom-image { transform: scale(1.03); }
+
+/* Badge Flotante (Nuevo producto) */
+.floating-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    z-index: 10;
 }
 
-/* Mejoras de accesibilidad */
-a:focus, button:focus {
-  outline: 2px solid #0d6efd;
-  outline-offset: 2px;
+/* ========================================================================= */
+/* ESTILOS DEL CATÁLOGO (catalogo.xhtml y PaginaInicio.xhtml) */
+/* ========================================================================= */
+
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.badge-price {
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
-.header-logo {
-    height: 40px; /* Ajusta según el tamaño de tu logo */
-    width: auto;
-    margin-right: 15px;
-    
+.product-image {
+    position: relative;
+    overflow: hidden;
 }
-
-/* NAVBAR PERSONALIZADO */
-.custom-navbar {
-    padding: 1.5rem 2rem;
-    min-height: 90px;
-    transition: all 0.3s ease;
-}
-
-.custom-navbar-container {
-    max-width: 100%;
-    padding: 0 3rem;
-}
-
-.header-logo {
-    height: 75px;
-    width: auto;
-    margin-right: 2rem;
-}
-
-.navbar-left-section {
-    flex-grow: 1;
-    align-items: center;
-}
-
-.navbar-right-section {
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.product-image:hover .product-overlay {
+    opacity: 1;
 }
 
-.custom-nav-btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.1rem;
-    border-radius: 50px;
-    transition: all 0.3s ease;
+/* ========================================================================= */
+/* ESTILOS DEL CARRITO DE COMPRAS (carrito_compra.xhtml) */
+/* ========================================================================= */
+/* (Esta sección fue correcta y ya estaba incluida en tu versión) */
+
+.modern-cart-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+.cart-header {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px 12px 0 0;
+    text-align: center;
+    margin-bottom: 0;
+}
+.cart-header h2 { margin: 0 0 10px 0; font-size: 2rem; font-weight: 700; }
+.cart-subtitle { margin: 0; opacity: 0.9; font-size: 1.1rem; }
+.cart-content {
+    background: white;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+.modern-cart-table { width: 100%; border-collapse: collapse; margin: 0; }
+.modern-cart-table th { background: #f8fafc; padding: 20px 15px; text-align: left; font-weight: 600; color: #1e293b; border-bottom: 2px solid #e2e8f0; }
+.modern-cart-table td { padding: 25px 15px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+.product-cell { display: flex; align-items: center; gap: 15px; }
+.product-name { font-weight: 600; font-size: 1.1rem; color: #1e293b; margin-bottom: 5px; }
+.product-category { color: #64748b; font-size: 0.9rem; }
+.price-cell { font-weight: 700; font-size: 1.2rem; color: #1e293b; }
+.quantity-controls { display: flex; align-items: center; gap: 5px; }
+.quantity-controls button { background: #f1f5f9; color: #333; border: none; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+.quantity-controls button:hover { background: #e2e8f0; }
+.quantity-input { width: 40px; text-align: center; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px; -moz-appearance: textfield; }
+.remove-button { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.2rem; transition: color 0.2s; }
+.remove-button:hover { color: #dc2626; }
+.cart-summary { display: grid; grid-template-columns: 2fr 1fr; border-top: 1px solid #e2e8f0; background: #f8fafc; }
+.summary-details { padding: 30px; }
+.summary-details h3 { font-size: 1.5rem; font-weight: 600; color: #1e293b; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+.summary-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1rem; color: #475569; }
+.summary-total { font-weight: 700; font-size: 1.3rem; color: #1e293b; border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: 15px; }
+.checkout-section { padding: 30px; background: white; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; border-left: 1px solid #e2e8f0; }
+.section-title { font-size: 1.3rem; font-weight: 600; color: #1e293b; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px dashed #e2e8f0; }
+.address-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-top: 10px; box-sizing: border-box; }
+.btn-checkout {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.security-notice { text-align: center; padding: 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; }
+
+/* Media Query para Carrito */
+@media (max-width: 768px) {
+    .checkout-section { grid-template-columns: 1fr; }
+    .product-cell { flex-direction: column; text-align: center; }
+    .quantity-controls { justify-content: center; }
 }
 
-.nav-link {
-    font-size: 1.1rem;
-    padding: 0.8rem 1.2rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
+
+/* ========================================================================= */
+/* 💡 ESTILOS FALTANTES DE ADMINISTRACIÓN (index.xhtml, crearactProducto.xhtml, etc.) 💡 */
+/* ========================================================================= */
+
+/* Cabeceras de Vistas Index (index.xhtml, indexUsuario.xhtml) */
+.product-header, .user-header {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-.nav-link:hover {
-    transform: translateY(-2px);
+/* Estilos para DataTables */
+.dataTables_wrapper {
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+.dataTables_length, .dataTables_filter {
+    margin-bottom: 15px;
+}
+.dataTables_length select {
+    border-radius: 6px;
+    padding: 0.5rem;
+}
+.dataTables_filter input {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    width: 200px;
+}
+.dataTables_filter label {
+    font-size: 0.9rem;
+    color: #555;
 }
 
-.bi-cart {
-    font-size: 1.3rem;
+/* Columna de Stock (index.xhtml) */
+.stock-cell { text-align: center; font-weight: 600; }
+.stock-low { color: #dc3545; }
+.stock-medium { color: #ffc107; }
+.stock-high { color: #28a745; }
+
+/* Botones de acción en tabla */
+.action-column { white-space: nowrap; }
+.btn-edit { color: #667eea; border: 1px solid #667eea; background: white; padding: 5px 10px; border-radius: 5px; font-size: 0.9rem; margin-right: 5px;}
+.btn-delete { color: #dc3545; border: 1px solid #dc3545; background: white; padding: 5px 10px; border-radius: 5px; font-size: 0.9rem; }
+.btn-edit:hover { background: #667eea; color: white; }
+.btn-delete:hover { background: #dc3545; color: white; }
+
+/* Formulario de Creación/Edición (crearactProducto.xhtml, crearactUsuario.xhtml) */
+.form-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
 }
 
-/* Efecto hover para botones */
-.custom-nav-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.form-title {
+    color: #2d3748;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
 }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-    .custom-navbar {
-        padding: 1rem;
-        min-height: auto;
-    }
-    
-    .custom-navbar-container {
-        padding: 0 1rem;
-    }
-    
-    .navbar-right-section {
-        margin-top: 1rem;
-        width: 100%;
-        justify-content: flex-end;
-    }
-    
-    .header-logo {
-        margin-right: 1rem;
-        height: 40px;
-    }
-    
-    .custom-nav-btn {
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-    }
-    
-    .nav-link {
-        padding: 0.5rem 0;
-    }
+.form-subtitle {
+    color: #718096;
+    margin-bottom: 2rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+/* Ajuste de botones en Admin para no ocupar 100% de ancho */
+.form-actions .btn-primary-custom,
+.form-actions .btn-secondary-custom {
+    width: auto;
+}
+
+.image-preview {
+    max-width: 150px;
+    max-height: 150px;
+    display: block;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    object-fit: cover;
 }
 
 @media (max-width: 768px) {
-    .navbar-right-section {
+    .form-row {
         flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .custom-nav-btn {
-        width: 100%;
-        text-align: center;
+        gap: 0;
     }
 }

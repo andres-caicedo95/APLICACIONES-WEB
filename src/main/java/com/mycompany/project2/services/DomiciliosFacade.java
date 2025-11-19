@@ -1,12 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.project2.services;
 
 import com.mycompany.project2.entities.Domicilios;
 import com.mycompany.project2.entities.Usuario;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,7 +32,7 @@ public class DomiciliosFacade extends AbstractFacade<Domicilios> implements Domi
         try {
             LOGGER.info("📍 Creando nuevo domicilio: " + domicilio.getDirecccionDomicilio());
             
-            // Usar coordenadas por defecto de Bogotá (sin geocodificación)
+            // Coordenadas por defecto de Bogotá
             domicilio.setLatitud(4.710989);
             domicilio.setLongitud(-74.072092);
             
@@ -53,7 +51,6 @@ public class DomiciliosFacade extends AbstractFacade<Domicilios> implements Domi
             LOGGER.info("📍 Actualizando domicilio ID: " + domicilio.getIdDomicilio());
             super.edit(domicilio);
             LOGGER.info("✅ Domicilio actualizado exitosamente");
-            
         } catch (Exception e) {
             LOGGER.severe("❌ Error al actualizar domicilio: " + e.getMessage());
             throw new RuntimeException("Error al actualizar domicilio: " + e.getMessage(), e);
@@ -86,6 +83,27 @@ public class DomiciliosFacade extends AbstractFacade<Domicilios> implements Domi
             .setParameter("estado", estado)
             .getResultList();
     }
-    
-    // Métodos que usaban geocodingService se eliminan o simplifican
+
+    // =====================================================
+    // NUEVO MÉTODO PARA DASHBOARD (Gráfico Domicilios/Estado)
+    // =====================================================
+    /**
+     * Retorna la cantidad de domicilios agrupados por estado.
+     * Usado para la gráfica "Domicilios por Estado".
+     */
+    public Map<String, Long> countByEstado() {
+        List<Object[]> resultados = em.createQuery(
+            "SELECT d.estado, COUNT(d) FROM Domicilios d GROUP BY d.estado",
+            Object[].class
+        ).getResultList();
+
+        Map<String, Long> data = new LinkedHashMap<>();
+        for (Object[] fila : resultados) {
+            String estado = (String) fila[0];
+            Long cantidad = (Long) fila[1];
+            data.put(estado != null ? estado : "Sin estado", cantidad);
+        }
+
+        return data;
+    }
 }

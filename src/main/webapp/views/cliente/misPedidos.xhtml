@@ -6,42 +6,42 @@
 
     <ui:define name="content">
         <h:outputStylesheet>
-            .modern-cart-container {
+            .modern-orders-container {
                 max-width: 1200px;
                 margin: 0 auto;
                 padding: 20px;
                 font-family: 'Segoe UI', Arial, sans-serif;
             }
-            .cart-header {
-                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            .orders-header {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
                 color: white;
                 padding: 30px;
                 border-radius: 12px 12px 0 0;
                 text-align: center;
                 margin-bottom: 0;
             }
-            .cart-header h2 {
+            .orders-header h2 {
                 margin: 0 0 10px 0;
                 font-size: 2rem;
                 font-weight: 700;
             }
-            .cart-subtitle {
+            .orders-subtitle {
                 margin: 0;
                 opacity: 0.9;
                 font-size: 1.1rem;
             }
-            .cart-content {
+            .orders-content {
                 background: white;
                 border-radius: 0 0 12px 12px;
                 box-shadow: 0 10px 25px rgba(0,0,0,0.1);
                 overflow: hidden;
             }
-            .modern-cart-table {
+            .modern-orders-table {
                 width: 100%;
                 border-collapse: collapse;
                 margin: 0;
             }
-            .modern-cart-table th {
+            .modern-orders-table th {
                 background: #f8fafc;
                 padding: 20px 15px;
                 text-align: left;
@@ -49,49 +49,49 @@
                 color: #1e293b;
                 border-bottom: 2px solid #e2e8f0;
             }
-            .modern-cart-table td {
+            .modern-orders-table td {
                 padding: 25px 15px;
                 border-bottom: 1px solid #e2e8f0;
                 vertical-align: middle;
             }
-            .product-cell {
+            .order-product-cell {
                 display: flex;
                 align-items: center;
                 gap: 15px;
             }
-            .product-image {
+            .order-product-image {
                 width: 60px;
                 height: 60px;
-                background: #f8fafc;
+                background: #f0fdf4;
                 border-radius: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: #2563eb;
+                color: #10b981;
                 font-size: 1.2rem;
                 font-weight: bold;
             }
-            .product-name {
+            .order-product-name {
                 font-weight: 600;
                 font-size: 1.1rem;
                 color: #1e293b;
                 margin-bottom: 5px;
             }
-            .product-category {
+            .order-product-category {
                 color: #64748b;
                 font-size: 0.9rem;
             }
-            .price-cell {
+            .order-price-cell {
                 font-weight: 700;
                 font-size: 1.2rem;
-                color: #2563eb;
+                color: #10b981;
             }
-            .quantity-controls {
+            .order-quantity-controls {
                 display: flex;
                 align-items: center;
                 gap: 10px;
             }
-            .quantity-input {
+            .order-quantity-input {
                 width: 60px;
                 padding: 8px 12px;
                 border: 1px solid #e2e8f0;
@@ -99,8 +99,8 @@
                 text-align: center;
                 font-weight: 600;
             }
-            .btn-update {
-                background: #2563eb;
+            .order-btn-update {
+                background: #10b981;
                 color: white;
                 border: none;
                 padding: 8px 16px;
@@ -108,7 +108,7 @@
                 cursor: pointer;
                 font-weight: 600;
             }
-            .btn-delete {
+            .order-btn-delete {
                 background: #ef4444;
                 color: white;
                 border: none;
@@ -117,40 +117,40 @@
                 cursor: pointer;
                 font-weight: 600;
             }
-            .total-section {
+            .order-total-section {
                 padding: 30px;
                 background: #f8fafc;
                 border-top: 1px solid #e2e8f0;
                 text-align: center;
             }
-            .total-amount {
+            .order-total-amount {
                 font-size: 2.5rem;
                 font-weight: 700;
-                color: #2563eb;
+                color: #10b981;
                 margin: 10px 0;
             }
-            .checkout-section {
+            .order-checkout-section {
                 padding: 30px;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 30px;
                 border-top: 1px solid #e2e8f0;
             }
-            .section-title {
+            .order-section-title {
                 font-size: 1.3rem;
                 font-weight: 600;
                 color: #1e293b;
                 margin-bottom: 20px;
             }
-            .payment-options table {
+            .order-payment-options table {
                 width: 100%;
                 border-collapse: collapse;
             }
-            .payment-options td {
+            .order-payment-options td {
                 padding: 10px 0;
                 vertical-align: middle;
             }
-            .payment-options label {
+            .order-payment-options label {
                 display: flex;
                 align-items: center;
                 gap: 10px;
@@ -159,17 +159,17 @@
                 border-radius: 8px;
                 cursor: pointer;
             }
-            .address-input {
+            .order-address-input {
                 width: 100%;
                 padding: 12px;
                 border: 1px solid #e2e8f0;
                 border-radius: 8px;
                 font-size: 1rem;
             }
-            .btn-checkout {
+            .order-btn-checkout {
                 width: 100%;
                 padding: 16px;
-                background: #2563eb;
+                background: #10b981;
                 color: white;
                 border: none;
                 border-radius: 10px;
@@ -178,7 +178,7 @@
                 cursor: pointer;
                 margin-top: 20px;
             }
-            .security-notice {
+            .order-security-notice {
                 text-align: center;
                 padding: 20px;
                 background: #f8fafc;
@@ -187,85 +187,85 @@
                 font-size: 0.9rem;
             }
             @media (max-width: 768px) {
-                .checkout-section {
+                .order-checkout-section {
                     grid-template-columns: 1fr;
                 }
-                .product-cell {
+                .order-product-cell {
                     flex-direction: column;
                     text-align: center;
                 }
-                .quantity-controls {
+                .order-quantity-controls {
                     justify-content: center;
                 }
             }
         </h:outputStylesheet>
 
-        <div class="modern-cart-container">
-            <div class="cart-header">
-                <h2>Mi Carrito de Compras</h2>
-                <p class="cart-subtitle">Revisa y gestiona tus productos</p>
+        <div class="modern-orders-container">
+            <div class="orders-header">
+                <h2>Mis Pedidos</h2>
+                <p class="orders-subtitle">Gestiona y realiza seguimiento a tus pedidos</p>
             </div>
 
-            <div class="cart-content">
-                <h:form id="cartForm">
-                    <h:dataTable value="#{clienteController.carrito}" var="item" styleClass="modern-cart-table">
+            <div class="orders-content">
+                <h:form id="ordersForm">
+                    <h:dataTable value="#{clienteController.carrito}" var="item" styleClass="modern-orders-table">
                         <h:column>
                             <f:facet name="header">Producto</f:facet>
-                            <div class="product-cell">
-                                <div class="product-image">P</div>
+                            <div class="order-product-cell">
+                                <div class="order-product-image">P</div>
                                 <div>
-                                    <div class="product-name">#{item.producto.nombreProducto}</div>
-                                    <div class="product-category">Producto fresco</div>
+                                    <div class="order-product-name">#{item.producto.nombreProducto}</div>
+                                    <div class="order-product-category">Producto fresco</div>
                                 </div>
                             </div>
                         </h:column>
                         <h:column>
                             <f:facet name="header">Precio</f:facet>
-                            <div class="price-cell">$#{item.precioUnitario}</div>
+                            <div class="order-price-cell">$#{item.precioUnitario}</div>
                         </h:column>
                         <h:column>
                             <f:facet name="header">Cantidad</f:facet>
-                            <div class="quantity-controls">
-                                <h:inputText value="#{item.cantidad}" size="3" styleClass="quantity-input"/>
-                                <h:commandButton value="Actualizar" action="#{clienteController.actualizarCantidad(item, item.cantidad)}" styleClass="btn-update"/>
+                            <div class="order-quantity-controls">
+                                <h:inputText value="#{item.cantidad}" size="3" styleClass="order-quantity-input"/>
+                                <h:commandButton value="Actualizar" action="#{clienteController.actualizarCantidad(item, item.cantidad)}" styleClass="order-btn-update"/>
                             </div>
                         </h:column>
                         <h:column>
                             <f:facet name="header">Accion</f:facet>
-                            <h:commandButton value="Eliminar" action="#{clienteController.eliminarDelCarrito(item)}" styleClass="btn-delete" onclick="return confirm('Estas seguro de eliminar este producto?')"/>
+                            <h:commandButton value="Eliminar" action="#{clienteController.eliminarDelCarrito(item)}" styleClass="order-btn-delete" onclick="return confirm('Estas seguro de eliminar este producto?')"/>
                         </h:column>
                     </h:dataTable>
 
-                    <div class="total-section">
-                        <h3>Total a Pagar</h3>
-                        <div class="total-amount">$#{clienteController.total}</div>
+                    <div class="order-total-section">
+                        <h3>Total del Pedido</h3>
+                        <div class="order-total-amount">$#{clienteController.total}</div>
                     </div>
 
-                    <div class="checkout-section">
+                    <div class="order-checkout-section">
                         <div>
-                            <h3 class="section-title">Metodo de Pago</h3>
-                            <div class="payment-options">
+                            <h3 class="order-section-title">Metodo de Pago</h3>
+                            <div class="order-payment-options">
                                 <h:selectOneRadio value="#{clienteController.metodoPago}">
                                     <f:selectItem itemValue="Nequi" itemLabel="Nequi"/>
                                     <f:selectItem itemValue="Daviplata" itemLabel="Daviplata"/>
-                                    <f:selectItem itemValue="ContraEntrega" itemLabel="Contra Entrega"/>
+                                    <f:selectItem itemValue="ContraEntrega" itemLabel="ContraEntrega"/>
                                 </h:selectOneRadio>
                             </div>
                         </div>
 
                         <div>
-                            <h3 class="section-title">Direccion de Entrega</h3>
-                            <h:inputText value="#{clienteController.direccionEntrega}" required="true" requiredMessage="La direccion es obligatoria" styleClass="address-input" placeholder="Ingresa tu direccion completa"/>
+                            <h3 class="order-section-title">Direccion de Entrega</h3>
+                            <h:inputText value="#{clienteController.direccionEntrega}" required="true" requiredMessage="La direccion es obligatoria" styleClass="order-address-input" placeholder="Ingresa tu direccion completa"/>
                             <h:message for="direccionEntrega" style="color: #ef4444; font-size: 0.9rem;"/>
                         </div>
                     </div>
 
                     <div style="padding: 0 30px 30px;">
-                        <h:commandButton value="Finalizar compra" action="#{clienteController.finalizarCompra()}" styleClass="btn-checkout"/>
+                        <h:commandButton value="Confirmar Pedido" action="#{clienteController.finalizarCompra()}" styleClass="order-btn-checkout"/>
                     </div>
 
-                    <div class="security-notice">
-                        Compra 100% segura - Tus datos estan protegidos
+                    <div class="order-security-notice">
+                        Pedido 100% seguro - Tus datos estan protegidos
                     </div>
                 </h:form>
             </div>
