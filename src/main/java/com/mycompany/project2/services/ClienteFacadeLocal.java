@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package com.mycompany.project2.services;
 
 import com.mycompany.project2.entities.Cliente;
@@ -9,7 +5,9 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
+ * Interfaz local para la fachada de Cliente.
+ * Define las operaciones disponibles para EJB y el Dashboard.
+ * 
  * @author user
  */
 @Local
@@ -28,5 +26,10 @@ public interface ClienteFacadeLocal {
     List<Cliente> findRange(int[] range);
 
     int count();
-    
+
+    /**
+     * Cuenta clientes según su estado (ACTIVO / INACTIVO).
+     * Usado por el Dashboard para graficar clientes por estado.
+     */
+    long countByEstado(String estado);
 }

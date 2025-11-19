@@ -32,6 +32,13 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/* -- IMPORTS AÑADIDOS PARA MANEJO DE IMAGENES -- */
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+import javax.servlet.http.Part;
+
 @Named(value = "productController")
 @SessionScoped
 public class ProductController implements Serializable {
@@ -52,6 +59,20 @@ public class ProductController implements Serializable {
 
     @EJB
     private ProductoFacadeLocal productoFacade;
+
+    // ---------------------------------------------------------------------
+    // NUEVO: campo para subir imagen desde el formulario (solo agregado)
+    // ---------------------------------------------------------------------
+    private Part uploadedFile;
+
+    public Part getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setUploadedFile(Part uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
+    // ---------------------------------------------------------------------
 
     // Getters y setters para categoriaTemporal
     public String getCategoriaTemporal() {
@@ -143,6 +164,44 @@ public class ProductController implements Serializable {
         return "/views/producto/crearactProducto.xhtml?faces-redirect=true";
     }
 
+    /**
+     * Procesa la imagen subida (si la hay) y la asigna a la entidad `pro`.
+     * - Valida tipo (image/*) y tamaño máximo (2 MB).
+     * - Si no hay imagen subida y se está editando, conserva la imagen existente.
+     * Lanza IOException si la imagen no cumple validaciones.
+     */
+    private void processUploadedImage() throws IOException {
+        if (uploadedFile != null && uploadedFile.getSize() > 0) {
+            String contentType = uploadedFile.getContentType();
+            if (contentType == null || !contentType.toLowerCase().startsWith("image/")) {
+                throw new IOException("El archivo debe ser una imagen (jpg, png, gif).");
+            }
+
+            long maxSize = 2L * 1024L * 1024L; // 2MB máximo
+            if (uploadedFile.getSize() > maxSize) {
+                throw new IOException("La imagen excede el tamaño máximo permitido (2 MB).");
+            }
+
+            try (InputStream is = uploadedFile.getInputStream();
+                 ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    baos.write(buffer, 0, bytesRead);
+                }
+                pro.setImagenProducto(baos.toByteArray());
+            }
+        } else {
+            // Si es edición y no se subió nada, conservar la imagen existente
+            if (pro != null && pro.getIdProducto() != null) {
+                Producto existente = productoFacade.find(pro.getIdProducto());
+                if (existente != null && existente.getImagenProducto() != null) {
+                    pro.setImagenProducto(existente.getImagenProducto());
+                }
+            }
+        }
+    }
+
     public String guardarProducto() {
         try {
             if (categoriaTemporal != null && !categoriaTemporal.isEmpty()) {
@@ -154,6 +213,15 @@ public class ProductController implements Serializable {
             }
 
             if (validarProducto()) {
+                // <-- ÚNICO CAMBIO: procesar imagen antes de persistir/edit
+                try {
+                    processUploadedImage();
+                } catch (IOException ex) {
+                    LOGGER.log(Level.SEVERE, "Error procesando imagen", ex);
+                    mostrarMensaje("❌ Error procesando la imagen: " + ex.getMessage(), FacesMessage.SEVERITY_ERROR);
+                    return null;
+                }
+
                 if (pro.getIdProducto() == null) {
                     productoFacade.create(pro);
                     mostrarMensaje("✅ Producto registrado correctamente", FacesMessage.SEVERITY_INFO);
@@ -284,5 +352,24 @@ public class ProductController implements Serializable {
 
     private void mostrarMensaje(String mensaje, FacesMessage.Severity severidad) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, mensaje, null));
+    }
+
+    /**
+     * Devuelve la imagen como data URI (base64) para mostrarla en las vistas JSF.
+     * Si el producto no tiene imagen, devuelve la ruta de una imagen por defecto.
+     */
+    public String getImageBase64(Producto p) {
+        try {
+            if (p == null || p.getImagenProducto() == null || p.getImagenProducto().length == 0) {
+                return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()
+                        + "/resources/images/no-image.png";
+            }
+            String base64 = Base64.getEncoder().encodeToString(p.getImagenProducto());
+            return "data:image/png;base64," + base64;
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error convirtiendo imagen a base64", e);
+            return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()
+                    + "/resources/images/no-image.png";
+        }
     }
 }

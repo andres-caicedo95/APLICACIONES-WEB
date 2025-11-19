@@ -6,6 +6,7 @@ package com.mycompany.project2.services;
 
 import com.mycompany.project2.entities.Producto;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -32,5 +33,9 @@ public interface ProductoFacadeLocal {
     List<String> findEstadosUnicos();
 
     public List<Producto> findByEstado(String activo);
+
+    public Map<String, Long> countByCategoria();
+
+    public List<Producto> findTopByStock(int i);
     
 }

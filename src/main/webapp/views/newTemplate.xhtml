@@ -8,7 +8,9 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        
         <link rel="icon" href="#{resource['images/logo.png']}" type="image/x-icon" /> 
+        <h:outputStylesheet name="/css/admin.css"/>
         
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -22,8 +24,8 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"/>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>
 
-        <!-- jQuery y DataTables JS -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <!-- jQuery y DataTables JS 
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
         <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -32,613 +34,7 @@
         <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
 
-        <style>
-            :root {
-                --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                --primary-color: #667eea;
-                --secondary-color: #764ba2;
-                --dark-color: #2d3748;
-                --light-color: #f8fafc;
-                --success-color: #48bb78;
-                --warning-color: #ed8936;
-                --danger-color: #f56565;
-                --sidebar-width: 280px;
-                --header-height: 80px;
-            }
-            
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-            
-            html {
-                font-size: 16px;
-            }
-            
-            body {
-                font-family: 'Poppins', sans-serif;
-                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-                min-height: 100vh;
-                color: #2d3748;
-                line-height: 1.6;
-                overflow-x: hidden;
-            }
-            
-            /* Header Styles - Optimizado para móviles */
-            .dashboard-header {
-                background: var(--primary-gradient);
-                color: white;
-                padding: 1rem 1.5rem;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                box-shadow: 0 4px 25px rgba(102, 126, 234, 0.4);
-                position: sticky;
-                top: 0;
-                z-index: 1000;
-                backdrop-filter: blur(10px);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                min-height: var(--header-height);
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-            
-            .brand-section {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                animation: slideInLeft 0.5s ease;
-                flex: 1;
-                min-width: 200px;
-            }
-            
-            .brand-logo {
-                height: 40px;
-                width: auto;
-                filter: brightness(0) invert(1);
-                transition: transform 0.3s ease;
-            }
-            
-            .brand-logo:hover {
-                transform: scale(1.1);
-            }
-            
-            .brand-title {
-                margin: 0;
-                font-size: clamp(1.2rem, 4vw, 1.6rem);
-                font-weight: 700;
-                letter-spacing: 0.5px;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                line-height: 1.2;
-            }
-            
-            .user-section {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                animation: slideInRight 0.5s ease;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-            }
-            
-            .user-info {
-                display: flex;
-                align-items: center;
-                gap: 0.8rem;
-                background: rgba(255, 255, 255, 0.15);
-                padding: 0.5rem 1rem;
-                border-radius: 30px;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                min-width: fit-content;
-            }
-            
-            .user-avatar {
-                width: 35px;
-                height: 35px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.2);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.1rem;
-                flex-shrink: 0;
-            }
-            
-            .user-details {
-                display: flex;
-                flex-direction: column;
-            }
-            
-            .user-name {
-                font-weight: 600;
-                font-size: 0.9rem;
-                white-space: nowrap;
-            }
-            
-            .user-role {
-                font-size: 0.75rem;
-                opacity: 0.9;
-                white-space: nowrap;
-            }
-            
-            .logout-btn {
-                background: rgba(255, 255, 255, 0.2);
-                border: 2px solid rgba(255, 255, 255, 0.8);
-                color: white;
-                padding: 0.5rem 1.2rem;
-                border-radius: 25px;
-                font-weight: 500;
-                transition: all 0.3s ease;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                text-decoration: none;
-                white-space: nowrap;
-                font-size: 0.9rem;
-            }
-            
-            .logout-btn:hover {
-                background: white;
-                color: var(--primary-color);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            }
-            
-            /* Botón de menú móvil */
-            .mobile-menu-btn {
-                display: none;
-                background: rgba(255, 255, 255, 0.2);
-                border: 2px solid rgba(255, 255, 255, 0.8);
-                color: white;
-                padding: 0.5rem;
-                border-radius: 8px;
-                font-size: 1.2rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-            
-            .mobile-menu-btn:hover {
-                background: white;
-                color: var(--primary-color);
-            }
-            
-            /* Main Layout */
-            .dashboard-layout {
-                display: flex;
-                min-height: calc(100vh - var(--header-height));
-                position: relative;
-            }
-            
-            /* Sidebar Navigation - Optimizado para móviles */
-            .sidebar {
-                width: var(--sidebar-width);
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(20px);
-                padding: 1.5rem 0;
-                box-shadow: 4px 0 25px rgba(0, 0, 0, 0.08);
-                border-right: 1px solid rgba(255, 255, 255, 0.6);
-                animation: slideInLeft 0.6s ease;
-                transition: transform 0.3s ease;
-                z-index: 999;
-                position: relative;
-            }
-            
-            .sidebar-header {
-                padding: 0 1.5rem 1rem;
-                border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-                margin-bottom: 1rem;
-            }
-            
-            .sidebar-title {
-                font-size: 0.8rem;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                color: #718096;
-                font-weight: 600;
-                margin: 0;
-            }
-            
-            .nav-menu {
-                list-style: none;
-                padding: 0 0.5rem;
-                margin: 0;
-            }
-            
-            .nav-item {
-                margin-bottom: 0.4rem;
-            }
-            
-            .nav-link {
-                display: flex;
-                align-items: center;
-                padding: 0.8rem 1rem;
-                text-decoration: none;
-                color: #4a5568;
-                border-radius: 12px;
-                transition: all 0.3s ease;
-                font-weight: 500;
-                gap: 0.8rem;
-                position: relative;
-                overflow: hidden;
-                border: 1px solid transparent;
-                font-size: 0.9rem;
-            }
-            
-            .nav-link::before {
-                content: '';
-                position: absolute;
-                left: -5px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 4px;
-                height: 0;
-                background: var(--primary-gradient);
-                border-radius: 2px;
-                transition: all 0.3s ease;
-            }
-            
-            .nav-link:hover,
-            .nav-link.active {
-                background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-                color: var(--primary-color);
-                transform: translateX(5px);
-                border-color: rgba(102, 126, 234, 0.2);
-            }
-            
-            .nav-link:hover::before,
-            .nav-link.active::before {
-                height: 60%;
-            }
-            
-            .nav-link i {
-                font-size: 1.2rem;
-                width: 20px;
-                text-align: center;
-                transition: transform 0.3s ease;
-                flex-shrink: 0;
-            }
-            
-            .nav-link:hover i {
-                transform: scale(1.1);
-            }
-            
-            /* Content Area - Optimizado para móviles */
-            .content-area {
-                flex: 1;
-                padding: 1.5rem;
-                background: transparent;
-                overflow-y: auto;
-                animation: fadeInUp 0.8s ease;
-                min-width: 0;
-            }
-            
-            .content-card {
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(20px);
-                border-radius: 16px;
-                padding: 2rem;
-                box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
-                border: 1px solid rgba(255, 255, 255, 0.6);
-                min-height: 500px;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                width: 100%;
-            }
-            
-            .content-card:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-            }
-            
-            .content-header {
-                margin-bottom: 2rem;
-                padding-bottom: 1.2rem;
-                border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-            }
-            
-            .content-title {
-                font-size: clamp(1.5rem, 5vw, 2.2rem);
-                font-weight: 700;
-                color: var(--dark-color);
-                margin: 0;
-                background: var(--primary-gradient);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                line-height: 1.2;
-            }
-            
-            /* Footer - Optimizado para móviles */
-            .dashboard-footer {
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(20px);
-                color: #718096;
-                padding: 1rem 1.5rem;
-                border-top: 1px solid rgba(226, 232, 240, 0.6);
-                font-size: 0.85rem;
-            }
-            
-            .footer-content {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                max-width: 1400px;
-                margin: 0 auto;
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-            
-            .footer-copyright {
-                margin: 0;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                font-weight: 500;
-            }
-            
-            .footer-version {
-                background: var(--primary-gradient);
-                color: white;
-                padding: 0.2rem 0.8rem;
-                border-radius: 15px;
-                font-size: 0.75rem;
-                font-weight: 600;
-                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-            }
-            
-            /* Animaciones */
-            @keyframes slideInLeft {
-                from {
-                    opacity: 0;
-                    transform: translateX(-30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-            
-            @keyframes slideInRight {
-                from {
-                    opacity: 0;
-                    transform: translateX(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-            
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            
-            /* ===== RESPONSIVE DESIGN ===== */
-            
-            /* Tablets y pantallas medianas (768px - 1024px) */
-            @media (max-width: 1024px) {
-                .sidebar {
-                    width: 240px;
-                }
-                
-                .content-area {
-                    padding: 1.2rem;
-                }
-                
-                .content-card {
-                    padding: 1.5rem;
-                }
-            }
-            
-            /* Tablets pequeñas (768px y menos) */
-            @media (max-width: 768px) {
-                .dashboard-header {
-                    padding: 0.8rem 1rem;
-                    gap: 0.8rem;
-                }
-                
-                .brand-section {
-                    min-width: auto;
-                }
-                
-                .brand-title {
-                    font-size: 1.3rem;
-                }
-                
-                .user-info {
-                    padding: 0.4rem 0.8rem;
-                }
-                
-                .user-name {
-                    font-size: 0.85rem;
-                }
-                
-                .user-role {
-                    font-size: 0.7rem;
-                }
-                
-                .mobile-menu-btn {
-                    display: block;
-                }
-                
-                .dashboard-layout {
-                    flex-direction: column;
-                }
-                
-                .sidebar {
-                    width: 100%;
-                    position: fixed;
-                    top: var(--header-height);
-                    left: 0;
-                    height: calc(100vh - var(--header-height));
-                    transform: translateX(-100%);
-                    z-index: 998;
-                    padding: 1rem 0;
-                }
-                
-                .sidebar.active {
-                    transform: translateX(0);
-                }
-                
-                .nav-menu {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                    max-height: calc(100vh - 180px);
-                    overflow-y: auto;
-                }
-                
-                .nav-link:hover {
-                    transform: translateY(-2px);
-                }
-                
-                .content-area {
-                    width: 100%;
-                    padding: 1rem;
-                    margin-left: 0;
-                }
-                
-                .content-card {
-                    padding: 1.2rem;
-                    border-radius: 12px;
-                    min-height: 400px;
-                }
-                
-                .footer-content {
-                    flex-direction: column;
-                    gap: 0.8rem;
-                    text-align: center;
-                }
-            }
-            
-            /* Móviles (576px y menos) */
-            @media (max-width: 576px) {
-                .dashboard-header {
-                    flex-direction: column;
-                    text-align: center;
-                    gap: 0.5rem;
-                    padding: 0.6rem 1rem;
-                }
-                
-                .brand-section {
-                    justify-content: center;
-                }
-                
-                .user-section {
-                    flex-direction: column;
-                    gap: 0.8rem;
-                    width: 100%;
-                }
-                
-                .user-info {
-                    justify-content: center;
-                    width: 100%;
-                    max-width: 280px;
-                    margin: 0 auto;
-                }
-                
-                .logout-btn {
-                    width: 100%;
-                    max-width: 200px;
-                    justify-content: center;
-                }
-                
-                .content-area {
-                    padding: 0.8rem;
-                }
-                
-                .content-card {
-                    padding: 1rem;
-                    border-radius: 10px;
-                }
-                
-                .content-title {
-                    font-size: 1.4rem;
-                }
-                
-                .footer-content {
-                    font-size: 0.8rem;
-                }
-            }
-            
-            /* Móviles muy pequeños (360px y menos) */
-            @media (max-width: 360px) {
-                .dashboard-header {
-                    padding: 0.5rem;
-                }
-                
-                .brand-logo {
-                    height: 35px;
-                }
-                
-                .brand-title {
-                    font-size: 1.1rem;
-                }
-                
-                .user-info {
-                    flex-direction: column;
-                    text-align: center;
-                    gap: 0.3rem;
-                    padding: 0.8rem;
-                }
-                
-                .content-area {
-                    padding: 0.5rem;
-                }
-                
-                .content-card {
-                    padding: 0.8rem;
-                }
-            }
-            
-            /* Efectos de transición suave */
-            .content-card,
-            .stat-card,
-            .nav-link {
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            
-            /* Scroll personalizado */
-            .content-area::-webkit-scrollbar {
-                width: 6px;
-            }
-            
-            .content-area::-webkit-scrollbar-track {
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 10px;
-            }
-            
-            .content-area::-webkit-scrollbar-thumb {
-                background: var(--primary-gradient);
-                border-radius: 10px;
-            }
-            
-            /* Overlay para móviles */
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 997;
-                backdrop-filter: blur(2px);
-            }
-            
-            .sidebar-overlay.active {
-                display: block;
-            }
-        </style>
+        
 
         <ui:insert name="head"/>
     </h:head>
@@ -654,8 +50,8 @@
             </button>
 
             <div class="brand-section">
-                <h:graphicImage value="/resources/images/logo.png" styleClass="brand-logo" />
-                <h1 class="brand-title">Sistema Desayunos Detalles</h1>
+                <h:graphicImage value="/resources/images/logo.png" styleClass="header-logo me-2" style="height: 50px;" />
+                <h1 class="brand-title">Desayunos Detalles</h1>
             </div>
 
             <div class="user-section">
@@ -686,24 +82,11 @@
                 </div>
                 
                 <ul class="nav-menu">
-                    <!-- Menú para Domiciliarios -->
-                    <h:panelGroup rendered="#{login.usuarioLogueado.rolIDROL.nombreRol eq 'Domiciliario'}">
+                    <!-- Menú Administrador (agregado minimalmente según petición) -->
+                    
+                    <h:panelGroup rendered="#{login.usuarioLogueado.rolIDROL.nombreRol eq 'Administrador'}">
+                        
                         <li class="nav-item">
-                            <h:link value="Domicilios Pendientes" outcome="/views/domicilioDomiciliario/pendientesDomiciliario.xhtml" styleClass="nav-link">
-                                <i class="bi bi-clock-history"></i>
-                                <span>Domicilios Pendientes</span>
-                            </h:link>
-                        </li>
-                        <li class="nav-item">
-                            <h:link value="Mis Domicilios" outcome="/views/domicilioDomiciliario/misDomicilios.xhtml" styleClass="nav-link">
-                                <i class="bi bi-truck"></i>
-                                <span>Mis Domicilios</span>
-                            </h:link>
-                        </li>
-                    </h:panelGroup>
-
-                    <!-- Menú General -->
-                    <li class="nav-item">
                         <h:link value="Producto" outcome="/views/producto/index.xhtml" styleClass="nav-link">
                             <i class="bi bi-gift"></i>
                             <span>Gestión de Productos</span>
@@ -726,7 +109,56 @@
                             <i class="bi bi-speedometer2"></i>
                             <span>Dashboard</span>
                         </h:link>
-                    </li>
+                    </li> 
+                        
+                        
+                    </h:panelGroup>
+
+                    <!-- Menú Cliente (agregado minimalmente según petición) -->
+                    <h:panelGroup rendered="#{login.usuarioLogueado.rolIDROL.nombreRol eq 'Cliente'}">
+                        <li class="nav-item">
+                            <h:link value="Mi perfil" outcome="/views/cliente/perfil.xhtml" styleClass="nav-link">
+                                <i class="bi bi-person"></i>
+                                <span>Mi perfil</span>
+                            </h:link>
+                        </li>
+                        <li class="nav-item">
+                            <h:link value="Catálogo" outcome="/views/catalogo/catalogoCliente.xhtml" styleClass="nav-link">
+                                <i class="bi bi-grid"></i>
+                                <span>Catálogo</span>
+                            </h:link>
+                        </li>
+                        <li class="nav-item">
+                            <h:link value="Carrito" outcome="/views/cliente/carrito.xhtml" styleClass="nav-link">
+                                <i class="bi bi-cart"></i>
+                                <span>Carrito</span>
+                            </h:link>
+                        </li>
+                        <li class="nav-item">
+                            <h:link value="Mis pedidos" outcome="/views/cliente/misPedidos.xhtml" styleClass="nav-link">
+                                <i class="bi bi-list-check"></i>
+                                <span>Mis pedidos</span>
+                            </h:link>
+                        </li>
+                    </h:panelGroup>
+
+                    <!-- Menú para Domiciliarios -->
+                    <h:panelGroup rendered="#{login.usuarioLogueado.rolIDROL.nombreRol eq 'Domiciliario'}">
+                        <li class="nav-item">
+                            <h:link value="Domicilios Pendientes" outcome="/views/domicilioDomiciliario/pendientesDomiciliario.xhtml" styleClass="nav-link">
+                                <i class="bi bi-clock-history"></i>
+                                <span>Domicilios Pendientes</span>
+                            </h:link>
+                        </li>
+                        <li class="nav-item">
+                            <h:link value="Mis Domicilios" outcome="/views/domicilioDomiciliario/misDomicilios.xhtml" styleClass="nav-link">
+                                <i class="bi bi-truck"></i>
+                                <span>Mis Domicilios</span>
+                            </h:link>
+                        </li>
+                    </h:panelGroup>
+
+                    
                 </ul>
                 <ui:insert name="left"/>
             </nav>
@@ -734,12 +166,7 @@
             <!-- Content Area -->
             <main class="content-area">
                 <div class="content-card">
-                    <div class="content-header">
-                        <h2 class="content-title">
-                            <ui:insert name="title">Panel de Control Principal</ui:insert>
-                        </h2>
-                    </div>
-                    <!-- ✅ CAMBIO ÚNICO: Eliminado contenido por defecto -->
+                    
                     <ui:insert name="content"/>
                 </div>
             </main>

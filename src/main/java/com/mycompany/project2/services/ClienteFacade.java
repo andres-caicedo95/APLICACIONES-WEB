@@ -10,7 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Fachada para operaciones con la entidad Cliente.
+ * Incluye métodos personalizados para métricas del dashboard.
+ * 
  * @author user
  */
 @Stateless
@@ -27,5 +29,17 @@ public class ClienteFacade extends AbstractFacade<Cliente> implements ClienteFac
     public ClienteFacade() {
         super(Cliente.class);
     }
-    
+
+    /**
+     * Cuenta la cantidad de clientes según su estado (ACTIVO/INACTIVO)
+     * @param estado valor del campo estadoCliente
+     * @return número de clientes encontrados
+     */
+    public long countByEstado(String estado) {
+        Long result = (Long) em.createQuery(
+                "SELECT COUNT(c) FROM Cliente c WHERE c.estadoCliente = :estado")
+                .setParameter("estado", estado)
+                .getSingleResult();
+        return result != null ? result : 0L;
+    }
 }

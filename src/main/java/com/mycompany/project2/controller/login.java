@@ -147,7 +147,7 @@ public class login implements Serializable {
             case "Domiciliario":
                 return "views/domicilioDomiciliario/pendientesDomiciliario?faces-redirect=true";
             case "Cliente":
-                return "views/cliente/index?faces-redirect=true";
+                return "views/cliente/perfil?faces-redirect=true";
             default:
                 LOGGER.log(Level.WARNING, "Rol no reconocido: {0}", rol);
                 return "views/index?faces-redirect=true";

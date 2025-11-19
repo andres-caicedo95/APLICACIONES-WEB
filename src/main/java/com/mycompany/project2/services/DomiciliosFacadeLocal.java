@@ -7,6 +7,7 @@ package com.mycompany.project2.services;
 import com.mycompany.project2.entities.Domicilios;
 import com.mycompany.project2.entities.Usuario;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 @Local
@@ -26,5 +27,7 @@ public interface DomiciliosFacadeLocal {
     
     // Métodos para administradores (mantenemos los existentes)
     List<Domicilios> findByEstado(String estado);
+
+    public Map<String, Long> countByEstado();
 }
 
