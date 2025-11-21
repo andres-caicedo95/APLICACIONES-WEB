@@ -87,29 +87,42 @@
                     <h:panelGroup rendered="#{login.usuarioLogueado.rolIDROL.nombreRol eq 'Administrador'}">
                         
                         <li class="nav-item">
-                        <h:link value="Producto" outcome="/views/producto/index.xhtml" styleClass="nav-link">
+                        <h:link value="" outcome="/views/producto/index.xhtml" styleClass="nav-link">
                             <i class="bi bi-gift"></i>
                             <span>Gestión de Productos</span>
                         </h:link>
                     </li>
                     <li class="nav-item">
-                        <h:link value="Usuario" outcome="/views/usuario/indexUsuario.xhtml" styleClass="nav-link">
+                        <h:link value="" outcome="/views/usuario/indexUsuario.xhtml" styleClass="nav-link">
                             <i class="bi bi-people"></i>
                             <span>Gestión de Usuarios</span>
                         </h:link>
                     </li>
                     <li class="nav-item">
-                        <h:link value="Domicilio" outcome="/views/domicilio/indexDomi.xhtml" styleClass="nav-link">
+                        <h:link value="" outcome="/views/domicilio/indexDomi.xhtml" styleClass="nav-link">
                             <i class="bi bi-geo-alt"></i>
                             <span>Gestión de Domicilios</span>
                         </h:link>
                     </li>
                     <li class="nav-item">
-                        <h:link value="Dashboard" outcome="/views/dashboard/dashboard.xhtml" styleClass="nav-link">
+                        <h:link value="" outcome="/views/dashboard/dashboard.xhtml" styleClass="nav-link">
                             <i class="bi bi-speedometer2"></i>
                             <span>Dashboard</span>
                         </h:link>
                     </li> 
+                    <li class="nav-item">
+                        <h:link value="" outcome="/views/email/enviarCorreo.xhtml" styleClass="nav-link">
+                            <i class="bi bi-speedometer2"></i>
+                            <span>Correo Electronico</span>
+                        </h:link>
+                    </li>
+                    <li class="nav-item">
+                        <h:link value="" outcome="/views/import-export/import.xhtml" styleClass="nav-link">
+                            <i class="bi bi-speedometer2"></i>
+                            <span>Base de datos</span>
+                        </h:link>
+                    </li>
+                        
                         
                         
                     </h:panelGroup>
