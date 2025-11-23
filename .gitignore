@@ -1,4 +1,1 @@
 target/
-# Ignorar scripts del wrapper de Maven
-mvnw
-mvnw.cmd
