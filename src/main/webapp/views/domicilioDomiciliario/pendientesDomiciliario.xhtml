@@ -9,31 +9,47 @@
         <ui:composition template="./../newTemplate.xhtml">
             <ui:define name="content">
                 <h1>Domicilios Pendientes</h1>
-                
+
                 <h:form>
-                    <h:dataTable value="#{domicilioDomiciliarioController.domiciliosPendientes}" var="domicilio"
+                    <h:dataTable value="#{domicilioDomiciliarioController.domiciliosPendientes}" 
+                                 var="domicilio"
                                  styleClass="table table-striped">
+
                         <h:column>
                             <f:facet name="header">ID</f:facet>
-                            #{domicilio.idDomicilio}
+                                #{domicilio.idDomicilio}
                         </h:column>
+
                         <h:column>
                             <f:facet name="header">Dirección</f:facet>
-                            #{domicilio.direcccionDomicilio}
+                                #{domicilio.direcccionDomicilio}
                         </h:column>
+
                         <h:column>
                             <f:facet name="header">Fecha</f:facet>
                             <h:outputText value="#{domicilio.fechaDomicilio}">
-                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
                             </h:outputText>
                         </h:column>
+
                         <h:column>
                             <f:facet name="header">Acción</f:facet>
-                            <h:commandButton value="Asignarme" 
-                                           action="#{domicilioDomiciliarioController.asignarmeDomicilio(domicilio)}"
-                                           styleClass="btn btn-primary"/>
+
+                            <!-- BOTÓN ASIGNAR DOMICILIO -->
+                            <h:commandButton value="Asignarme"
+                                             action="#{domicilioDomiciliarioController.asignarmeDomicilio(domicilio)}"
+                                             styleClass="btn btn-primary"/>
+                            <br/><br/>
+
+                            <!-- BOTÓN VER RUTA -->
+                            <h:commandButton value="Ver Ruta"
+                                             action="#{domicilioDomiciliarioController.verRuta(domicilio)}"
+                                             styleClass="btn btn-success"
+                                             style="margin-left:8px;"/>
+
                         </h:column>
                     </h:dataTable>
+
                 </h:form>
             </ui:define>
         </ui:composition>

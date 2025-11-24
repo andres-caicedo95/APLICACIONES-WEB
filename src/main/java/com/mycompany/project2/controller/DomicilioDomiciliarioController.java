@@ -39,20 +39,22 @@ public class DomicilioDomiciliarioController implements Serializable {
 
     public String asignarmeDomicilio(Domicilios domicilio) {
         try {
-            domicilio.setUsuarioIDUSUARIODOMICILIO(domiciliario);
+            domicilio.setUsuarioDomiciliario(domiciliario); // ✔ Domiciliario correcto
             domicilio.setEstado("ASIGNADO");
             domiciliosFacade.edit(domicilio);
+
             cargarDomicilios();
-            
+
             FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO,
-                "Domicilio asignado correctamente", ""));
-            
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Domicilio asignado correctamente", ""));
+
             return "/views/domicilioDomiciliario/misDomicilios.xhtml?faces-redirect=true";
+
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                "Error al asignar domicilio", ""));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Error al asignar domicilio", ""));
             return null;
         }
     }
@@ -61,11 +63,11 @@ public class DomicilioDomiciliarioController implements Serializable {
         domicilio.setEstado(estado);
         domiciliosFacade.edit(domicilio);
         cargarDomicilios();
-        
+
         FacesContext.getCurrentInstance().addMessage(null,
-            new FacesMessage(FacesMessage.SEVERITY_INFO,
-            "Estado actualizado a: " + estado, ""));
-        
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Estado actualizado a: " + estado, ""));
+
         return null;
     }
 

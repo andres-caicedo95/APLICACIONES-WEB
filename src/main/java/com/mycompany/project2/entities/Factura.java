@@ -182,4 +182,8 @@ public class Factura implements Serializable {
     public String toString() {
         return "com.mycompany.project2.entities.Factura[ idFactura=" + idFactura + " ]";
     }
+
+    public void setMetodoPago(String metodoPago) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

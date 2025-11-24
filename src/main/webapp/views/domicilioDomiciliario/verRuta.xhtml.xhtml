@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="./../newTemplate.xhtml">
+    <ui:define name="content">
+
+        <h1>Ruta del Domicilio</h1>
+
+        <h:panelGroup rendered="#{domicilioDomiciliarioController.domicilioSeleccionado != null}">
+
+            <h2>
+                Destino: 
+                #{domicilioDomiciliarioController.domicilioSeleccionado.direcccionDomicilio}
+            </h2>
+
+            <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+
+            <!-- Leaflet -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+            <!-- OSRM Routing -->
+            <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+            <link rel="stylesheet"
+                  href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css"/>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+
+                    // Coordenadas desde el controlador
+                    const tiendaLat = 4.653332;
+                    const tiendaLon = -74.083652;
+
+                    const clienteLat = #{domicilioDomiciliarioController.domicilioSeleccionado.latitud};
+                    const clienteLon = #{domicilioDomiciliarioController.domicilioSeleccionado.longitud};
+
+                    const map = L.map('map').setView([tiendaLat, tiendaLon], 14);
+
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap'
+                    }).addTo(map);
+
+                    L.marker([tiendaLat, tiendaLon]).addTo(map).bindPopup("Tienda");
+                    L.marker([clienteLat, clienteLon]).addTo(map).bindPopup("Cliente");
+
+                    L.Routing.control({
+                        waypoints: [
+                            L.latLng(tiendaLat, tiendaLon),
+                            L.latLng(clienteLat, clienteLon)
+                        ],
+                        lineOptions: {addWaypoints: false},
+                        router: L.routing.osrmv1({
+                            serviceUrl: 'https://router.project-osrm.org/route/v1'
+                        })
+                    }).addTo(map);
+
+                });
+            </script>
+
+        </h:panelGroup>
+
+    </ui:define>
+</ui:composition>
+</html>

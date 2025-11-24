@@ -6,7 +6,7 @@ import com.mycompany.project2.entities.Usuario;
 import com.mycompany.project2.services.DomiciliosFacadeLocal;
 import com.mycompany.project2.services.FacturaFacadeLocal;
 import com.mycompany.project2.services.UsuarioFacadeLocal;
-import com.mycompany.project2.services.GeolocationService; // ✅ CORREGIDO: "services" (plural)
+import com.mycompany.project2.services.GeoService; // ✅ CORREGIDO: "services" (plural)
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -48,7 +48,7 @@ public class DomicilioController implements Serializable {
     private UsuarioFacadeLocal ufl;
 
     @Inject
-    private GeolocationService geolocationService;
+    private GeoService geolocationService;
 
     private Integer facturaTemporal;
     private Integer vendedorTemporal;
@@ -69,7 +69,7 @@ public class DomicilioController implements Serializable {
                 if (dom != null) {
                     this.domicilioSeleccionado = dom;
                     this.facturaTemporal = dom.getFacturaIDFACTURA() != null ? dom.getFacturaIDFACTURA().getIdFactura() : null;
-                    this.vendedorTemporal = dom.getUsuarioIDUSUARIODOMICILIO() != null ? dom.getUsuarioIDUSUARIODOMICILIO().getIdUsuario() : null;
+                    //this.vendedorTemporal = dom.getUsuarioIDUSUARIODOMICILIO() != null ? dom.getUsuarioIDUSUARIODOMICILIO().getIdUsuario() : null;
                     LOG.info("✅ Editando domicilio ID=" + idDomicilioParam);
                 } else {
                     LOG.warning("⚠️ Domicilio no encontrado ID=" + idDomicilioParam);

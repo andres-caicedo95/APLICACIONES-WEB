@@ -36,25 +36,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Domicilios implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID_DOMICILIO")
     private Integer idDomicilio;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_DOMICILIO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaDomicilio;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 120)
     @Column(name = "DIRECCCION_DOMICILIO")
     private String direcccionDomicilio;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -67,11 +67,11 @@ public class Domicilios implements Serializable {
 
     @Column(name = "LONGITUD")
     private Double longitud;
-    
+
     @JoinColumn(name = "factura_ID_FACTURA", referencedColumnName = "ID_FACTURA")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Factura facturaIDFACTURA;
-    
+
     @JoinColumn(name = "usuario_ID_USUARIO_DOMICILIO", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioIDUSUARIODOMICILIO;
@@ -88,6 +88,20 @@ public class Domicilios implements Serializable {
         this.fechaDomicilio = fechaDomicilio;
         this.direcccionDomicilio = direcccionDomicilio;
         this.estado = estado;
+    }
+    // ======================================================
+// NUEVO CAMPO: Usuario DOMICILIARIO que toma el domicilio
+// ======================================================
+    @JoinColumn(name = "domiciliario_ID", referencedColumnName = "ID_USUARIO")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Usuario usuarioDomiciliario;
+
+    public Usuario getUsuarioDomiciliario() {
+        return usuarioDomiciliario;
+    }
+
+    public void setUsuarioDomiciliario(Usuario usuarioDomiciliario) {
+        this.usuarioDomiciliario = usuarioDomiciliario;
     }
 
     // Getters y Setters para todos los campos
@@ -123,7 +137,7 @@ public class Domicilios implements Serializable {
         this.estado = estado;
     }
 
-    // ✅ GETTERS Y SETTERS NUEVOS
+    // GETTERS Y SETTERS NUEVOS
     public Double getLatitud() {
         return latitud;
     }
