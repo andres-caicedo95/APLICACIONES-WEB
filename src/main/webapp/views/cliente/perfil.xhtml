@@ -1,107 +1,94 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/views/newTemplate.xhtml">
+    <ui:define name="title">Mi perfil</ui:define>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <!-- Contenido principal de la página (insertado en la plantilla) -->
+    <ui:define name="content">
+        <div class="container mt-4">
+            <h2>Mi perfil</h2>
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <body>
-        <!-- Usamos la plantilla global 'newTemplate.xhtml' que está en /views -->
-        <!-- desde /views/cliente/perfil.xhtml la ruta relativa correcta es ../newTemplate.xhtml -->
-        <ui:composition template="../newTemplate.xhtml">
+            <!-- Mensajes globales -->
+            <h:messages globalOnly="true" styleClass="alert alert-info mb-4"/>
 
-```
-        <!-- Título que usará la plantilla -->
-        <ui:define name="title">Mi perfil</ui:define>
-
-        <!-- Contenido principal de la página (insertado en la plantilla) -->
-        <ui:define name="content">
-            <div class="container mt-4">
-                <h2>Mi perfil</h2>
-
-                <!-- Mensajes globales -->
-                <h:messages globalOnly="true" styleClass="alert alert-info mb-4"/>
-
-                <!-- Protegemos la sección principal: solo renderizar si hay usuario en sesión -->
-                <h:panelGroup rendered="#{not empty login.usuarioLogueado}">
-                    <div class="row">
-                        <!-- Foto de perfil -->
-                        <div class="col-md-4 text-center mb-4 mb-md-0">
-                            <div class="border rounded-circle overflow-hidden d-inline-block" 
-                                 style="width: 180px; height: 180px;">
-                                <img src="#{request.contextPath}/userImage?id=#{login.usuarioLogueado.idUsuario}"
-                                     class="w-100 h-100"
-                                     style="object-fit: cover;"
-                                     onerror="this.src='#{request.contextPath}/resources/images/default-user.png'"
-                                     alt="Foto de perfil"/>
-                            </div>
-                        </div>
-
-                        <!-- Datos personales -->
-                        <div class="col-md-8">
-                            <h3 class="mb-4">Datos personales</h3>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Nombre completo:</strong></div>
-                                <div class="col-sm-8">
-                                    #{login.usuarioLogueado.nombreUsuario} #{login.usuarioLogueado.apellidoUsuario}
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Correo electrónico:</strong></div>
-                                <div class="col-sm-8">#{login.usuarioLogueado.correoUsuario}</div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Teléfono:</strong></div>
-                                <div class="col-sm-8">#{login.usuarioLogueado.telUsuario}</div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Dirección:</strong></div>
-                                <div class="col-sm-8">#{login.usuarioLogueado.direcccionUsuario}</div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Documento:</strong></div>
-                                <div class="col-sm-8">
-                                    #{login.usuarioLogueado.tipoDocumentoUsuario} #{login.usuarioLogueado.numeroDocumento}
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-4"><strong>Estado:</strong></div>
-                                <div class="col-sm-8">
-                                    <span class="#{login.usuarioLogueado.estadoUsuario == 'Activo' ? 'badge bg-success' : 'badge bg-secondary'}">
-                                        #{login.usuarioLogueado.estadoUsuario}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Botón para editar -->
-                            <div class="mt-4">
-                                <h:form>
-                                    <h:commandButton value="Editar perfil"
-                                                     action="editarPerfil?faces-redirect=true"
-                                                     styleClass="btn btn-primary"/>
-                                </h:form>
-                            </div>
+            <!-- Protegemos la sección principal: solo renderizar si hay usuario en sesión -->
+            <h:panelGroup rendered="#{not empty login.usuarioLogueado}">
+                <div class="row">
+                    <!-- Foto de perfil -->
+                    <div class="col-md-4 text-center mb-4 mb-md-0">
+                        <div class="border rounded-circle overflow-hidden d-inline-block" 
+                             style="width: 180px; height: 180px;">
+                            <img src="#{request.contextPath}/userImage?id=#{login.usuarioLogueado.idUsuario}"
+                                 class="w-100 h-100"
+                                 style="object-fit: cover;"
+                                 onerror="this.src='#{request.contextPath}/resources/images/default-user.png'"
+                                 alt="Foto de perfil"/>
                         </div>
                     </div>
-                </h:panelGroup>
 
-                <!-- Mensaje si no hay usuario en sesión (evita mostrar errores si alguien entra sin sesión) -->
-                <h:panelGroup rendered="#{empty login.usuarioLogueado}">
-                    <div class="alert alert-warning mt-3">No se ha encontrado usuario en sesión. Por favor, inicia sesión.</div>
-                </h:panelGroup>
+                    <!-- Datos personales -->
+                    <div class="col-md-8">
+                        <h3 class="mb-4">Datos personales</h3>
 
-            </div>
-        </ui:define>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Nombre completo:</strong></div>
+                            <div class="col-sm-8">
+                                #{login.usuarioLogueado.nombreUsuario} #{login.usuarioLogueado.apellidoUsuario}
+                            </div>
+                        </div>
 
-    </ui:composition>
-</body>
-```
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Correo electrónico:</strong></div>
+                            <div class="col-sm-8">#{login.usuarioLogueado.correoUsuario}</div>
+                        </div>
 
-</html>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Teléfono:</strong></div>
+                            <div class="col-sm-8">#{login.usuarioLogueado.telUsuario}</div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Dirección:</strong></div>
+                            <div class="col-sm-8">#{login.usuarioLogueado.direcccionUsuario}</div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Documento:</strong></div>
+                            <div class="col-sm-8">
+                                #{login.usuarioLogueado.tipoDocumentoUsuario} #{login.usuarioLogueado.numeroDocumento}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Estado:</strong></div>
+                            <div class="col-sm-8">
+                                <span class="#{login.usuarioLogueado.estadoUsuario == 'Activo' ? 'badge bg-success' : 'badge bg-secondary'}">
+                                    #{login.usuarioLogueado.estadoUsuario}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Botón para editar -->
+                        <div class="mt-4">
+                            <h:form>
+                                <h:commandButton value="Editar perfil"
+                                                 action="editarPerfil?faces-redirect=true"
+                                                 styleClass="btn btn-primary"/>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </h:panelGroup>
+
+            <!-- Mensaje si no hay usuario en sesión (evita mostrar errores si alguien entra sin sesión) -->
+            <h:panelGroup rendered="#{empty login.usuarioLogueado}">
+                <div class="alert alert-warning mt-3">No se ha encontrado usuario en sesión. Por favor, inicia sesión.</div>
+            </h:panelGroup>
+
+        </div>
+    </ui:define>
+
+</ui:composition>
+

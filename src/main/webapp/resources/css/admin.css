@@ -1851,3 +1851,420 @@ body {
 .btn-carrito:hover { 
     background: #059669;
 }
+
+/* --- Estilos Exclusivos para enviarcorreomasivo.xhtml --- */
+
+.email-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 15px; /* Modificado de 12px */
+    padding: 2rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); /* Modificado de 0 4px 20px */
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Modificaciones para la vista de email */
+.email-card .form-title {
+    margin-bottom: 1.5rem; /* Modificado de 0.5rem */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.email-card .form-group {
+    margin-bottom: 1.5rem; /* Modificado de 1.2rem */
+}
+
+.email-card .form-label {
+    margin-bottom: 0.5rem; /* Modificado de 0.4rem */
+}
+
+.email-card .form-control {
+    padding: 0.75rem 1rem; /* Modificado de 0.6rem */
+}
+
+.email-card .btn-primary-custom {
+    padding: 0.75rem 2rem; /* Modificado de 0.65rem 1.8rem */
+}
+
+.email-editor {
+    min-height: 300px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.recipient-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #f8fafc;
+}
+
+.recipient-item {
+    display: inline-block;
+    background: var(--primary-color); /* Usar variable para consistencia */
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    margin: 0.25rem;
+    font-size: 0.85rem;
+}
+
+.btn-cancel {
+    padding: 0.75rem 2rem; 
+    border-radius: 10px; 
+    background: #f1f5f9; 
+    border: 1px solid #cbd5e0; 
+    color: #4a5568; 
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background: #e2e8f0;
+    text-decoration: none;
+    color: #4a5568;
+}
+
+.text-muted {
+    color: #718096;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    display: block;
+}
+
+/* Estilos de compatibilidad para inputs de tipo checkbox/radio */
+.form-check {
+    /* Si no se usa un framework de estilos */
+    display: block; 
+    margin-bottom: 0.5rem;
+}
+
+.form-check-label {
+    /* Estilos básicos para el label de la casilla de verificación */
+    display: inline-block;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.form-check-input {
+    /* Estilos básicos para la casilla de verificación */
+    margin-right: 0.5rem;
+}
+
+
+/* Estilos index admin  */
+
+
+/* ======== Utilidades de espaciado ======== */
+.page-padding {
+    padding: 30px;
+}
+
+.mb-10 { 
+    margin-bottom: 10px; 
+}
+
+.mb-15 { 
+    margin-bottom: 15px; 
+}
+
+/* ======== Encabezado centrado ======== */
+.centered-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* ======== Tipografía secundaria ======== */
+.muted-lead {
+    color: #666;
+    font-size: 16px;
+}
+
+.muted {
+    color: #666;
+}
+
+/* ======== Grid de accesos directos ======== */
+.shortcut-grid {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+/* ======== Tarjeta enlazada (shortcut-card) ======== */
+.shortcut-card {
+    flex: 1;
+    min-width: 220px;
+    background: #B7DFFF;
+    padding: 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+    display: block;
+}
+
+.shortcut-card:hover,
+.shortcut-card:focus {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* ======== Caja de información ======== */
+.info-box {
+    margin-top: 20px;
+    padding: 25px;
+    background: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.info-text {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* ======== Accesibilidad ======== */
+.shortcut-card:focus-visible {
+    box-shadow: 0 0 0 4px rgba(102,126,234,0.18);
+    border-radius: 12px;
+}
+
+/* ======== Utilidad adicional ======== */
+.center-text { 
+    text-align: center; 
+}
+
+
+/* ================================================= */
+/* ESTILOS DE DOMICILIOS (IMPLEMENTACIÓN CENTRAL)    */
+/* (Extraídos y centralizados desde indexDomi.xhtml) */
+/* ================================================= */
+
+/* --- Sobrescrituras y adiciones a Componentes Base --- */
+
+/* Propiedades faltantes en Encabezado de Tabla */
+.jsf-data-table th {
+    /* La alineación central faltaba en el estilo general */
+    text-align: center;
+}
+
+/* Propiedades faltantes en Celdas de Tabla */
+.jsf-data-table td {
+    /* Asegura que el contenido se alinee verticalmente */
+    vertical-align: middle;
+    /* Evita el desbordamiento de texto largo en las celdas */
+    word-wrap: break-word;
+}
+
+/* Propiedad faltante en Contenedor de Botones de Acción */
+.action-buttons {
+    /* Centra el grupo de botones dentro de la celda */
+    justify-content: center;
+}
+
+/* Propiedades faltantes en Botones de Acción */
+.btn-action {
+    /* Ancho mínimo para consistencia visual */
+    min-width: 70px;
+    /* Centra el ícono y texto dentro del botón */
+    justify-content: center;
+}
+
+/* --- Nuevo Componente: Botón de Cancelación/Secundario --- */
+
+.btn-cancel {
+    background: #6c757d; /* gris */
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+    color: white;
+}
+
+/* --- Nuevo Componente: Barra de Estadísticas --- */
+
+.stats-bar {
+    background: #e8f5e9; /* verde claro */
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #2e7d32; /* verde oscuro */
+}
+
+/* --- Nuevo Componente: Insignia (Badge) --- */
+
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* --- Nuevas Clases de Utilidad de Color (Para Badges) --- */
+
+.bg-success { background-color: #28a745 !important; }
+.bg-warning { background-color: #ffc107 !important; color: #000 !important; }
+.bg-secondary { background-color: #6c757d !important; }
+.bg-info { background-color: #17a2b8 !important; }
+
+/* --- Ajustes Responsivos (Faltantes) --- */
+
+@media (max-width: 768px) {
+    .jsf-data-table th,
+    .jsf-data-table td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-action {
+        padding: 0.25rem 0.6rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* ========================================= */
+/* ESTILOS ESPECÍFICOS PARA DOMICILIOS crearactDomicilio.xhtml)   */
+/* ========================================= */
+
+/* Selector de formulario */
+.form-select {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background: white;
+}
+
+/* Estado focus para .form-select  */
+.form-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* Botón de geolocalización (único para domicilios) */
+.btn-geolocate {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e0;
+    color: #4a5568;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.btn-geolocate:hover {
+    background: #e2e8f0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Grupo de dirección para campos combinados */
+.address-group {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+}
+
+/* Campo de entrada dentro de un grupo de dirección */
+.address-input {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Selector combinado de focus  */
+.form-control:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* ========================================= */
+/* MEDIA QUERIES ESPECÍFICAS PARA DOMICILIOS */
+/* ========================================= */
+
+@media (max-width: 768px) {
+    /* Ajustes específicos para formularios de domicilios */
+    .btn-primary-custom,
+    .btn-secondary-custom,
+    .btn-geolocate {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Nota: Los siguientes estilos SÍ existen en admin.css pero con diferencias: 
+   - .form-card (en admin.css no tiene margin-bottom: 2rem)
+   - .form-title (en admin.css no tiene justify-content: center)
+   - .form-subtitle (en admin.css no tiene text-align: center)
+   Pero dado que son variaciones de estilos existentes, no se incluyen aquí 
+   para evitar conflictos con otras páginas que usan newTemplate.xhtml */
+
+
+/* ---- ESTILOS DEL MODAL ---- */
+            .payment-modal-bg {
+                position: fixed;
+                top:0; left:0;
+                width:100%; height:100%;
+                background: rgba(0,0,0,0.6);
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                z-index:9999;
+            }
+            .payment-modal {
+                background:white;
+                width: 420px;
+                padding:25px;
+                border-radius:15px;
+                text-align:center;
+                animation: fadeIn 0.3s ease;
+            }
+            .payment-modal h2 {
+                margin:0 0 10px 0;
+                font-size:22px;
+                color:#10b981;
+            }
+            .qr-box {
+                margin-top:15px;
+            }
+            .btn-confirmar-pago {
+                background:#10b981;
+                padding:12px 22px;
+                border: none;
+                color:white;
+                border-radius:8px;
+                margin-top:18px;
+                cursor:pointer;
+                font-weight:bold;
+            }
+            .btn-cerrar {
+                background:#ef4444;
+                padding:10px 18px;
+                color:white;
+                border-radius:6px;
+                border:none;
+                margin-top:10px;
+                cursor:pointer;
+            }

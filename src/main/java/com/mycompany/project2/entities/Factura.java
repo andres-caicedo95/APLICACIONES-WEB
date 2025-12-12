@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.project2.entities;
 
 import java.io.Serializable;
@@ -28,58 +24,76 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author user
- */
 @Entity
 @Table(name = "factura")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Factura.findAll", query = "SELECT f FROM Factura f"),
     @NamedQuery(name = "Factura.findByIdFactura", query = "SELECT f FROM Factura f WHERE f.idFactura = :idFactura"),
-    @NamedQuery(name = "Factura.findByFechaFactura", query = "SELECT f FROM Factura f WHERE f.fechaFactura = :fechaFactura")})
+    @NamedQuery(name = "Factura.findByFechaFactura", query = "SELECT f FROM Factura f WHERE f.fechaFactura = :fechaFactura")
+})
 public class Factura implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    // ===============================
+    //         CAMPOS PRINCIPALES
+    // ===============================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID_FACTURA")
     private Integer idFactura;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_FACTURA")
     @Temporal(TemporalType.DATE)
     private Date fechaFactura;
-    
-    // ✅ CAMPOS AGREGADOS PARA EL CARRITO DE COMPRAS
+
+    // ===============================
+    //     CAMPOS AGREGADOS (NUEVOS)
+    // ===============================
     @Basic(optional = false)
     @NotNull
     @Column(name = "TOTAL_FACTURA")
     private BigDecimal totalFactura;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "ESTADO_FACTURA")
     private String estadoFactura;
-    
+
+    @Column(name = "METODO_PAGO")
+    private String metodoPago; // ✔ CORRECTO
+
+    // ===============================
+    //         RELACIONES
+    // ===============================
     @JoinColumn(name = "USUARIO_ID_USUARIO_CLIENTE", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioIDUSUARIOCLIENTE;
-    
+
     @JoinColumn(name = "prototipo_ID_PROTOTIPO", referencedColumnName = "ID_PROTOTIPO")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Prototipo prototipoIDPROTOTIPO;
-    
+
     @JoinColumn(name = "usuario_ID_USUARIO_VENDEDOR", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario usuarioIDUSUARIOVENDEDOR;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturaIDFACTURA", fetch = FetchType.LAZY)
     private List<Domicilios> domiciliosList;
 
+    // ===============================
+    //         CONSTRUCTORES
+    // ===============================
     public Factura() {
+        // Inicializar campos obligatorios para evitar null
+        this.fechaFactura = new Date();
+        this.estadoFactura = "PENDIENTE";
+        this.totalFactura = java.math.BigDecimal.ZERO;
+        this.metodoPago = "ContraEntrega";
     }
 
     public Factura(Integer idFactura) {
@@ -93,6 +107,9 @@ public class Factura implements Serializable {
         this.estadoFactura = estadoFactura;
     }
 
+    // ===============================
+    //      GETTERS Y SETTERS
+    // ===============================
     public Integer getIdFactura() {
         return idFactura;
     }
@@ -109,7 +126,6 @@ public class Factura implements Serializable {
         this.fechaFactura = fechaFactura;
     }
 
-    // ✅ GETTERS Y SETTERS AGREGADOS
     public BigDecimal getTotalFactura() {
         return totalFactura;
     }
@@ -124,6 +140,14 @@ public class Factura implements Serializable {
 
     public void setEstadoFactura(String estadoFactura) {
         this.estadoFactura = estadoFactura;
+    }
+
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
     }
 
     public Usuario getUsuarioIDUSUARIOCLIENTE() {
@@ -159,6 +183,9 @@ public class Factura implements Serializable {
         this.domiciliosList = domiciliosList;
     }
 
+    // ===============================
+    //     MÉTODOS GENERALES
+    // ===============================
     @Override
     public int hashCode() {
         int hash = 0;
@@ -172,10 +199,8 @@ public class Factura implements Serializable {
             return false;
         }
         Factura other = (Factura) object;
-        if ((this.idFactura == null && other.idFactura != null) || (this.idFactura != null && !this.idFactura.equals(other.idFactura))) {
-            return false;
-        }
-        return true;
+        return !((this.idFactura == null && other.idFactura != null)
+                || (this.idFactura != null && !this.idFactura.equals(other.idFactura)));
     }
 
     @Override
@@ -183,7 +208,4 @@ public class Factura implements Serializable {
         return "com.mycompany.project2.entities.Factura[ idFactura=" + idFactura + " ]";
     }
 
-    public void setMetodoPago(String metodoPago) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

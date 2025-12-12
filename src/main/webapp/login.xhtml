@@ -1,8 +1,9 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+
     <h:head>
         <title>Inicio de Sesión - Desayunos y Detalles</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,78 +14,102 @@
         <h:outputStylesheet name="/css/Inicio.css"/>
         
     </h:head>
+
     <h:body styleClass="bg-auth"> 
         <div class="login-container">
             <div class="login-card">
                 <div class="row g-0">
+
+                    <!-- Imagen lado izquierdo -->
                     <div class="col-lg-6 login-image">
-                        <div class="login-image-content">
+                        <div class="login-image-content ps-5">
                             <h2>Bienvenido de vuelta</h2>
-                            <p>Inicia sesión para acceder a tu cuenta y descubrir los mejores desayunos y detalles para ocasiones especiales.</p>
+                            <p>Inicia sesión para acceder a tu cuenta y descubrir los mejores desayunos y detalles.</p>
                             <div style="font-size: 5rem; margin-top: 30px;">
                                 <i class="bi bi-box-arrow-in-right"></i>
                             </div>
                         </div>
                     </div>
-                    
+
+                    <!-- Formulario -->
                     <div class="col-lg-6">
                         <div class="login-form">
                             <h2 class="login-title">Iniciar Sesión</h2>
-                            <h:form>
+
+                            <h:form id="formLogin">
+
+                                <!-- Tipo Usuario -->
                                 <div class="mb-4">
                                     <h:outputLabel value="Tipo de Usuario" styleClass="form-label" for="tipoUsuario" />
                                     <div class="input-icon">
                                         <i class="bi bi-person-badge"></i>
                                         <h:selectOneMenu id="tipoUsuario" value="#{login.tipoUsuario}" 
-                                                        required="true" styleClass="form-select"
-                                                        requiredMessage="Por favor, seleccione un tipo de usuario">
-                                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                                                         required="true" styleClass="form-select"
+                                                         requiredMessage="Seleccione el tipo de usuario">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
                                             <f:selectItems value="#{login.listaRoles}" />
                                         </h:selectOneMenu>
                                     </div>
                                     <h:message for="tipoUsuario" styleClass="text-danger" />
                                 </div>
 
+                                <!-- Correo -->
                                 <div class="mb-4">
                                     <h:outputLabel value="Correo Electrónico" styleClass="form-label" for="iTextUsuario" />
                                     <div class="input-icon">
                                         <i class="bi bi-envelope"></i>
-                                        <h:inputText id="iTextUsuario" value="#{login.usuario}" 
-                                                        required="true" styleClass="form-control"
-                                                        requiredMessage="El campo usuario es obligatorio" />
+                                        <h:inputText id="iTextUsuario" 
+                                                     value="#{login.usuario}" 
+                                                     required="true" 
+                                                     styleClass="form-control"
+                                                     requiredMessage="El correo es obligatorio"
+                                                     validatorMessage="Ingrese un correo válido (ej: usuario@dominio.com)">
+                                            <f:validateRegex pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$" />
+                                        </h:inputText>
                                     </div>
                                     <h:message for="iTextUsuario" styleClass="text-danger" />
                                 </div>
 
+                                <!-- Contraseña -->
                                 <div class="mb-4">
                                     <h:outputLabel value="Contraseña" styleClass="form-label" for="iTextContrasenna" />
                                     <div class="input-icon">
                                         <i class="bi bi-lock"></i>
-                                        <h:inputSecret id="iTextContrasenna" value="#{login.contrasenna}" 
-                                                        required="true" styleClass="form-control"
-                                                        requiredMessage="El campo contraseña es obligatorio" />
+                                        <h:inputSecret id="iTextContrasenna" 
+                                                       value="#{login.contrasenna}" 
+                                                       required="true" 
+                                                       styleClass="form-control"
+                                                       requiredMessage="La contraseña es obligatoria" />
                                     </div>
                                     <h:message for="iTextContrasenna" styleClass="text-danger" />
                                 </div>
 
                                 <div class="mb-3">
-                                    <h:commandButton value="Iniciar Sesión" action="#{login.iniciarSesion}" styleClass="btn-login" />
+                                    <h:commandButton value="Iniciar Sesión" 
+                                                     action="#{login.iniciarSesion}" 
+                                                     styleClass="btn-login" />
                                 </div>
                                 
                                 <div class="mb-3">
                                     <h:button value="Volver al Inicio" outcome="/inicio.xhtml" styleClass="btn-cancel" />
                                 </div>
-                                
+
+                                <!-- Errores globales -->
                                 <h:messages globalOnly="true" styleClass="alert alert-danger" />
+
                             </h:form>
-                            
+
                             <div class="text-center mt-4">
                                 <p class="text-muted">¿No tienes una cuenta? 
-                                    <h:button value="Regístrate aquí" outcome="/registro.xhtml" style="color: #667eea; text-decoration: none; font-weight: 500;" />
+                                    <h:button value="Regístrate aquí" 
+                                              outcome="/registro.xhtml" 
+                                              style="color: #667eea; text-decoration: none; font-weight: 500;" />
                                 </p>
                             </div>
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

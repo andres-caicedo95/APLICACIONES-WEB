@@ -1,336 +1,152 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/views/newTemplate.xhtml">
 
-<body>
-    <ui:composition template="./../newTemplate.xhtml">
-        
-        <ui:define name="title">Gestión de Domicilios</ui:define>
-        
-        <ui:define name="head">
-            <style>
-                .domicilio-header {
-                    background: rgba(255, 255, 255, 0.98);
-                    border-radius: 12px;
-                    padding: 1.5rem;
-                    margin-bottom: 1.5rem;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-                    border: 1px solid rgba(255, 255, 255, 0.6);
-                }
-                
-                .btn-primary-custom {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    border: none;
-                    color: white;
-                    padding: 0.6rem 1.8rem;
-                    border-radius: 10px;
-                    font-weight: 500;
-                    transition: all 0.3s ease;
-                }
-                
-                .btn-primary-custom:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-                }
-                
-                .table-container {
-                    background: rgba(255, 255, 255, 0.98);
-                    border-radius: 12px;
-                    overflow: hidden;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-                    border: 1px solid rgba(255, 255, 255, 0.6);
-                    position: relative;
-                }
-                
-                .jsf-data-table th {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-                    color: white !important;
-                    font-weight: 600;
-                    border: none;
-                    padding: 1rem;
-                    font-size: 0.9rem;
-                    text-align: center;
-                }
-                
-                .jsf-data-table td {
-                    padding: 0.8rem 1rem;
-                    vertical-align: middle;
-                    border-color: #e2e8f0;
-                    font-size: 0.9rem;
-                    word-wrap: break-word;
-                }
-                
-                .action-buttons {
-                    display: flex;
-                    gap: 0.3rem;
-                    flex-wrap: wrap;
-                    justify-content: center;
-                }
-                
-                .btn-action {
-                    padding: 0.3rem 0.8rem;
-                    font-size: 0.8rem;
-                    border-radius: 6px;
-                    transition: all 0.3s ease;
-                    border: none;
-                    text-decoration: none;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.3rem;
-                    min-width: 70px;
-                    justify-content: center;
-                }
-                
-                .btn-edit {
-                    background: #ffc107;
-                    color: #000;
-                }
-                
-                .btn-edit:hover {
-                    background: #e0a800;
-                    transform: translateY(-1px);
-                    color: #000;
-                }
-                
-                .btn-cancel {
-                    background: #6c757d;
-                    color: white;
-                }
-                
-                .btn-cancel:hover {
-                    background: #5a6268;
-                    transform: translateY(-1px);
-                    color: white;
-                }
-                
-                .domicilio-title {
-                    color: #2d3748;
-                    font-weight: 700;
-                    margin-bottom: 0.3rem;
-                }
-                
-                .domicilio-subtitle {
-                    color: #718096;
-                    font-size: 0.9rem;
-                    margin-bottom: 0;
-                }
-                
-                .stats-bar {
-                    background: #e8f5e9;
-                    padding: 0.8rem 1.5rem;
-                    border-radius: 8px;
-                    margin-bottom: 1rem;
-                    font-weight: 600;
-                    color: #2e7d32;
-                }
-                
-                .table-scroll-wrapper {
-                    overflow-x: auto;
-                    -webkit-overflow-scrolling: touch;
-                }
-                
-                .badge {
-                    padding: 0.4rem 0.8rem;
-                    border-radius: 20px;
-                    font-size: 0.8rem;
-                    font-weight: 600;
-                }
-                
-                .bg-success { background-color: #28a745 !important; }
-                .bg-warning { background-color: #ffc107 !important; color: #000 !important; }
-                .bg-secondary { background-color: #6c757d !important; }
-                .bg-info { background-color: #17a2b8 !important; }
-                
-                @media (max-width: 768px) {
-                    .jsf-data-table th,
-                    .jsf-data-table td {
-                        padding: 0.5rem;
-                        font-size: 0.8rem;
-                    }
-                    
-                    .btn-action {
-                        padding: 0.25rem 0.6rem;
-                        font-size: 0.75rem;
-                    }
-                }
-            </style>
-        </ui:define>
-        
-        <ui:define name="content">
-            <!-- Encabezado -->
-            <div class="domicilio-header">
+    <!-- Título de la página -->
+    <ui:define name="title">Gestión de Pedidos</ui:define>
+
+    <!-- Estilos adicionales -->
+    <ui:define name="head">
+        <style>
+            .jsf-data-table th {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                color: white !important;
+            }
+            .btn-action { margin-right: 5px; }
+            .btn-edit { background-color: #4CAF50; color: white; padding: 3px 8px; border-radius: 4px; text-decoration: none; }
+            .btn-cancel { background-color: #f44336; color: white; padding: 3px 8px; border-radius: 4px; }
+            .action-buttons { display: flex; flex-wrap: wrap; }
+            .table-container { overflow-x: auto; margin-top: 20px; }
+        </style>
+    </ui:define>
+
+    <!-- Contenido principal -->
+    <ui:define name="content">
+        <!-- Encabezado -->
+        <div class="user-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h3 class="domicilio-title">
-                            <i class="bi bi-truck me-2"></i>Gestión de Domicilios
-                        </h3>
-                        <p class="domicilio-subtitle">
-                            Administra los domicilios del sistema Desayunos Detalles
-                        </p>
-                    </div>
-                    <!-- ✅ BOTÓN CREAR: ahora usa enlace directo -->
-                    <a href="crearactDomicilio.xhtml" 
-                       class="btn-primary-custom">
-                        🚚 Asignar Domicilio
-                    </a>
+                    <h3 class="user-title">
+                        <i class="bi bi-basket me-2"></i>Gestión de Pedidos
+                    </h3>
+                    <p class="domicilio-subtitle">
+                        Administra todos los pedidos del sistema
+                    </p>
                 </div>
+                <!--<a href="crearactDomicilio.xhtml" class="btn btn-primary">
+                    🛒 Crear Pedido
+                </a> -->
             </div>
+        </div>
 
-            <!-- Mensajes del sistema -->
-            <h:messages globalOnly="false" styleClass="messages" 
-                      infoClass="alert alert-success" 
-                      errorClass="alert alert-danger" 
-                      warnClass="alert alert-warning"/>
+        <!-- Mensajes del sistema -->
+        <h:messages globalOnly="false" styleClass="messages" 
+                    infoClass="alert alert-success" 
+                    errorClass="alert alert-danger" 
+                    warnClass="alert alert-warning"/>
 
-            <!-- Estadísticas -->
-            <div class="stats-bar">
-                <strong>Total de domicilios: #{domicilioController.obtenerDomicilios().size()}</strong>
-            </div>
+        <!-- Estadísticas -->
+        <div class="stats-bar mb-3">
+            <strong>Total de pedidos: #{clienteController.todosPedidos.size()}</strong>
+        </div>
 
-            <!-- Tabla de domicilios CORREGIDA -->
-            <div class="table-container">
-                <div class="table-scroll-wrapper">
-                    <table id="t-all" class="jsf-data-table display nowrap" width="100%">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>FECHA</th>
-                                <th>DIRECCIÓN</th>
-                                <th>DOMICILIARIO</th>
-                                <th>FACTURA</th>
-                                <th>ESTADO</th>
-                                <th>ACCIONES</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ui:repeat value="#{domicilioController.obtenerDomicilios()}" var="item">
-                                <tr>
-                                    <td><strong>#{item.idDomicilio}</strong></td>
-                                    <td>
-                                        <h:outputText value="#{item.fechaDomicilio}">
-                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-                                        </h:outputText>
-                                    </td>
-                                    <td>#{item.direcccionDomicilio}</td>
-                                    
-                                    <!-- COLUMNA DOMICILIARIO CORREGIDA -->
-                                    <td>
-                                        <h:outputText value="#{item.usuarioIDUSUARIODOMICILIO.nombreUsuario} #{item.usuarioIDUSUARIODOMICILIO.apellidoUsuario}" 
-                                                     rendered="#{item.usuarioIDUSUARIODOMICILIO != null}"/>
-                                        <h:outputText value="Sin asignar" 
-                                                     rendered="#{item.usuarioIDUSUARIODOMICILIO == null}" 
-                                                     style="color: #999; font-style: italic;"/>
-                                    </td>
-                                    
-                                    <!-- COLUMNA FACTURA CORREGIDA -->
-                                    <td>
-                                        <h:outputText value="Factura ##{item.facturaIDFACTURA.idFactura}" 
-                                                     rendered="#{item.facturaIDFACTURA != null}"/>
-                                        <h:outputText value="Sin factura" 
-                                                     rendered="#{item.facturaIDFACTURA == null}" 
-                                                     style="color: #999; font-style: italic;"/>
-                                    </td>
-                                    
-                                    <!-- COLUMNA ESTADO -->
-                                    <td>
-                                        <span class="badge 
-                                            #{item.estado == 'Entregado' ? 'bg-success' : 
-                                              item.estado == 'En camino' ? 'bg-warning' : 
-                                              item.estado == 'Pendiente' ? 'bg-info' : 'bg-secondary'}">
-                                            #{item.estado}
-                                        </span>
-                                    </td>
-                                    
-                                    <td>
-                                        <div class="action-buttons">
-                                            <!-- ✅ BOTÓN EDITAR: ahora usa enlace con parámetro -->
-                                            <a href="crearactDomicilio.xhtml?id=#{item.idDomicilio}" 
-                                               class="btn-action btn-edit">
-                                                ✏️ Editar
-                                            </a>
-                                            
-                                            <!-- ✅ BOTÓN CANCELAR: se mantiene (usa método existente) -->
-                                            <h:form style="display: inline;">
-                                                <h:commandButton value="Cancelar" 
-                                                               onclick="return confirm('¿Está seguro de cancelar este domicilio?')" 
-                                                               action="#{domicilioController.cancelarDomicilio(item)}"
-                                                               styleClass="btn-action btn-cancel"/>
-                                            </h:form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </ui:repeat>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- Tabla de pedidos -->
+        <div class="table-container">
+            <table id="pedidosTable" class="jsf-data-table display nowrap" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Dirección</th>
+                        <th>Domiciliario</th>
+                        <th>Factura</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ui:repeat value="#{clienteController.todosPedidos}" var="item">
+                        <tr>
+                            <td><strong>#{item.idPedido}</strong></td>
+                            <td>
+                                <h:outputText value="#{item.fechaPedido}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                </h:outputText>
+                            </td>
+                            <td>#{item.direccionEntrega}</td>
+                            <td>
+                                <h:outputText value="#{item.usuarioDomiciliario.nombreUsuario} #{item.usuarioDomiciliario.apellidoUsuario}" 
+                                              rendered="#{item.usuarioDomiciliario != null}"/>
+                                <h:outputText value="Sin asignar" 
+                                              rendered="#{item.usuarioDomiciliario == null}" 
+                                              style="color: #999; font-style: italic;"/>
+                            </td>
+                            <td>
+                                <h:outputText value="Factura ##{item.idFactura}" 
+                                              rendered="#{item.idFactura != null}"/>
+                                <h:outputText value="Sin factura" 
+                                              rendered="#{item.idFactura == null}" 
+                                              style="color: #999; font-style: italic;"/>
+                            </td>
+                            <td>
+                                <span class="badge 
+                                      #{item.estado == 'Entregado' ? 'bg-success' : 
+                                        item.estado == 'En camino' ? 'bg-warning' : 
+                                        item.estado == 'Pendiente' ? 'bg-info' : 'bg-secondary'}">
+                                      #{item.estado}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="crearactDomicilio.xhtml?id=#{item.idPedido}" 
+                                       class="btn-edit btn-action">
+                                        ✏️ Editar
+                                    </a>
+                                    <h:form style="display: inline;">
+                                        <h:commandButton value="Cancelar" 
+                                                         onclick="return confirm('¿Está seguro de cancelar este pedido?')" 
+                                                         action="#{clienteController.cancelarPedido(item)}"
+                                                         styleClass="btn-cancel btn-action"/>
+                                    </h:form>
+                                </div>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </tbody>
+            </table>
+        </div>
 
-            <!-- Mensaje si no hay domicilios -->
-            <div class="alert alert-warning text-center mt-3" rendered="#{empty domicilioController.obtenerDomicilios()}">
-                <h5>No hay domicilios registrados</h5>
-                <p>Utiliza el botón "Asignar Domicilio" para crear el primer registro.</p>
-            </div>
+        <!-- Mensaje si no hay pedidos -->
+        <div class="alert alert-warning text-center mt-3" rendered="#{empty clienteController.todosPedidos}">
+            <h5>No hay pedidos registrados</h5>
+            <p>Utiliza el botón "Crear Pedido" para agregar el primer registro.</p>
+        </div>
 
-            <script>
-                $(document).ready(function () {
-                    $('.jsf-data-table').DataTable({
-                        dom: 'Bfrtip',
-                        "language": {
-                            "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json",
-                            "decimal": ",",
-                            "thousands": "."
-                        },
-                        "pageLength": 10,
-                        "responsive": true,
-                        "autoWidth": false,
-                        "order": [[0, "desc"]],
-                        "scrollX": true,
-                        "columnDefs": [
-                            { "width": "8%", "targets": 0 },
-                            { "width": "12%", "targets": 1 },
-                            { "width": "25%", "targets": 2 },
-                            { "width": "18%", "targets": 3 },
-                            { "width": "10%", "targets": 4 },
-                            { "width": "12%", "targets": 5 },
-                            { "width": "15%", "targets": 6 }
-                        ],
-                        buttons: [
-                            {
-                                extend: 'copy',
-                                text: '<i class="bi bi-clipboard"></i> Copiar',
-                                className: 'btn btn-sm'
-                            },
-                            {
-                                extend: 'csv',
-                                text: '<i class="bi bi-file-earmark-spreadsheet"></i> CSV',
-                                className: 'btn btn-sm'
-                            },
-                            {
-                                extend: 'excel',
-                                text: '<i class="bi bi-file-earmark-excel"></i> Excel',
-                                className: 'btn btn-sm'
-                            },
-                            {
-                                extend: 'pdf',
-                                text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
-                                className: 'btn btn-sm'
-                            },
-                            {
-                                extend: 'print',
-                                text: '<i class="bi bi-printer"></i> Imprimir',
-                                className: 'btn btn-sm'
-                            }
-                        ],
-                        "initComplete": function(settings, json) {
-                            $('.dt-buttons .btn').addClass('me-1');
-                        }
-                    });
+        <!-- DataTables JS -->
+        <script>
+            $(document).ready(function () {
+                $('#pedidosTable').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+                    },
+                    "pagingType": "full_numbers",
+                    "responsive": true,
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        { extend: 'copy', text: '<i class="bi bi-clipboard"></i> Copiar', className: 'btn btn-sm' },
+                        { extend: 'csv', text: '<i class="bi bi-file-earmark-spreadsheet"></i> CSV', className: 'btn btn-sm' },
+                        { extend: 'excel', text: '<i class="bi bi-file-earmark-excel"></i> Excel', className: 'btn btn-sm' },
+                        { extend: 'pdf', text: '<i class="bi bi-file-earmark-pdf"></i> PDF', className: 'btn btn-sm' },
+                        { extend: 'print', text: '<i class="bi bi-printer"></i> Imprimir', className: 'btn btn-sm' }
+                    ],
+                    "initComplete": function (settings, json) {
+                        $('.dt-buttons .btn').addClass('me-1');
+                    }
                 });
-            </script>
-        </ui:define>
-    </ui:composition>
-</body>
-</html>
+            });
+        </script>
+
+    </ui:define>
+</ui:composition>

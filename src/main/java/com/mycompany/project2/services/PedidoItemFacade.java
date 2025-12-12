@@ -90,4 +90,17 @@ public List<Object[]> topProducts(int limit) {
     .getResultList();
 }
 
+// ============================
+// NUEVO: Buscar items por pedido
+// ============================
+@Override
+public List<PedidoItem> findByPedido(Integer idPedido) {
+    if (idPedido == null) {
+        return Collections.emptyList();
+    }
+    return em.createQuery("SELECT pi FROM PedidoItem pi WHERE pi.idPedido = :idPedido", PedidoItem.class)
+             .setParameter("idPedido", idPedido)
+             .getResultList();
+}
+
 }

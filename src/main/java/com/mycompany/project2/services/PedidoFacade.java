@@ -1,6 +1,8 @@
 package com.mycompany.project2.services;
 
 import com.mycompany.project2.entities.Pedido;
+import com.mycompany.project2.entities.Usuario;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,17 +44,40 @@ public class PedidoFacade implements PedidoFacadeLocal {
     }
 
     // ======================================
-    // NUEVO MÉTODO para Dashboard.xhtml
+    // DOMICILIARIO - PENDIENTES
     // ======================================
+    public List<Pedido> findPendientes() {
+        return em.createQuery("SELECT p FROM Pedido p "
+                + "WHERE p.estado = :estado "
+                + "AND p.usuarioDomiciliario IS NULL",
+                Pedido.class
+        )
+                .setParameter("estado", "pendiente")
+                .getResultList();
+    }
 
-    /**
-     * Retorna la cantidad de pedidos agrupados por estado.
-     * Usado para la gráfica "Pedidos por Estado".
-     */
+    // ======================================
+    // DOMICILIARIO - MIS PEDIDOS
+    // ======================================
+    @Override
+    public List<Pedido> findByDomiciliario(Usuario usuario) {
+        if (usuario == null) {
+            return new ArrayList<>();
+        }
+
+        return em.createQuery("SELECT p FROM Pedido p WHERE p.usuarioDomiciliario.idUsuario = :id", Pedido.class)
+                .setParameter("id", usuario.getIdUsuario())
+                .getResultList();
+    }
+
+    // ======================================
+    // MÉTODO PARA DASHBOARD
+    // ======================================
+    @Override
     public Map<String, Long> countByEstado() {
         List<Object[]> rows = em.createQuery(
-            "SELECT p.estado, COUNT(p) FROM Pedido p GROUP BY p.estado",
-            Object[].class
+                "SELECT p.estado, COUNT(p) FROM Pedido p GROUP BY p.estado",
+                Object[].class
         ).getResultList();
 
         Map<String, Long> data = new LinkedHashMap<>();

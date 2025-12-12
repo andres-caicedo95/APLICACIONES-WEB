@@ -1,57 +1,65 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/views/newTemplate.xhtml">
+    
+    <ui:define name="title">Domicilios Pendientes</ui:define>
 
-    <body>
-        <ui:composition template="./../newTemplate.xhtml">
-            <ui:define name="content">
-                <h1>Domicilios Pendientes</h1>
+    <ui:define name="content">
 
-                <h:form>
-                    <h:dataTable value="#{domicilioDomiciliarioController.domiciliosPendientes}" 
-                                 var="domicilio"
-                                 styleClass="table table-striped">
+        <div class="content-card">
 
-                        <h:column>
-                            <f:facet name="header">ID</f:facet>
-                                #{domicilio.idDomicilio}
-                        </h:column>
+            <div class="content-header">
+                <h2 class="content-title">
+                    <i class="bi bi-list-task"></i> Pedidos Pendientes
+                </h2>
+                <p class="form-subtitle">Pedidos que aún no tienen domiciliario asignado</p>
+            </div>
 
-                        <h:column>
-                            <f:facet name="header">Dirección</f:facet>
-                                #{domicilio.direcccionDomicilio}
-                        </h:column>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
 
-                        <h:column>
-                            <f:facet name="header">Fecha</f:facet>
-                            <h:outputText value="#{domicilio.fechaDomicilio}">
-                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-                            </h:outputText>
-                        </h:column>
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>Cliente</th>
+                            <th>Dirección</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
 
-                        <h:column>
-                            <f:facet name="header">Acción</f:facet>
+                    <tbody>
+                        <ui:repeat value="#{domicilioDomiciliarioController.pedidosPendientes}" var="p">
+                            <tr>
+                                <td>#{p.idPedido}</td>
+                                <td>#{p.idCliente}</td>
+                                <td>#{p.direccionEntrega}</td>
+                                <td>
+                                    <h:outputText value="#{p.fechaPedido}">
+                                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm"/>
+                                    </h:outputText>
+                                </td>
+                                <td>$ #{p.total}</td>
 
-                            <!-- BOTÓN ASIGNAR DOMICILIO -->
-                            <h:commandButton value="Asignarme"
-                                             action="#{domicilioDomiciliarioController.asignarmeDomicilio(domicilio)}"
-                                             styleClass="btn btn-primary"/>
-                            <br/><br/>
+                                <td>
+                                    <h:form>
+                                        <h:commandButton value="Asignarme"
+                                                         styleClass="btn btn-primary btn-sm"
+                                                         action="#{domicilioDomiciliarioController.asignarmePedido(p)}"/>
+                                    </h:form>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
 
-                            <!-- BOTÓN VER RUTA -->
-                            <h:commandButton value="Ver Ruta"
-                                             action="#{domicilioDomiciliarioController.verRuta(domicilio)}"
-                                             styleClass="btn btn-success"
-                                             style="margin-left:8px;"/>
+                </table>
+            </div>
 
-                        </h:column>
-                    </h:dataTable>
+        </div>
 
-                </h:form>
-            </ui:define>
-        </ui:composition>
-    </body>
-</html>
+    </ui:define>
+
+</ui:composition>

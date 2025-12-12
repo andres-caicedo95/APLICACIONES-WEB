@@ -1,11 +1,26 @@
 package com.mycompany.project2.controller;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.mycompany.project2.entities.Cliente;
 import com.mycompany.project2.entities.Domicilios;
 import com.mycompany.project2.entities.Factura;
 import com.mycompany.project2.entities.Producto;
 import com.mycompany.project2.entities.Pedido;
 import com.mycompany.project2.entities.PedidoItem;
 import com.mycompany.project2.entities.Usuario;
+import com.mycompany.project2.entities.Rol;
+import com.mycompany.project2.services.ClienteFacadeLocal;
 import com.mycompany.project2.services.DomiciliosFacadeLocal;
 import com.mycompany.project2.services.FacturaFacadeLocal;
 import com.mycompany.project2.services.GeoService;
@@ -13,7 +28,9 @@ import com.mycompany.project2.services.ProductoFacadeLocal;
 import com.mycompany.project2.services.PedidoFacadeLocal;
 import com.mycompany.project2.services.PedidoItemFacadeLocal;
 import com.mycompany.project2.services.UsuarioFacadeLocal;
-
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import javax.validation.ConstraintViolationException;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -21,8 +38,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.faces.context.ExternalContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
 @Named("clienteController")
 @SessionScoped
@@ -48,8 +68,11 @@ public class ClienteController implements Serializable {
     @EJB
     private UsuarioFacadeLocal usuarioFacade;
 
+    @EJB
+    private ClienteFacadeLocal clienteFacade;
+
     @Inject
-private GeoService geoService;
+    private GeoService geoService;
 
     // Lista de productos y carrito
     private List<Producto> productos;
@@ -60,7 +83,11 @@ private GeoService geoService;
     private String metodoPago = "ContraEntrega";
     private String direccionEntrega;
 
-    // ---------- CAMBIOS MÍNIMOS AÑADIDOS ----------
+    // ===== CAMPOS PARA ASIGNAR DOMICILIARIO A PEDIDO =====
+    private Integer idDomiciliarioTemporal;
+    private Integer idFacturaTemporal;
+
+    // ---------- ----------
     /**
      * Cantidades temporales por producto (clave = idProducto). Se usa en la
      * vista del catálogo para cada tarjeta/producto.
@@ -239,6 +266,12 @@ private GeoService geoService;
         }
     }
 
+    // === Método requerido para que el modal funcione con Ajax ===
+    public void prepararPago() {
+        // Solo asegura la actualización de valores antes de abrir el modal
+        System.out.println("Preparando modal de pago: métodoPago=" + metodoPago + ", direccion=" + direccionEntrega);
+    }
+
     // ---------- NUEVOS métodos para uso desde carrito.xhtml (botones + / -) ----------
     public void incrementarItem(ItemCarrito item) {
         if (item == null) {
@@ -259,8 +292,77 @@ private GeoService geoService;
     }
     // ---------- FIN nuevos métodos ----------
 
+    /**
+     * Obtiene el cliente asociado a un usuario (por correo). Si no existe, crea
+     * uno nuevo automáticamente.
+     */
+    private Cliente obtenerClientePorUsuario(Usuario usuario) {
+        if (usuario == null || usuario.getCorreoUsuario() == null) {
+            return null;
+        }
+
+        // Buscar cliente por correo (usando el método del facade)
+        Cliente cliente = clienteFacade.findByCorreo(usuario.getCorreoUsuario());
+
+        if (cliente == null) {
+            // Crear nuevo cliente automáticamente
+            cliente = new Cliente();
+            cliente.setTipoDocumentoCliente(usuario.getTipoDocumentoUsuario());
+            cliente.setNumeroDocumentoCliente(usuario.getNumeroDocumento());
+            cliente.setNombreCliente(usuario.getNombreUsuario());
+            cliente.setApellidoCliente(usuario.getApellidoUsuario());
+            cliente.setTelCliente(usuario.getTelUsuario());
+            cliente.setDirecccionCliente(usuario.getDirecccionUsuario());
+            cliente.setCorreoCliente(usuario.getCorreoUsuario());
+            cliente.setPaswordCliente(usuario.getPaswordUsuario());
+            cliente.setEstadoCliente("Activo");
+
+            clienteFacade.create(cliente);
+        }
+
+        return cliente;
+    }
+    // ---------- validar domicilio ----------
+
+    private void validarDomicilio(Domicilios domicilio) {
+        System.out.println("=== VALIDANDO DOMICILIO ===");
+
+        if (domicilio.getFechaDomicilio() == null) {
+            System.out.println("ERROR: fechaDomicilio es null");
+            domicilio.setFechaDomicilio(new Date());
+        }
+
+        if (domicilio.getEstado() == null || domicilio.getEstado().trim().isEmpty()) {
+            System.out.println("ERROR: estado es null o vacío");
+            domicilio.setEstado("PENDIENTE");
+        }
+
+        if (domicilio.getDirecccionDomicilio() == null || domicilio.getDirecccionDomicilio().trim().isEmpty()) {
+            System.out.println("ERROR: direcccionDomicilio es null o vacío");
+            // No podemos continuar sin dirección
+            throw new IllegalArgumentException("La dirección del domicilio es obligatoria");
+        }
+
+        if (domicilio.getUsuarioIDUSUARIODOMICILIO() == null) {
+            System.out.println("ERROR: usuarioIDUSUARIODOMICILIO es null");
+            throw new IllegalArgumentException("El usuario del domicilio es obligatorio");
+        }
+
+        if (domicilio.getFacturaIDFACTURA() == null) {
+            System.out.println("ERROR: facturaIDFACTURA es null");
+            throw new IllegalArgumentException("La factura del domicilio es obligatoria");
+        }
+
+        System.out.println("Domicilio validado correctamente");
+    }
+
     // ---------- Checkout ----------
     public String finalizarCompra() {
+        System.out.println("=== INICIANDO FINALIZAR COMPRA ===");
+        System.out.println("Carrito: " + carrito.size() + " items");
+        System.out.println("Total: " + getTotal());
+        System.out.println("Dirección entrega: " + direccionEntrega);
+        System.out.println("Método pago: " + metodoPago);
         try {
             if (carrito.isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(null,
@@ -269,34 +371,40 @@ private GeoService geoService;
             }
 
             // Obtener usuario logueado
-            Usuario cliente = (Usuario) FacesContext.getCurrentInstance()
-                    .getExternalContext().getSessionMap().get("usuarioLogueado");
+            Usuario usuario = (Usuario) FacesContext.getCurrentInstance()
+                    .getExternalContext().getSessionMap().get("usuario");
 
-            if (cliente == null) {
+            if (usuario == null) {
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR,
                                 "Debe iniciar sesión para continuar.", ""));
                 return null;
             }
 
+// ✅ OBTENER CLIENTE ASOCIADO (no fijo)
+            Cliente cliente = obtenerClientePorUsuario(usuario);
+
             // ===========================
-            // 1. CREAR FACTURA
+            // 1. CREAR FACTURA - CORREGIDO
             // ===========================
             Factura factura = new Factura();
             factura.setFechaFactura(new Date());
-            factura.setUsuarioIDUSUARIOVENDEDOR(cliente);
+            factura.setUsuarioIDUSUARIOVENDEDOR(usuario);  // Vendedor
+            factura.setUsuarioIDUSUARIOCLIENTE(usuario);   // Cliente - ¡OBLIGATORIO ANTES DE create()!
             factura.setTotalFactura(getTotal());
-            factura.setMetodoPago(metodoPago);
+            factura.setEstadoFactura("PENDIENTE");         // Estado - ¡OBLIGATORIO ANTES DE create()!
+            factura.setMetodoPago(metodoPago != null ? metodoPago : "ContraEntrega");
 
-            facturaFacade.create(factura);
+            // Solo después de asignar TODOS los campos obligatorios:
+            facturaFacade.create(factura);  // LÍNEA 291 - AHORA SÍ
 
             // ===========================
             // 2. CREAR PEDIDO
             // ===========================
             Pedido pedido = new Pedido();
-            pedido.setIdCliente(cliente.getIdUsuario());      // AHORA cliente real
+            pedido.setIdCliente(cliente.getIdCliente());      // AHORA cliente real
             pedido.setFechaPedido(new Date());
-            pedido.setEstado(metodoPago.equals("ContraEntrega") ? "pendiente" : "procesando");
+            pedido.setEstado("pendiente");
             pedido.setTotal(getTotal());
             pedido.setDireccionEntrega(direccionEntrega);
             pedido.setIdFactura(factura.getIdFactura());       // ENLAZADO A FACTURA
@@ -324,22 +432,54 @@ private GeoService geoService;
             // ===========================
             // 4. CREAR DOMICILIO
             // ===========================
-            Domicilios domicilio = new Domicilios();
-            domicilio.setFechaDomicilio(new Date());
-            domicilio.setEstado("PENDIENTE");
-            domicilio.setDirecccionDomicilio(direccionEntrega);
-            domicilio.setUsuarioIDUSUARIODOMICILIO(cliente);  // Cliente solicitante
-            domicilio.setFacturaIDFACTURA(factura);           // Ligado a factura
-
-            // Coordenadas s
-            double[] coords = geoService.geocodificar(direccionEntrega);
-
-            if (coords != null) {
-                domicilio.setLatitud(coords[0]);
-                domicilio.setLongitud(coords[1]);
+// ===========================
+// Validar que la dirección no sea nula
+            if (direccionEntrega == null || direccionEntrega.trim().isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "La dirección de entrega es obligatoria.", ""));
+                return null;
             }
 
-            domiciliosFacade.create(domicilio);
+// Validar que el usuario existe
+            if (usuario == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "El usuario no está disponible.", ""));
+                return null;
+            }
+
+// Validar que la factura existe
+            if (factura == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "La factura no está disponible.", ""));
+                return null;
+            }
+
+            try {
+                Domicilios domicilio = new Domicilios();
+                domicilio.setFechaDomicilio(new Date());
+                domicilio.setDirecccionDomicilio(direccionEntrega.trim());
+                domicilio.setEstado("PENDIENTE");
+                domicilio.setUsuarioIDUSUARIODOMICILIO(usuario);
+                domicilio.setFacturaIDFACTURA(factura);
+
+                // Coordenadas (opcional, no son obligatorias)
+                double[] coords = geoService.geocodificar(direccionEntrega);
+                if (coords != null && coords.length >= 2) {
+                    domicilio.setLatitud(coords[0]);
+                    domicilio.setLongitud(coords[1]);
+                }
+                validarDomicilio(domicilio);
+                domiciliosFacade.create(domicilio);
+                System.out.println("✅ Domicilio creado exitosamente. ID: " + domicilio.getIdDomicilio());
+
+            } catch (Exception e) {
+                System.out.println("❌ Error al crear domicilio: " + e.getMessage());
+                e.printStackTrace();
+                throw e; // Re-lanzar para que sea capturado por el catch general
+            }
 
             // ===========================
             // 5. LIMPIAR CARRITO
@@ -351,19 +491,42 @@ private GeoService geoService;
 
             return "/views/cliente/misPedidos.xhtml?faces-redirect=true";
 
+        } catch (ConstraintViolationException e) {
+            // Capturar errores de validación específicos
+            StringBuilder sb = new StringBuilder();
+            for (javax.validation.ConstraintViolation<?> violation : e.getConstraintViolations()) {
+                sb.append("• ").append(violation.getPropertyPath()).append(": ").append(violation.getMessage()).append("\n");
+            }
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Error de validación:", sb.toString()));
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                            "Error al procesar la compra", ""));
+                            "Error al procesar la compra: " + e.getMessage(), ""));
             return null;
         }
     }
 
     // ---------- Mis Pedidos ----------
     public List<Pedido> getMisPedidos() {
-        // ⚠️ Actualmente filtra por idCliente = 1
-        Integer idCliente = 1;
+        Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext()
+                .getSessionMap().get("usuario");
+
+        if (usuario == null) {
+            return Collections.emptyList();
+        }
+
+        // Obtener cliente real relacionado
+        Cliente cliente = obtenerClientePorUsuario(usuario);
+        if (cliente == null) {
+            return Collections.emptyList();
+        }
+
+        Integer idCliente = cliente.getIdCliente();
+
         List<Pedido> lista = pedidoFacade.findAll();
         List<Pedido> filtrados = new ArrayList<>();
         for (Pedido p : lista) {
@@ -372,6 +535,349 @@ private GeoService geoService;
             }
         }
         return filtrados;
+    }
+
+    public List<PedidoItem> getItemsPedido(Pedido pedido) {
+        if (pedido == null || pedido.getIdPedido() == null) {
+            return Collections.emptyList();
+        }
+// Llama al método optimizado de la fachada
+        return pedidoItemFacade.findByPedido(pedido.getIdPedido());
+    }
+
+    public Producto getProducto(Integer idProducto) {
+        if (idProducto == null) {
+            return null;
+        }
+        return productoFacade.find(idProducto);
+    }
+
+    public Domicilios getDomicilio(Integer idDomicilio) {
+        if (idDomicilio == null) {
+            return null;
+        }
+        return domiciliosFacade.find(idDomicilio);
+    }
+
+    // ==============================
+// MÉTODOS ADICIONALES PARA MIS PEDIDOS / DETALLE
+// ==============================
+    private Pedido pedidoSeleccionado;
+
+    public Pedido getPedidoSeleccionado() {
+        return pedidoSeleccionado;
+    }
+
+    /**
+     * Devuelve lista de items por idPedido (comodidad para EL).
+     */
+    public List<PedidoItem> getItemsByPedido(Integer idPedido) {
+        if (idPedido == null) {
+            return Collections.emptyList();
+        }
+        return pedidoItemFacade.findByPedido(idPedido);
+    }
+
+    /**
+     * Llama cuando el usuario hace "Ver detalles". Guarda el pedido
+     * seleccionado y redirige a la página de detalle.
+     */
+    public String verDetallePedido(Pedido pedido) {
+        if (pedido == null) {
+            return null;
+        }
+        this.pedidoSeleccionado = pedido;
+        return "/views/cliente/detallePedido.xhtml?faces-redirect=true";
+    }
+
+    /**
+     * DESCARGAR FACTURA
+     */
+    public void descargarFactura(Pedido pedido) {
+        if (pedido == null || pedido.getIdFactura() == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Este pedido no tiene factura disponible.", ""));
+            return;
+        }
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        HttpServletResponse response = (HttpServletResponse) ec.getResponse();
+
+        try {
+            Factura factura = facturaFacade.find(pedido.getIdFactura());
+            if (factura == null) {
+                throw new IllegalArgumentException("Factura no encontrada");
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+            PdfWriter.getInstance(document, baos);
+            document.open();
+
+            // ================= LOGO Y DATOS EMPRESA =================
+            try {
+                String logoPath = ec.getRealPath("/resources/images/logo.png"); // Ajusta la ruta
+                Image logo = Image.getInstance(logoPath);
+                logo.scaleToFit(100, 100);
+                logo.setAlignment(Element.ALIGN_LEFT);
+
+                // Datos empresa
+                PdfPTable empresaTable = new PdfPTable(2);
+                empresaTable.setWidthPercentage(100);
+                empresaTable.setWidths(new float[]{1f, 3f});
+                empresaTable.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+
+                PdfPCell logoCell = new PdfPCell(logo);
+                logoCell.setBorder(PdfPCell.NO_BORDER);
+                empresaTable.addCell(logoCell);
+
+                PdfPCell datosEmpresa = new PdfPCell();
+                datosEmpresa.setBorder(PdfPCell.NO_BORDER);
+                Paragraph p = new Paragraph();
+                p.add(new Phrase("Desayunos&Detalles S.A.\n", new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)));
+                p.add(new Phrase("Dirección:Carrera 13 No. 65 - 10, Bogota\n", new Font(Font.FontFamily.HELVETICA, 11)));
+                p.add(new Phrase("Teléfono: 3112175356\nEmail: contacto@desayunosdetalles.com", new Font(Font.FontFamily.HELVETICA, 11)));
+                datosEmpresa.addElement(p);
+                empresaTable.addCell(datosEmpresa);
+
+                document.add(empresaTable);
+                document.add(Chunk.NEWLINE);
+
+            } catch (Exception e) {
+                System.out.println("Logo no cargado: " + e.getMessage());
+            }
+
+            // ================= ENCABEZADO FACTURA =================
+            Font tituloFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, BaseColor.BLACK);
+            Paragraph titulo = new Paragraph("FACTURA #" + factura.getIdFactura(), tituloFont);
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            titulo.setSpacingAfter(10);
+            document.add(titulo);
+
+            Font infoFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK);
+            Paragraph infoCliente = new Paragraph(
+                    "Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(factura.getFechaFactura()) + "\n"
+                    + "Cliente: " + factura.getUsuarioIDUSUARIOCLIENTE().getNombreUsuario() + " "
+                    + factura.getUsuarioIDUSUARIOCLIENTE().getApellidoUsuario() + "\n"
+                    + "Método de pago: " + factura.getMetodoPago(),
+                    infoFont
+            );
+            infoCliente.setSpacingAfter(10);
+            document.add(infoCliente);
+
+            // ================= DIRECCIÓN DE ENTREGA =================
+            Pedido pedidoCompleto = pedidoFacade.find(pedido.getIdPedido());
+
+            if (pedidoCompleto != null && pedidoCompleto.getDireccionEntrega() != null) {
+                Paragraph direccionEntregaPDF = new Paragraph(
+                        "Dirección de entrega: " + pedidoCompleto.getDireccionEntrega(),
+                        new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK)
+                );
+                direccionEntregaPDF.setSpacingAfter(10);
+                document.add(direccionEntregaPDF);
+            }
+
+            // ================= TABLA DE PRODUCTOS =================
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+            table.setWidths(new float[]{4f, 1f, 2f, 2f});
+
+            Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
+            BaseColor headerColor = new BaseColor(0, 102, 204); // azul
+            String[] headers = {"Producto", "Cantidad", "Precio Unit.", "Subtotal"};
+            for (String h : headers) {
+                PdfPCell cell = new PdfPCell(new Phrase(h, headerFont));
+                cell.setBackgroundColor(headerColor);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setPadding(5);
+                table.addCell(cell);
+            }
+
+            Font cellFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL, BaseColor.BLACK);
+            BigDecimal total = BigDecimal.ZERO;
+            List<PedidoItem> items = getItemsByPedido(pedido.getIdPedido());
+            boolean gris = false;
+            for (PedidoItem item : items) {
+                String nombre = getProducto(item.getIdProducto()).getNombreProducto();
+                BigDecimal precio = item.getPrecioUnitario();
+                BigDecimal subtotal = precio.multiply(BigDecimal.valueOf(item.getCantidad()));
+                total = total.add(subtotal);
+
+                BaseColor bgColor = gris ? new BaseColor(240, 240, 240) : BaseColor.WHITE;
+                gris = !gris;
+
+                PdfPCell c1 = new PdfPCell(new Phrase(nombre, cellFont));
+                c1.setBackgroundColor(bgColor);
+                c1.setPadding(5);
+                table.addCell(c1);
+
+                PdfPCell c2 = new PdfPCell(new Phrase(String.valueOf(item.getCantidad()), cellFont));
+                c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+                c2.setBackgroundColor(bgColor);
+                c2.setPadding(5);
+                table.addCell(c2);
+
+                PdfPCell c3 = new PdfPCell(new Phrase("$" + precio, cellFont));
+                c3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                c3.setBackgroundColor(bgColor);
+                c3.setPadding(5);
+                table.addCell(c3);
+
+                PdfPCell c4 = new PdfPCell(new Phrase("$" + subtotal, cellFont));
+                c4.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                c4.setBackgroundColor(bgColor);
+                c4.setPadding(5);
+                table.addCell(c4);
+            }
+
+            document.add(table);
+
+            // ================= TOTAL =================
+            PdfPTable totalTable = new PdfPTable(2);
+            totalTable.setWidthPercentage(40);
+            totalTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalTable.setSpacingBefore(10f);
+
+            Font totalFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+
+            PdfPCell totalLabel = new PdfPCell(new Phrase("TOTAL", totalFont));
+            totalLabel.setBackgroundColor(new BaseColor(200, 200, 200));
+            totalLabel.setHorizontalAlignment(Element.ALIGN_CENTER);
+            totalLabel.setPadding(5);
+            totalTable.addCell(totalLabel);
+
+            PdfPCell totalValue = new PdfPCell(new Phrase("$" + total, totalFont));
+            totalValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalValue.setPadding(5);
+            totalTable.addCell(totalValue);
+
+            document.add(totalTable);
+
+            document.close();
+
+            // ================= ENVIAR PDF AL NAVEGADOR =================
+            byte[] pdfBytes = baos.toByteArray();
+            response.reset();
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=factura_" + factura.getIdFactura() + ".pdf");
+            response.setContentLength(pdfBytes.length);
+
+            OutputStream out = response.getOutputStream();
+            out.write(pdfBytes);
+            out.flush();
+            out.close();
+
+            fc.responseComplete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al generar la factura: " + e.getMessage(), ""));
+        }
+    }
+
+    // ---------- Total de pedidos ---------- 
+    public int getTotalPedidos() {
+        return getMisPedidos().size();
+    }
+
+    // ----------  MÉTODOS PARA DOMICILIOS -admin----------
+    // Devuelve todos los pedidos registrados
+    public List<Pedido> getTodosPedidos() {
+        return pedidoFacade.findAll();
+    }
+
+    // Cancelar pedido (actualiza estado)
+    public void cancelarPedido(Pedido pedido) {
+        if (pedido != null) {
+            pedido.setEstado("Cancelado");
+            pedidoFacade.edit(pedido);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Pedido cancelado", null));
+        }
+    }
+
+    // Listar domiciliarios (rol DOMICILIARIO)
+    public List<Usuario> getListaDomiciliarios() {
+        return usuarioFacade.findByRol(3);
+    }
+
+// Listar facturas
+    public List<Factura> getListaFacturas() {
+        return facturaFacade.findAll();
+    }
+
+// Getters/Setters
+    public Integer getIdDomiciliarioTemporal() {
+        return idDomiciliarioTemporal;
+    }
+
+    public void setIdDomiciliarioTemporal(Integer idDomiciliarioTemporal) {
+        this.idDomiciliarioTemporal = idDomiciliarioTemporal;
+    }
+
+    public Integer getIdFacturaTemporal() {
+        return idFacturaTemporal;
+    }
+
+    public void setIdFacturaTemporal(Integer idFacturaTemporal) {
+        this.idFacturaTemporal = idFacturaTemporal;
+    }
+
+    public String guardarPedido() {
+        try {
+            if (pedidoSeleccionado == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "No hay pedido seleccionado", null));
+                return null;
+            }
+
+            // Asignar factura
+            if (idFacturaTemporal != null) {
+                pedidoSeleccionado.setIdFactura(idFacturaTemporal);
+            }
+
+            // Asignar domiciliario
+            if (idDomiciliarioTemporal != null) {
+                Usuario dom = usuarioFacade.find(idDomiciliarioTemporal);
+                pedidoSeleccionado.setUsuarioDomiciliario(dom);
+            } else {
+                pedidoSeleccionado.setUsuarioDomiciliario(null);
+            }
+
+            // Actualizar pedido
+            pedidoFacade.edit(pedidoSeleccionado);
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Pedido actualizado correctamente", null));
+
+            return "indexDomi?faces-redirect=true";
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Error al actualizar el pedido: " + e.getMessage(), null));
+            return null;
+        }
+    }
+
+    public String editarPedido(Pedido pedido) {
+        this.pedidoSeleccionado = pedido;
+
+        // Cargar ID del domiciliario temporal
+        if (pedido.getUsuarioDomiciliario() != null) {
+            this.idDomiciliarioTemporal = pedido.getUsuarioDomiciliario().getIdUsuario();
+        } else {
+            this.idDomiciliarioTemporal = null;
+        }
+
+        // Cargar ID de la factura temporal
+        this.idFacturaTemporal = pedido.getIdFactura();
+
+        return "/views/admin/crearactDomicilio.xhtml?faces-redirect=true";
     }
 
     // ---------- Clase interna ItemCarrito ----------

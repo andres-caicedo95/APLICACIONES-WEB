@@ -156,7 +156,9 @@ public class login implements Serializable {
 
     public String cerrarSesion() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "login?faces-redirect=true";
+        return "/PaginaInicio.xhtml?faces-redirect=true";
+        //return "/?faces-redirect=true";
+        //return "login?faces-redirect=true";
     }
 
     private void mostrarMensaje(String mensaje, FacesMessage.Severity severidad) {

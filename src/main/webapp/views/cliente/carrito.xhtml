@@ -5,8 +5,9 @@
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 template="/views/newTemplate.xhtml">
 
+    <ui:define name="title">Mi Carrito de Compras</ui:define>
     <ui:define name="content">
-        
+
 
         <div class="modern-cart-container">
             <div class="cart-header">
@@ -16,13 +17,19 @@
 
             <div class="cart-content">
                 <h:form id="cartForm">
-                    <h:messages id="msgs" globalOnly="true" style="color:#10b981; text-align:center; margin:10px 0;"/>
+                    <h:messages id="msgs" globalOnly="true"
+                                style="color:#10b981; text-align:center; margin:10px 0;" />
 
+                    <!-- ==============================
+                         TABLA PRODUCTOS
+                    =============================== -->
                     <h:dataTable value="#{clienteController.carrito}" var="item" styleClass="modern-cart-table">
+
                         <h:column>
                             <f:facet name="header">Producto</f:facet>
                             <div class="product-cell">
-                                <h:graphicImage value="#{productController.getImageBase64(item.producto)}" styleClass="product-image" />
+                                <h:graphicImage value="#{productController.getImageBase64(item.producto)}"
+                                                styleClass="product-image" />
                                 <div>
                                     <div class="product-name">#{item.producto.nombreProducto}</div>
                                     <div class="product-category">Producto fresco</div>
@@ -44,7 +51,8 @@
                                     <f:ajax execute="@this" render="@form"/>
                                 </h:commandButton>
 
-                                <h:inputText value="#{item.cantidad}" styleClass="quantity-input" readonly="true"/>
+                                <h:inputText value="#{item.cantidad}"
+                                             styleClass="quantity-input" readonly="true" />
 
                                 <h:commandButton value="+"
                                                  action="#{clienteController.actualizarCantidad(item, item.cantidad + 1)}"
@@ -65,48 +73,121 @@
                         </h:column>
                     </h:dataTable>
 
+                    <!-- ============================
+                         TOTAL
+                    ============================= -->
                     <div class="total-section">
                         <h3>Total a Pagar</h3>
                         <div class="total-amount">$#{clienteController.total}</div>
                     </div>
 
+
+                    <!-- ============================
+                         METODO DE PAGO
+                    ============================ -->
                     <div class="checkout-section">
                         <div>
                             <h3 class="section-title">Método de Pago</h3>
                             <div class="payment-options">
-                                <h:selectOneRadio value="#{clienteController.metodoPago}">
+                                <h:selectOneRadio id="metodoPago" value="#{clienteController.metodoPago}">
                                     <f:selectItem itemValue="Nequi" itemLabel="Nequi"/>
                                     <f:selectItem itemValue="Daviplata" itemLabel="Daviplata"/>
-                                    <f:selectItem itemValue="ContraEntrega" itemLabel="Contra Entrega"/>
                                 </h:selectOneRadio>
                             </div>
                         </div>
 
+                        <!-- DIRECCION ENTREGA -->
                         <div>
                             <h3 class="section-title">Dirección de Entrega</h3>
+
                             <h:inputText id="direccionEntrega"
                                          value="#{clienteController.direccionEntrega}"
                                          required="true"
-                                         requiredMessage="La dirección es obligatoria"
+                                         label="Dirección"
                                          styleClass="address-input"
-                                         pt:placeholder="Ingresa tu dirección completa"/>
-                            <h:message for="direccionEntrega" style="color:#ef4444; font-size:0.9rem;"/>
+                                         pt:placeholder="Ej: Calle 80 # 50-20">
+
+                                <f:validateRegex 
+                                    pattern="^(Calle|Carrera|Avenida|Transversal|Diagonal|Autopista)\s\d{1,3}[A-Za-z]?\s?(Este|Oeste|Sur|Norte|este|oeste|sur|norte)?\s?(#|-)\s?\d{1,3}[A-Za-z]?\s?-?\s?\d{1,3}$"/>
+
+                            </h:inputText>
+
+                            <h:message for="direccionEntrega"
+                                       style="color:#ef4444; font-size:0.9rem;" />
+
+
+                            <h:message for="direccionEntrega"
+                                       style="color:#ef4444; font-size:0.9rem;"/>
                         </div>
                     </div>
 
+                    <!-- ============================
+                         BOTON FINALIZAR COMPRA
+                    ============================ -->
                     <div style="padding: 0 30px 30px;">
-                        <h:commandButton value="Finalizar compra"
-                                         action="#{clienteController.finalizarCompra}"
+
+                        <!-- CORREGIDO: ahora guarda datos antes de abrir modal -->
+                        <h:commandButton value="Pagar Ahora"
+                                         action="#{clienteController.prepararPago}"
                                          styleClass="btn-checkout">
-                            <f:ajax render="msgs"/>
+                            <f:ajax execute="metodoPago direccionEntrega @this"
+                                    render="@form"
+                                    onevent="abrirModalPago"/>
                         </h:commandButton>
+
+
                     </div>
 
                     <div class="security-notice">
                         Compra 100% segura - Tus datos están protegidos
                     </div>
+
                 </h:form>
+
             </div>
         </div>
+
+
+        <!-- ============================================
+               MODAL DE PAGO
+        ============================================= -->
+        <div id="modalPago" style="display:none;" class="payment-modal-bg">
+            <div class="payment-modal">
+                <h2>Confirmar Pago</h2>
+
+                <p>Método seleccionado:
+                    <b>#{clienteController.metodoPago}</b>
+                </p>
+
+                <div class="qr-box">
+                    <img src="/resources/img/qr_ejemplo.png"
+                         alt="QR" width="230" />
+                </div>
+
+                <p>Escanea el código y realiza el pago.</p>
+
+                <h:form>
+                    <h:commandButton value="Finalizar pago"
+                                     action="#{clienteController.finalizarCompra}"
+                                     styleClass="btn-confirmar-pago" />
+                </h:form>
+
+                <button type="button" class="btn-cerrar" onclick="cerrarPago()">Cancelar</button>
+
+            </div>
+        </div>
+
+        <script>
+            function abrirModalPago(event) {
+                if (event.status === "success") {
+                    document.getElementById("modalPago").style.display = "flex";
+                }
+            }
+
+            function cerrarPago() {
+                document.getElementById("modalPago").style.display = "none";
+            }
+        </script>
+
     </ui:define>
 </ui:composition>

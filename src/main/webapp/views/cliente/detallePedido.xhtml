@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/views/newTemplate.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="detalleForm">
+
+            <h:panelGroup rendered="#{clienteController.pedidoSeleccionado != null}">
+
+                <div style="background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+
+                    <h2>Detalle Pedido # #{clienteController.pedidoSeleccionado.idPedido}</h2>
+
+                    <p>
+                        <strong>Fecha:</strong>
+                        <h:outputText value="#{clienteController.pedidoSeleccionado.fechaPedido}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                        </h:outputText>
+                        <span style="margin:0 8px;">|</span>
+
+                        <strong>Estado:</strong> #{clienteController.pedidoSeleccionado.estado}
+                    </p>
+
+                    <p>
+                        <strong>Dirección de entrega:</strong>
+                        <h:outputText value="#{clienteController.pedidoSeleccionado.direccionEntrega != null ? clienteController.pedidoSeleccionado.direccionEntrega : 'No registrada'}"/>
+                    </p>
+
+                    <hr/>
+
+                    <h3>Productos</h3>
+
+                    <ui:repeat value="#{clienteController.getItemsByPedido(clienteController.pedidoSeleccionado.idPedido)}" var="item">
+                        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;">
+                            <div>
+                                <strong>#{clienteController.getProducto(item.idProducto).nombreProducto}</strong>
+                                <div style="color:#666;font-size:.9rem;">ID: #{item.idItem}</div>
+                            </div>
+
+                            <div style="text-align:right;">
+                                <div>Cantidad: #{item.cantidad}</div>
+                                <div>Precio u.: $#{item.precioUnitario}</div>
+                                <div style="font-weight:bold;margin-top:6px;">Subtotal: $#{item.precioUnitario * item.cantidad}</div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+
+                    <div style="margin-top:15px;text-align:right;">
+                        <h:panelGrid columns="2" columnClasses="label,value" style="width:360px;margin-left:auto;">
+                            <h:outputText value="Subtotal:" />
+                            <h:outputText value="$#{clienteController.pedidoSeleccionado.total}" />
+                            <!-- Si tienes impuesto/envío, añade líneas acá -->
+                            <h:outputText value="Total:" style="font-weight:bold;"/>
+                            <h:outputText value="$#{clienteController.pedidoSeleccionado.total}" style="font-weight:bold;"/>
+                        </h:panelGrid>
+                    </div>
+
+                    <div style="margin-top:18px;text-align:right;">
+                        <h:commandButton value="Descargar Factura"
+                                         action="#{clienteController.descargarFactura(clienteController.pedidoSeleccionado)}"
+                                         styleClass="btn-secondary-custom">
+                            <f:ajax disabled="true"/>
+                        </h:commandButton>
+
+
+
+                        <h:commandButton value="↩ Volver"
+                                         action="/views/cliente/misPedidos.xhtml?faces-redirect=true"
+                                         immediate="true"
+                                         styleClass="btn-secondary-custom" />
+                    </div>
+
+                </div>
+
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{clienteController.pedidoSeleccionado == null}">
+                <p>No hay pedido seleccionado. Regresa a <a href="/views/cliente/misPedidos.xhtml">Mis pedidos</a>.</p>
+            </h:panelGroup>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

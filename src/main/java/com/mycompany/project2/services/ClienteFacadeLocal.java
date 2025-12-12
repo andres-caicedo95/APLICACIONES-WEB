@@ -5,9 +5,9 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- * Interfaz local para la fachada de Cliente.
- * Define las operaciones disponibles para EJB y el Dashboard.
- * 
+ * Interfaz local para la fachada de Cliente. Define las operaciones disponibles
+ * para EJB y el Dashboard.
+ *
  * @author user
  */
 @Local
@@ -28,8 +28,16 @@ public interface ClienteFacadeLocal {
     int count();
 
     /**
-     * Cuenta clientes según su estado (ACTIVO / INACTIVO).
-     * Usado por el Dashboard para graficar clientes por estado.
+     * Cuenta clientes según su estado (ACTIVO / INACTIVO). Usado por el
+     * Dashboard para graficar clientes por estado.
      */
     long countByEstado(String estado);
+
+    /**
+     * Busca un cliente por su correo electrónico.
+     *
+     * @param correo Correo del cliente
+     * @return Cliente encontrado o null si no existe
+     */
+    Cliente findByCorreo(String correo);
 }

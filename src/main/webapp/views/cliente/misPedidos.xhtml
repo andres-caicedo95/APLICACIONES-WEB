@@ -2,84 +2,71 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 template="/views/newTemplate.xhtml">
-
+<ui:define name="title">Mis Pedidos</ui:define>
     <ui:define name="content">
-        <h:outputStylesheet>
-            
-        </h:outputStylesheet>
 
-        <div class="modern-orders-container">
-            <div class="orders-header">
-                <h2>Mis Pedidos</h2>
-                <p class="orders-subtitle">Gestiona y realiza seguimiento a tus pedidos</p>
+        <div class="container my-4">
+
+            <!-- Encabezado -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">
+                <div>
+                    <h2 class="mb-1">Mis Pedidos</h2>
+                    <p class="text-muted mb-0">Gestiona y realiza seguimiento a tus pedidos</p>
+                </div>
             </div>
 
-            <div class="orders-content">
-                <h:form id="ordersForm">
-                    <h:dataTable value="#{clienteController.carrito}" var="item" styleClass="modern-orders-table">
-                        <h:column>
-                            <f:facet name="header">Producto</f:facet>
-                            <div class="order-product-cell">
-                                <div class="order-product-image">P</div>
-                                <div>
-                                    <div class="order-product-name">#{item.producto.nombreProducto}</div>
-                                    <div class="order-product-category">Producto fresco</div>
+            <h:form id="ordersForm">
+
+                <!-- Lista de pedidos -->
+                <div class="row g-4">
+                    <ui:repeat value="#{clienteController.misPedidos}" var="pedido">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card shadow-sm h-100 border-0">
+
+                                <!-- Cabecera de la tarjeta -->
+                                <div class="card-header d-flex justify-content-between align-items-center bg-light border-bottom">
+                                    <span class="fw-bold">Pedido ##{pedido.idPedido}</span>
+                                    <span class="badge #{pedido.estado eq 'pendiente' ? 'bg-warning text-dark' : 'bg-success'}">
+                                        #{pedido.estado}
+                                    </span>
                                 </div>
-                            </div>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Precio</f:facet>
-                            <div class="order-price-cell">$#{item.precioUnitario}</div>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Cantidad</f:facet>
-                            <div class="order-quantity-controls">
-                                <h:inputText value="#{item.cantidad}" size="3" styleClass="order-quantity-input"/>
-                                <h:commandButton value="Actualizar" action="#{clienteController.actualizarCantidad(item, item.cantidad)}" styleClass="order-btn-update"/>
-                            </div>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Accion</f:facet>
-                            <h:commandButton value="Eliminar" action="#{clienteController.eliminarDelCarrito(item)}" styleClass="order-btn-delete" onclick="return confirm('Estas seguro de eliminar este producto?')"/>
-                        </h:column>
-                    </h:dataTable>
 
-                    <div class="order-total-section">
-                        <h3>Total del Pedido</h3>
-                        <div class="order-total-amount">$#{clienteController.total}</div>
-                    </div>
+                                <!-- Cuerpo de la tarjeta -->
+                                <div class="card-body">
+                                    <p class="mb-2"><strong>Fecha:</strong>
+                                        <h:outputText value="#{pedido.fechaPedido}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                        </h:outputText>
+                                    </p>
+                                    <p class="mb-2"><strong>Total:</strong> $#{pedido.total}</p>
+                                    <p class="mb-0"><strong>Dirección:</strong> 
+                                        #{pedido.direccionEntrega != null ? pedido.direccionEntrega : 'No registrada'}
+                                    </p>
+                                </div>
 
-                    <div class="order-checkout-section">
-                        <div>
-                            <h3 class="order-section-title">Metodo de Pago</h3>
-                            <div class="order-payment-options">
-                                <h:selectOneRadio value="#{clienteController.metodoPago}">
-                                    <f:selectItem itemValue="Nequi" itemLabel="Nequi"/>
-                                    <f:selectItem itemValue="Daviplata" itemLabel="Daviplata"/>
-                                    <f:selectItem itemValue="ContraEntrega" itemLabel="ContraEntrega"/>
-                                </h:selectOneRadio>
+                                <!-- Pie de la tarjeta -->
+                                <div class="card-footer text-end bg-light border-top">
+                                    <h:commandButton value="Ver Detalle"
+                                                     action="#{clienteController.verDetallePedido(pedido)}"
+                                                     styleClass="btn btn-primary btn-sm"/>
+                                </div>
+
                             </div>
                         </div>
+                    </ui:repeat>
+                </div>
 
-                        <div>
-                            <h3 class="order-section-title">Direccion de Entrega</h3>
-                            <h:inputText value="#{clienteController.direccionEntrega}" required="true" requiredMessage="La direccion es obligatoria" styleClass="order-address-input" 
-                                         pt:placeholder="Ingresa tu direccion completa"/>
-                            <h:message for="direccionEntrega" style="color: #ef4444; font-size: 0.9rem;"/>
-                        </div>
+                <!-- Mensaje si no hay pedidos -->
+                <h:panelGroup rendered="#{empty clienteController.misPedidos}" class="mt-4">
+                    <div class="alert alert-info" role="alert">
+                        No has realizado ningún pedido aún.
                     </div>
+                </h:panelGroup>
 
-                    <div style="padding: 0 30px 30px;">
-                        <h:commandButton value="Confirmar Pedido" action="#{clienteController.finalizarCompra()}" styleClass="order-btn-checkout"/>
-                    </div>
+            </h:form>
 
-                    <div class="order-security-notice">
-                        Pedido 100% seguro - Tus datos estan protegidos
-                    </div>
-                </h:form>
-            </div>
         </div>
+
     </ui:define>
 </ui:composition>

@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -59,9 +60,9 @@ public class Domicilios implements Serializable {
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "ESTADO")
-    private String estado = "PENDIENTE"; // Valores: PENDIENTE, ASIGNADO, EN_CAMINO, ENTREGADO, CANCELADO
+    private String estado; // Valores: PENDIENTE, ASIGNADO, EN_CAMINO, ENTREGADO, CANCELADO
 
-    // ✅ NUEVOS CAMPOS PARA GEOLOCALIZACIÓN
+    // NUEVOS CAMPOS PARA GEOLOCALIZACIÓN
     @Column(name = "LATITUD")
     private Double latitud;
 
@@ -77,6 +78,22 @@ public class Domicilios implements Serializable {
     private Usuario usuarioIDUSUARIODOMICILIO;
 
     public Domicilios() {
+        this.fechaDomicilio = new Date();
+        this.estado = "PENDIENTE";
+        this.direcccionDomicilio = ""; // Valor por defecto
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (this.fechaDomicilio == null) {
+            this.fechaDomicilio = new Date();
+        }
+        if (this.estado == null || this.estado.trim().isEmpty()) {
+            this.estado = "PENDIENTE";
+        }
+        if (this.direcccionDomicilio == null) {
+            this.direcccionDomicilio = "";
+        }
     }
 
     public Domicilios(Integer idDomicilio) {
@@ -194,3 +211,5 @@ public class Domicilios implements Serializable {
         return "com.mycompany.project2.entities.Domicilios[ idDomicilio=" + idDomicilio + " ]";
     }
 }
+
+

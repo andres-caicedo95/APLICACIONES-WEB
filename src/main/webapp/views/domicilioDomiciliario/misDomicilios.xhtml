@@ -1,50 +1,91 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/views/newTemplate.xhtml">
 
-    <body>
-        <ui:composition template="./../newTemplate.xhtml">
-            <ui:define name="content">
-                <h1>Mis Domicilios</h1>
-                
-                <h:form>
-                    <h:dataTable value="#{domicilioDomiciliarioController.misDomicilios}" var="domicilio"
-                                 styleClass="table table-striped">
-                        <h:column>
-                            <f:facet name="header">ID</f:facet>
-                            #{domicilio.idDomicilio}
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Dirección</f:facet>
-                            #{domicilio.direcccionDomicilio}
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Estado</f:facet>
-                            <span style="font-weight: bold; 
-                                        color: #{domicilio.estado == 'ASIGNADO' ? 'orange' : 
-                                               domicilio.estado == 'EN_CAMINO' ? 'blue' : 
-                                               'green'}">
-                                #{domicilio.estado}
-                            </span>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Acciones</f:facet>
-                            <h:commandButton value="En Camino" 
-                                           rendered="#{domicilio.estado == 'ASIGNADO'}"
-                                           action="#{domicilioDomiciliarioController.cambiarEstado(domicilio, 'EN_CAMINO')}"
-                                           styleClass="btn btn-warning"/>
-                                           
-                            <h:commandButton value="Entregado" 
-                                           rendered="#{domicilio.estado == 'EN_CAMINO'}"
-                                           action="#{domicilioDomiciliarioController.cambiarEstado(domicilio, 'ENTREGADO')}"
-                                           styleClass="btn btn-success"/>
-                        </h:column>
-                    </h:dataTable>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-    </body>
-</html>
+    <ui:define name="title">Mis Domicilios</ui:define>
+
+    <ui:define name="content">
+        <h1>Mis Domicilios</h1>
+
+        <h:form>
+            <h:messages globalOnly="true" style="color:green; font-weight:bold;" />
+
+            <!-- ================== PEDIDOS ACTIVOS ================== -->
+            <h2>Pedidos Activos</h2>
+            <h:dataTable value="#{domicilioDomiciliarioController.misPedidosActivos}" 
+                         var="pedido" class="table table-striped">
+
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                        #{pedido.idPedido}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Dirección</f:facet>
+                        #{pedido.direccionEntrega}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Estado</f:facet>
+                    <span style="font-weight:bold;
+                          color:#{pedido.estado=='asignado' ? 'orange' :
+                                  pedido.estado=='en camino' ? 'blue' : 'green'}">
+                          #{pedido.estado}
+                    </span>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Total</f:facet>
+                        #{pedido.total}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Acciones</f:facet>
+
+                    <h:commandButton value="En Camino"
+                                     rendered="#{pedido.estado=='asignado'}"
+                                     action="#{domicilioDomiciliarioController.cambiarEstado(pedido,'en camino')}"
+                                     class="btn btn-warning" />
+
+                    <h:commandButton value="Entregado"
+                                     rendered="#{pedido.estado=='en camino'}"
+                                     action="#{domicilioDomiciliarioController.cambiarEstado(pedido,'entregado')}"
+                                     class="btn btn-success" />
+                </h:column>
+
+            </h:dataTable>
+
+            <!-- ================== HISTORIAL ================== -->
+            <h2>Historial de Pedidos Entregados</h2>
+            <h:dataTable value="#{domicilioDomiciliarioController.misPedidosEntregados}" 
+                         var="pedido" class="table table-striped">
+
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                        #{pedido.idPedido}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Dirección</f:facet>
+                        #{pedido.direccionEntrega}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Estado</f:facet>
+                    <span style="font-weight:bold; color:green">
+                        #{pedido.estado}
+                    </span>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Total</f:facet>
+                        #{pedido.total}
+                </h:column>
+
+            </h:dataTable>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

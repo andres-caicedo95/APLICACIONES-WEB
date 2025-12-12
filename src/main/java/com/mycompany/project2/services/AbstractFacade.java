@@ -6,6 +6,9 @@ package com.mycompany.project2.services;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.TypedQuery; // Importamos para usar TypedQuery en count() y findRange()
 
 /**
  *
@@ -37,27 +40,38 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().find(entityClass, id);
     }
 
+    // 1. Método findAll() Corregido
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        // Usamos CriteriaQuery<T> para especificar el tipo
+        CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
         cq.select(cq.from(entityClass));
+        // getEntityManager().createQuery(cq) es automáticamente TypedQuery<T>
         return getEntityManager().createQuery(cq).getResultList();
     }
 
+    // 2. Método findRange() Corregido
     public List<T> findRange(int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        // Usamos CriteriaQuery<T> para especificar el tipo
+        CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
         cq.select(cq.from(entityClass));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
+        
+        // Usamos TypedQuery<T> para especificar el tipo
+        TypedQuery<T> q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);
         q.setFirstResult(range[0]);
         return q.getResultList();
     }
 
+    // 3. Método count() Corregido
     public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
+        // Usamos CriteriaQuery<Long> ya que count() siempre devuelve Long
+        CriteriaQuery<Long> cq = getEntityManager().getCriteriaBuilder().createQuery(Long.class);
+        Root<T> rt = cq.from(entityClass);
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
+        
+        // Usamos TypedQuery<Long> para obtener el resultado de tipo Long de forma segura
+        TypedQuery<Long> q = getEntityManager().createQuery(cq);
+        return q.getSingleResult().intValue();
     }
     
 }

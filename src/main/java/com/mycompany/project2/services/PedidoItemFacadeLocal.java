@@ -14,6 +14,8 @@ public interface PedidoItemFacadeLocal {
     void remove(PedidoItem item);
     PedidoItem find(Integer id);
     List<PedidoItem> findAll();
+    
+    List<PedidoItem> findByPedido(Integer idPedido);
 
     public Map<Date, BigDecimal> totalVentasPorDia(Date desde, Date hasta);
 

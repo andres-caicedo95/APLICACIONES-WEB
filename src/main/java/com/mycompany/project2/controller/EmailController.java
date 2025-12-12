@@ -2,7 +2,7 @@ package com.mycompany.project2.controller;
 
 import com.mycompany.project2.entities.Usuario;
 import com.mycompany.project2.services.UsuarioFacadeLocal;
-import com.mycompany.project2.services.EmailService; // ✅ IMPORTACIÓN CLAVE
+import com.mycompany.project2.services.EmailService; 
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class EmailController implements Serializable {
     private DomicilioController domicilioController;
     
     @Inject
-    private EmailService emailService; // ✅ Servicio de correo centralizado
+    private EmailService emailService; 
 
     @PostConstruct
     public void init() {
@@ -108,7 +108,6 @@ public class EmailController implements Serializable {
                 return null;
             }
 
-            // ✅ Usa el servicio centralizado (configurado para Outlook)
             String cuerpoFinal = enviarHtml ? cuerpo : "<pre>" + cuerpo + "</pre>";
             boolean exito = emailService.enviarCorreo(
                 destinatarios.toArray(new String[0]), 
@@ -168,7 +167,6 @@ public class EmailController implements Serializable {
         destinatariosPreview = new ArrayList<>();
     }
 
-    // Getters y Setters
     public String getAsunto() { return asunto; }
     public void setAsunto(String asunto) { this.asunto = asunto; }
     public String getCuerpo() { return cuerpo; }
@@ -190,4 +188,3 @@ public class EmailController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, mensaje, null));
     }
 }
-

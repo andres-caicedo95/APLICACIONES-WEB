@@ -30,6 +30,13 @@ public class Pedido implements Serializable {
     @Column(name = "direccion_entrega")
     private String direccionEntrega;
 
+    @Column(name = "id_factura")
+    private Integer idFactura; // campo para relacionar factura
+    
+    @ManyToOne
+    @JoinColumn(name = "id_domiciliario")
+    private Usuario usuarioDomiciliario;
+
     // Getters y setters
     public Integer getIdPedido() { return idPedido; }
     public void setIdPedido(Integer idPedido) { this.idPedido = idPedido; }
@@ -49,7 +56,10 @@ public class Pedido implements Serializable {
     public String getDireccionEntrega() { return direccionEntrega; }
     public void setDireccionEntrega(String direccionEntrega) { this.direccionEntrega = direccionEntrega; }
 
-    public void setIdFactura(Integer idFactura) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public Integer getIdFactura() { return idFactura; }
+    public void setIdFactura(Integer idFactura) { this.idFactura = idFactura; }
+    
+    
+    public Usuario getUsuarioDomiciliario() { return usuarioDomiciliario; }
+    public void setUsuarioDomiciliario(Usuario usuarioDomiciliario) { this.usuarioDomiciliario = usuarioDomiciliario; }
 }
